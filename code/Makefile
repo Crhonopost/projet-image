@@ -21,9 +21,9 @@ LD = g++
 
 
 # C flags
-CFLAGS = -Wall -O3
+CFLAGS = -Wall -O0
 # C++ flags
-CXXFLAGS = -Wall -O3
+CXXFLAGS = -Wall -O0
 # C/C++ flags
 CPPFLAGS = -Wall -g -I $(INC)
 # dependency-generation flags

@@ -34,7 +34,7 @@ struct Image {
         this->width = width;
         this->isColor = isColor;
         nbPixel = width * height;
-        totalSize = isColor ? nbPixel : nbPixel * 3;
+        totalSize = isColor ? nbPixel * 3 : nbPixel;
     
         allocation_tableau(this->data, OCTET, this->totalSize);
     }

@@ -1,4 +1,4 @@
-#include <Image.h>
+#include <image.h>
 #include <super_pixel.h>
 
 int main(int argc, char* argv[])
