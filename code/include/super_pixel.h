@@ -2,6 +2,7 @@
 
 #include <image.h>
 #include <format.h>
+#include <fstream>
 
 struct Pixel {
     int superpixel_id, potential_sp_id;
@@ -64,6 +65,60 @@ struct SuperPixel{
     }
 };
 
+
+
+void storeSNIC(int width, int height, const std::vector<Rgb> &palette, const std::vector<int> &superpixelIds) {
+    std::ofstream file("output/compressed.txt");
+    
+    if (!file.is_open()) {
+        std::cerr << "Error opening file for writing." << std::endl;
+        return;
+    }
+
+    file << width << height << palette.size();
+    
+    for (const auto &color : palette) {
+        file << color.r << color.g << color.b;
+    }
+
+    for (int id : superpixelIds) {
+        file << id;
+    }
+}
+
+void readSNIC(const char *path, Image &image) {
+    std::ifstream file(path);
+    
+    if (!file.is_open()) {
+        std::cerr << "Error opening file for reading." << std::endl;
+        return;
+    }
+    
+    int width, height, paletteSize;
+    file >> width >> height >> paletteSize;
+    
+    int totalSize = width * height;
+    std::vector<Rgb> palette(paletteSize);
+    
+    for (int i = 0; i < paletteSize; i++) {
+        file >> palette[i].r >> palette[i].g >> palette[i].b;
+    }
+    
+    std::vector<int> ids(totalSize);
+    for (int i = 0; i < totalSize; i++) {
+        file >> ids[i];
+    }
+    
+    file.close();
+    
+    image = Image(width, height, true);
+    for (int i = 0; i < image.nbPixel; i++) {
+        Rgb pixelColor = palette[ids[i]];
+        image[i * 3] = pixelColor.r;
+        image[i * 3 + 1] = pixelColor.g;
+        image[i * 3 + 2] = pixelColor.b;
+    }
+}
 
 // ref: https://openaccess.thecvf.com/content_cvpr_2017/papers/Achanta_Superpixels_and_Polygons_CVPR_2017_paper.pdf
 // points clés de SNIC: n'utilise pas kmean, pas besoin de plusieurs itérations et meilleure connectivité dés le début
@@ -172,15 +227,20 @@ void SNIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
     
     
     imageOut = Image(imageIn.width, imageIn.height, true);
+    std::vector<int> ids;
     // Mise à jour des centroïdes
     for(int i=0; i<imageOut.nbPixel; i++){
         int superPixelIdx = (*imagePixels[i]).superpixel_id;
+        ids.push_back(superPixelIdx);
         Rgb &color = colors[superPixelIdx];
         imageOut[i*3] = color.r;
         imageOut[i*3 + 1] = color.g;
         imageOut[i*3 + 2] = color.b;
     }
 
+
+    storeSNIC(imageIn.width, imageIn.height, colors, ids);
+    readSNIC("output/compressed.txt", imageOut);
     imageOut.write("output/res.ppm");
 
 

@@ -36,24 +36,20 @@ void ecrire_image_ppm(const char  nom_image[], OCTET *pt_image, int nb_lignes, i
    FILE *f_image;
    int taille_image = 3*nb_colonnes * nb_lignes;
 
-   if( (f_image = fopen(nom_image, "wb")) == NULL)
-      {
-	 printf("\nPas d'acces en ecriture sur l'image %s \n", nom_image);
-	 exit(EXIT_FAILURE);
-      }
-   else
-      {
-	 fprintf(f_image,"P6\r") ;                               /*ecriture entete*/
-	 fprintf(f_image,"%d %d\r255\r", nb_colonnes, nb_lignes) ;
+   if( (f_image = fopen(nom_image, "wb")) == NULL){
+      printf("\nPas d'acces en ecriture sur l'image %s \n", nom_image);
+      exit(EXIT_FAILURE);
+   } else {
+   fprintf(f_image,"P6\r") ;                               /*ecriture entete*/
+   fprintf(f_image,"%d %d\r255\r", nb_colonnes, nb_lignes) ;
 
-	 if( (fwrite((OCTET*)pt_image, sizeof(OCTET), taille_image, f_image))
-	     != (size_t)(taille_image))
-	    {
-	       printf("\nErreur d'ecriture de l'image %s \n", nom_image);
-	       exit(EXIT_FAILURE);
-	    }
-	 fclose(f_image);
+   if( (fwrite((OCTET*)pt_image, sizeof(OCTET), taille_image, f_image))
+      != (size_t)(taille_image)){
+         printf("\nErreur d'ecriture de l'image %s \n", nom_image);
+         exit(EXIT_FAILURE);
       }
+      fclose(f_image);
+   }
 }
 /*===========================================================================*/
 
