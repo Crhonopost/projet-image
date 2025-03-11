@@ -45,6 +45,50 @@ void storeHistoColor(unsigned int *dataR, unsigned int *dataG, unsigned int *dat
     }
 }
 
+void displayHistoColor(const char *name){
+    // Recupérer de mes tps
+    //system(
+    //   "gnuplot -persist -e \"set term png; set output 'histoCouleur.png'; plot 'histocoul.dat' using 1:2 with lines title 'Red' linecolor 'red', \
+    //       'histocoul.dat' using 1:3 with lines title 'Green' linecolor 'green', \
+    //       'histocoul.dat' using 1:4 with lines title 'Blue' linecolor 'blue';\"");
+    std::string command = "gnuplot -persist -e \"set term png; set output '";
+    command += name;
+    command += ".png'; plot '";
+    command += name;
+    command += "' using 1:2 with lines title 'Red' linecolor 'red', \
+          '";
+    command += name;
+    command += "' using 1:3 with lines title 'Green' linecolor 'green', \
+          '";
+    command += name;
+    command += "' using 1:4 with lines title 'Blue' linecolor 'blue';\"";
+    std::cout << command << std::endl;
+    system(command.c_str());
+}
+
+void histoColor(Image &img, const char *name){
+    unsigned int *dataR, *dataG, *dataB;
+    allocation_tableau(dataR, unsigned int, 256);
+    allocation_tableau(dataG, unsigned int, 256);
+    allocation_tableau(dataB, unsigned int, 256);
+
+    for(int i = 0; i < img.totalSize; i += 3){
+        dataR[img.data[i]]++;
+        dataG[img.data[i + 1]]++;
+        dataB[img.data[i + 2]]++;
+    }
+
+    // Store data
+    std::ofstream file(name);
+    if(!file.is_open()) return;
+    for(int i=0; i<256; i++){
+        file << i << " " << dataR[i] << " " << dataG[i] << " " << dataB[i] << "\n";
+    }
+    file.close();
+    // Display data
+    displayHistoColor(name);
+}
+
 double PSNR(Image &original, Image &compressed){
     double total = 0;  
     for(size_t i=0; i<original.totalSize; i++){

@@ -67,10 +67,12 @@ struct SuperPixel{
 
 // ref: https://openaccess.thecvf.com/content_cvpr_2017/papers/Achanta_Superpixels_and_Polygons_CVPR_2017_paper.pdf
 // points clés de SNIC: n'utilise pas kmean, pas besoin de plusieurs itérations et meilleure connectivité dés le début
-void SNIC(Image &imageIn, Image &imageOut) {
-    int k = 5000; // Nombre de superpixels
+// imageIn : image d'entrée
+// imageOut : image de sortie
+// k : nombre de superpixels
+// m : Facteur de compacité
+void SNIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
     double s = sqrt((double)imageIn.nbPixel / (double)k); // Taille d'un superpixel
-    double m = 10.0; // Facteur de compacité
 
     std::vector<SuperPixel> superPixels;
     std::vector<Pixel*> imagePixels;
@@ -121,18 +123,6 @@ void SNIC(Image &imageIn, Image &imageOut) {
         }
     }
 
-
-    // int iterationStep = imageIn.nbPixel / k;
-    
-    // for (int i = 0; i < k; i++) {
-    //     for (int j = 0; j < k; j++) {
-    //         Pixel& centroid = imagePixels[i * imageIn.width iterationStep - (iterationStep / 2)];
-    //         centroid.superpixel_id = i;
-    //         centroid.distance = 0;
-    //         Q.push(centroid);
-    //         superPixels[i].pixels.push_back(centroid);
-    //     }
-    // }
 
     int loop = 0;
 
