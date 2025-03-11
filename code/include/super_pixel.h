@@ -66,28 +66,25 @@ struct SuperPixel{
 };
 
 
-
 void storeSNIC(int width, int height, const std::vector<Rgb> &palette, const std::vector<int> &superpixelIds) {
-    std::ofstream file("output/compressed.txt");
+    std::ofstream file("output/compressed.bin", std::ios::binary);
     
     if (!file.is_open()) {
         std::cerr << "Error opening file for writing." << std::endl;
         return;
     }
 
-    file << width << height << palette.size();
+    file.write(reinterpret_cast<const char*>(&width), sizeof(int));
+    file.write(reinterpret_cast<const char*>(&height), sizeof(int));
+    int paletteSize = palette.size();
+    file.write(reinterpret_cast<const char*>(&paletteSize), sizeof(int));
     
-    for (const auto &color : palette) {
-        file << color.r << color.g << color.b;
-    }
-
-    for (int id : superpixelIds) {
-        file << id;
-    }
+    file.write(reinterpret_cast<const char*>(palette.data()), paletteSize * sizeof(Rgb));
+    file.write(reinterpret_cast<const char*>(superpixelIds.data()), superpixelIds.size() * sizeof(int));
 }
 
 void readSNIC(const char *path, Image &image) {
-    std::ifstream file(path);
+    std::ifstream file(path, std::ios::binary);
     
     if (!file.is_open()) {
         std::cerr << "Error opening file for reading." << std::endl;
@@ -95,19 +92,16 @@ void readSNIC(const char *path, Image &image) {
     }
     
     int width, height, paletteSize;
-    file >> width >> height >> paletteSize;
+    file.read(reinterpret_cast<char*>(&width), sizeof(int));
+    file.read(reinterpret_cast<char*>(&height), sizeof(int));
+    file.read(reinterpret_cast<char*>(&paletteSize), sizeof(int));
     
     int totalSize = width * height;
     std::vector<Rgb> palette(paletteSize);
-    
-    for (int i = 0; i < paletteSize; i++) {
-        file >> palette[i].r >> palette[i].g >> palette[i].b;
-    }
+    file.read(reinterpret_cast<char*>(palette.data()), paletteSize * sizeof(Rgb));
     
     std::vector<int> ids(totalSize);
-    for (int i = 0; i < totalSize; i++) {
-        file >> ids[i];
-    }
+    file.read(reinterpret_cast<char*>(ids.data()), totalSize * sizeof(int));
     
     file.close();
     
@@ -240,7 +234,7 @@ void SNIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
 
 
     storeSNIC(imageIn.width, imageIn.height, colors, ids);
-    readSNIC("output/compressed.txt", imageOut);
+    readSNIC("output/compressed.bin", imageOut);
     imageOut.write("output/res.ppm");
 
 
