@@ -6,9 +6,7 @@
         "type": "cppdbg",
         "request": "launch",
         "program": "${workspaceFolder}/code/main",
-        "args": [
-          "assets/prof/colormap.ppm"
-        ],
+        "args": [],
         "stopAtEntry": false,
         "cwd": "${workspaceFolder}/code/",
         "environment": [],
