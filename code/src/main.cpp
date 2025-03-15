@@ -48,8 +48,7 @@ int main(int argc, char* argv[])
         histoFile = histoFile.substr(0, histoFile.size() - 4) + ".histo";
         histoColor(imageOut, histoFile.c_str());
         return 0;
-    }
-    if(argc!=0 && argc!=5 && argc!=6){
+    } else if(argc>1){
         std::cerr << "Usage: " << argv[0] << " |OU| " << argv[0] << " imageIn.ppm imageOut.ppm k m" << " [imageBoundaryRecall.pgm (test de boundary recall)]"  << std::endl;
         return 1;
     }
@@ -57,8 +56,8 @@ int main(int argc, char* argv[])
     Image imageIn, imageOut;
     imageIn.read("images/taupe.ppm");
     SNIC(imageIn, imageOut);
-    double recall = BoundaryRecall(imageOut, imageOut);
-    std::cout << "Boundary Recall : " << recall << std::endl;
+    // double recall = BoundaryRecall(imageOut, imageOut);
+    // std::cout << "Boundary Recall : " << recall << std::endl;
     
     return 1;
 }

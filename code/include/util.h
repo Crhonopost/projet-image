@@ -3,6 +3,7 @@
 #include <image.h>
 #include <huffman.h>
 #include <fstream>
+#include "huffman.h"
 
 void histoGrey(Image &img, unsigned int **data){
     allocation_tableau(*data, unsigned int, 256);
@@ -195,63 +196,48 @@ double BoundaryRecall(Image &Compressed, Image &BoundaryRecall){
 }
 
 
-int compressFile(bool compress, char *srcPath, char *dstPath)
+void compressFile(bool compress, char *srcPath, char *dstPath)
 {
-   FILE *src, *dst, *frq;
+    // FILE *src, *dst, *frq;
 
-   /* Ouverture du fichier source en lecture */
-   if ((src=fopen(srcPath, "rb"))==NULL)
-   {
-      perror("fopen");
-      return -1;
-   }
+    // if ((src=fopen(srcPath, "rb"))==NULL) perror("fopen");
+    // if ((dst=fopen(dstPath, "wb"))==NULL) perror("fopen");
 
-   /* Ouverture du fichier cible en écriture */
-   if ((dst=fopen(dstPath, "wb"))==NULL)
-   {
-      perror("fopen");
-      return -1;
-   }
+    // frq=NULL;
 
-   frq=NULL;
+    // if ((arbre_d=(struct arbre_data *)malloc(512*sizeof(struct arbre_data)))==NULL) perror("malloc");
+
+    // if ((arbre=(struct arbre *)malloc(512*sizeof(struct arbre)))==NULL) {
+    //     free(arbre_d);
+    //     perror("malloc");
+    // }
+
+    // if (compress)
+    //     huffman_compacter(src, dst, frq);
+    // else
+    //     huffman_decompacter(src, dst, frq);
 
 
-   /* Allocation mémoire pour les données diverses necessaires à la construction de l'arbre */
-   if ((arbre_d=(struct arbre_data *)malloc(512*sizeof(struct arbre_data)))==NULL)
-   {
-      perror("malloc");
-      return -1;
-   }
+    // free(arbre_d);
+    // free(arbre);
 
-   /* Allocation d'une zone mémoire pour l'arbre */
-   if ((arbre=(struct arbre *)malloc(512*sizeof(struct arbre)))==NULL)
-   {
-      free(arbre_d);
-      perror("malloc");
-      return -1;
-   }
+    // fclose(src);
+    // fclose(dst);
+    // if (frq!=NULL)
+    //     fclose(frq);
 
-   /* Compression ou décompression ? */
-   if (compress)
-      huffman_compacter(src, dst, frq);
-   else
-      huffman_decompacter(src, dst, frq);
-//    else if (*argv[1]=='f')
-//       huffman_creer_fichier_frequences(src, dst);
 
-   /* Libération de la mémoire */
-   free(arbre_d);
-   free(arbre);
+    map<unsigned char, string> codes;
+    if(compress){
+        compressFile(srcPath, dstPath, codes);
+    } else {
+        decompressFile(srcPath, dstPath);
+    }
+    
+}
 
-   /* Fermeture des fichiers */
-   fclose(src);
-   fclose(dst);
-   if (frq!=NULL)
-      fclose(frq);
-#ifdef LINUX_COMPIL
-   printf("Linux rules!\n");
-#endif
-   return 0;
+uintmax_t getFileSize(char *path){
+    return filesystem::file_size(path);
 }
 
 

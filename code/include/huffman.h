@@ -1,507 +1,311 @@
 #pragma once
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#ifdef LINUX_COMPIL            /* Compilation conditionnelle */
- #include <sys/time.h>
-#endif
-
-#define CODE_MAX_LEN 32
-#define BUF_LEN 512
-
-/* Definition des structures */
-struct arbre
+#include <bits/stdc++.h>
+using namespace std;
+struct Tree
 {
-   short branche0;
-   short branche1;
+    int frequency;
+    unsigned char character;
+    Tree *left = NULL;
+    Tree *right = NULL;
 };
 
-struct arbre_data
+class TreeComparator
 {
-   unsigned long frequence;
-   short index_suivant;
+  public:
+    bool operator()(Tree *a, Tree *b)
+    {
+        return a->frequency > b->frequency;
+    }
 };
 
-struct dictionnaire
+Tree *buildHuffmanTree(vector<pair<unsigned char, int> > freqtable)
 {
-   unsigned char taille;
-   char code[CODE_MAX_LEN];
-};
 
-/* Prototypes des fonctions */
-short huffman_calculer_frequences(FILE *, unsigned long *, unsigned short *);
-short huffman_lire_frequences(FILE *);
-short huffman_creer_arbre(short);
-void huffman_creer_dictionnaire(unsigned char *, short, short);
-char huffman_creer_fichier_frequences(FILE *, FILE *);
-char huffman_compacter(FILE *, FILE *, FILE *);
-char huffman_decompacter(FILE *, FILE *, FILE *);
+    priority_queue<Tree *, vector<Tree *>, TreeComparator> huffqueue;
+    for (int i = 0; i < freqtable.size(); i++)
+    {
+        Tree *node = new Tree();
+        node->frequency = freqtable[i].second;
+        node->character = freqtable[i].first;
+        
+        huffqueue.push(node);
+    }
 
+    
 
-/* Variables globales */
-struct arbre_data *arbre_d;
-struct arbre *arbre;
-struct dictionnaire *dico;
+    while (huffqueue.size() > 1)
+    {
+        Tree *a, *b;
+        a = huffqueue.top();
+        huffqueue.pop();
+        
+        b = huffqueue.top();
+        huffqueue.pop();
+        Tree *c = new Tree();
+        c->frequency = a->frequency + b->frequency;
+        c->left = a;
+        c->right = b;
+        huffqueue.push(c);
+    }
 
-/*
-Calcule la fréquence de chaque caractère dans un fichier et trie la liste de structures
-par fréquences croissantes
-*src : pointeur sur le fichier
-*nbre_octets : pointeur sur une variable recevant la taille du fichier
-*nbre_ascii : pointeur sur une variable recevant le nombre de caractères
-différents présents dans le fichier source
-Retourne l'index de la première structure dans la liste triée
-*/
-short huffman_calculer_frequences(FILE *src, unsigned long *nbre_octets, unsigned short *nbre_ascii)
-{
-   int i, r;
-   unsigned char buffer[BUF_LEN];
-   short index_frequence=0, index_precedent=-1;
-
-   int continuer=1;
-   short c1, c2;
-
-   *nbre_octets=0;
-   *nbre_ascii=0;
-
-   memset(arbre_d, 0, 512*sizeof(struct arbre_data));
-
-   /*Lecture dans le fichier */
-   while ((r=fread(buffer, 1, BUF_LEN, src))>0)
-   {
-      *nbre_octets+=r;
-      for(i=0; i<r; i++)
-         /* incrémentation du compteur du caractère correspondant */
-         arbre_d[buffer[i]].frequence++;
-   }
-
-   /* Chainage des structures avec une fréquence supérieure à 0 */
-   for(i=0; i<256; i++)
-      if (arbre_d[i].frequence>0)
-      {
-         (*nbre_ascii)++;
-         if (index_precedent==-1)
-            index_frequence=i;
-         else
-            arbre_d[index_precedent].index_suivant=i;
-         index_precedent=i;
-      }
-   if (index_precedent==-1)
-      index_frequence=-1;
-     else
-      arbre_d[index_precedent].index_suivant=-1;
-
-   /* Tri des structures (bubble sort) */
-   while (continuer)
-   {
-      c1=index_frequence;
-      continuer=0;
-      index_precedent=-1;
-      while(c1!=-1)
-      {
-         if ((c2=arbre_d[c1].index_suivant)!=-1)
-         {
-            if (arbre_d[c1].frequence>arbre_d[c2].frequence)
-            {
-               continuer=1;
-               if (index_precedent==-1)
-                  index_frequence=c2;
-               else
-                  arbre_d[index_precedent].index_suivant=c2;
-               arbre_d[c1].index_suivant=arbre_d[c2].index_suivant;
-               arbre_d[c2].index_suivant=c1;
-            }
-            index_precedent=c1;
-            c1=c2;
-         }
-         else
-            c1=c2;
-      }
-   }
-
-   /* On retourne l'index de la première structure */
-   return index_frequence;
+    return huffqueue.top();
 }
 
-/*
-Lit les fréquences de chaque caractère, inscrites soit dans le fichier
-compressé, soit dans un fichier de fréquences spécial
-*/
-short huffman_lire_frequences(FILE *frq)
+string toBinary(unsigned  char a)
 {
-   unsigned short nbre_ascii;
-   unsigned char i;
-   short index_frequence=-1, index_precedent=-1;
+    string output  = "";
+    while(a!=0)
+    {
+        string bit = a%2==0?"0":"1";
+        output+=bit;
+        a/=2;
+    }
 
-   /* Lecture de la taille de la table des fréquences */
-   fread(&nbre_ascii, 2, 1, frq);
+    if(output.size()<8)
+    {
+        int deficit = 8 - output.size();
+        for(int i=0; i<deficit; i++)
+        {
+            output+="0";
+        }
+    }
 
-   /* Lecture de la table des fréquences */
-   while (nbre_ascii>0)
-   {
-      /* Lecture du caractère en cours */
-      fread(&i, 1, 1, frq);
-      /* Lecture de la fréquence du caractère en cours */
-      fread((char *)&arbre_d[i].frequence, 4, 1, frq);
-      /* Chainage de la structure */
-      if (index_frequence==-1)
-         index_frequence=i;
-      else
-         arbre_d[index_precedent].index_suivant=i;
-      index_precedent=i;
-      nbre_ascii--;
-   }
-   if (index_precedent==-1)
-      return -1;
-   arbre_d[index_precedent].index_suivant=-1;
-   return index_frequence;
+    reverse(output.begin(), output.end());
+    return output;
+    
 }
 
-/*
-Crée un arbre à partir d'une liste de fréquences
-index_fréquence : idnex de la première structure dans la liste *arbre_d
-Retourne l'index de la racine de l'arbre dans la liste *arbre
-*/
-short huffman_creer_arbre(short index_frequence)
+void traverseHuffmanTree(Tree *root, string prev, string toAppend, map<unsigned char, string> &codemap)
 {
-   short i, j, j_save;
-   unsigned long somme_frequence;
-   short nbre_noeuds=256;
-   char struct_inseree=0;
 
-   /* Les structures 0 à 255 correspondent aux caractères, ce sont des terminaisons => -1 */
-   for(j=0; j<256; j++)
-      arbre[j].branche0=arbre[j].branche1=-1;
+    prev+=toAppend;
+    
+    if (root->right == NULL && root->left == NULL)
+    {
+        // cout<<root->character<<" "<<prev<<endl;   
+        codemap[root->character] = prev;
+    }
+    if (root->right != NULL)
+    {
+        traverseHuffmanTree(root->right, prev, "1", codemap);
+    }
 
-   /* Création de l'arbre :
-   La mise en commun les deux fréquences les plus faibles crée un nouveau noeud avec une frequence
-   égale a la somme des deux fréquences.
-   Il s'agit ensuite d'insérer cette nouvelle structure dans la liste triée */
-   i=index_frequence;
-   while(i!=-1)
-   {
-      if (arbre_d[i].index_suivant==-1)
-      {
-         /*printf("Arbre cree\n");*/
-         break;
-      }
-      /*printf("%d\n", arbre_d[i].frequence);
-      printf("%d\n", arbre_d[arbre_d[i].index_suivant].frequence); */
-      somme_frequence=arbre_d[i].frequence + arbre_d[arbre_d[i].index_suivant].frequence;
-      /*printf("Nouveau noeud : %d (%d) et %d (%d) => %d\n", i, arbre_d[i].frequence, 
-         arbre_d[i].index_suivant, arbre_d[arbre_d[i].index_suivant].frequence, 
-         somme_frequence);*/
-      arbre_d[nbre_noeuds].frequence=somme_frequence;
-      arbre[nbre_noeuds].branche0=arbre_d[i].index_suivant;
-      arbre[nbre_noeuds].branche1=i;
-      /* Insertion du nouveau noeud dans la liste triée */
-      j_save=-1;
-      struct_inseree=0;
-      j=i;
-      while (j!=-1 && struct_inseree==0)
-      {
-         if (arbre_d[j].frequence>=somme_frequence)
-         {
-            if (j_save!=-1)
-               arbre_d[j_save].index_suivant=nbre_noeuds;
-            arbre_d[nbre_noeuds].index_suivant=j;
-            /*printf("Insertion du nouveau noeud : entre %d et %d\n", 
-               j_save==-1?-1:arbre_d[j_save].frequence, arbre_d[j].frequence);*/
-            struct_inseree=1;
-         }
-         j_save=j;
-         j=arbre_d[j].index_suivant;
-      }
-      /* Insertion du nouveau noeud a la fin */
-      if (struct_inseree==0)
-      {
-         arbre_d[j_save].index_suivant=nbre_noeuds;
-         arbre_d[nbre_noeuds].index_suivant=-1;
-         /*printf("Insertion du nouveau noeud à la fin : %d\n", arbre_d[j_save].frequence);*/
-      }
-      nbre_noeuds++;
-      i=arbre_d[i].index_suivant;
-      i=arbre_d[i].index_suivant;
-   }
-   /* On retourne l'index du noeud racine */
-   return nbre_noeuds-1;
+    if (root->left != NULL)
+    {
+        traverseHuffmanTree(root->left, prev, "0", codemap);
+    }
 }
 
-/*
-Procédure récursive qui crée un dictionnaire (correspondance entre la valeur ascii
-d'un caractère et son codage obtenu avec la compression huffman) à partir d'un arbre
-*code : pointeur sur une zone mémoire de taille CODE_MAX_LEN recevant
-temporairement le code, au fur et à mesure de la progression dans l'arbre
-index : position dans l'arbre (index de la structure courante)
-pos : nombre de bits deja inscrits dans *code
-*/
-void huffman_creer_dictionnaire(unsigned char *code, short index, short pos)
+unsigned char *readFileIntoBuffer(char *path, int &sz)
 {
-   /* On a atteint une terminaison de l'arbre : c'est un caractère */
-   if ((arbre[index].branche0==-1) && (arbre[index].branche1==-1))
-   {
-      /* Copie du code dans le dictionnaire */
-      memcpy(dico[index].code, code, CODE_MAX_LEN);
-      /*printf("%c: %x - %d\n", index, code[0], pos);*/
-      /* taille du code en bits */
-      dico[index].taille=(unsigned char)pos;
-   }
-   /* le noeud possède d'autres branches : on continue à les suivre */
-   else
-   {
-      /* On suit la branche ajoutant un bit valant 0 */
-      code[pos/8]&=~(0x80>>(pos%8));
-      /* Le "(short)" devant "(pos+1)", c'est juste pour empecher VC++
-      de chipoter (Warning : integral size mismatch in argument : 
-      conversion supplied) */
-      huffman_creer_dictionnaire(code, arbre[index].branche0, (short)(pos+1));
-      /* On suit la branche ajoutant un bit valant 1 */
-      code[pos/8]|=0x80>>(pos%8);
-      huffman_creer_dictionnaire(code, arbre[index].branche1, (short)(pos+1));
-   }
+    FILE *fp = fopen(path, "rb");
+    sz = 0;
+    fseek(fp, 0, SEEK_END);
+    sz = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+    unsigned char *buffer = (unsigned char *)malloc(sz);
+    fread(buffer, 1, sz, fp);
+	fclose(fp);
+    return buffer;
 }
 
-/*
-Crée une table de fréquences à partir de src, l'inscrit dans dst,
-puis affiche un tableau des caractères de la table, avec leur fréquence.
-*/
-char huffman_creer_fichier_frequences(FILE *src, FILE *dst)
+void writeFileFromBuffer(char *path, unsigned char *buffer, int sz, int flag)
 {
-   short i, compteur=0;
-   unsigned long nbre_octets;
-   unsigned short nbre_ascii=0;
+    FILE *fp;
+    if(flag==0)
+    {
+        fp = fopen(path, "wb");
+    }
 
-   i=huffman_calculer_frequences(src, &nbre_octets, &nbre_ascii);
+    else{
+        fp = fopen(path, "ab");
+    }
+   
+    fwrite(buffer, 1, sz, fp);
 
-   /*Ecriture de la taille de la table des fréquences */
-   fwrite(&nbre_ascii, 1, 1, dst);
-
-   printf("Création du fichier de fréquences...\n");
-   printf("%d caractères représentés sur 256\n", nbre_ascii);
-
-   /*Ecriture de la table des fréquences */
-    while(i!=-1)
-   {
-      nbre_ascii=i;
-      fwrite(&nbre_ascii, 1, 1, dst);
-      fwrite((char *)&arbre_d[i].frequence, 4, 1, dst);
-      if ((nbre_ascii>=32 && nbre_ascii<=126) || (nbre_ascii>=161 && nbre_ascii <=255))
-         printf("%-4c %-6d", nbre_ascii, arbre_d[i].frequence);
-      else
-         printf("0x%02x %-6d", nbre_ascii, arbre_d[i].frequence);
-      if (((compteur+1)%7)==0)
-         printf("\n");
-      compteur++;
-      i=arbre_d[i].index_suivant;
-   }
-   printf("\n");
-   return 0;
+    fclose(fp);
 }
 
-/*
-Compresse le fichier src.
-Le résulat se trouve dans le fichier dst
-Si frq est différent de NULL, il est utilsé pour lire la table des fréquences
-nécessaire à la construction de l'arbre
-*/
-char huffman_compacter(FILE *src, FILE *dst, FILE *frq)
+
+vector<pair<unsigned char, int> > convertToVector(map<unsigned char, int> codes)
 {
-   int i, r, octet_r, bit_r, bit_count, bit_w;
-   unsigned long nbre_octets;
-   short index_frequence;
-   short racine_arbre;
-   unsigned short nbre_ascii=0;
-   unsigned char code[CODE_MAX_LEN];
-   unsigned char buffer[BUF_LEN];
+    vector<pair<unsigned char, int> > codesV;
 
-#ifdef LINUX_COMPIL
-   struct timeval tv;
-   unsigned int t_debut;
-   gettimeofday(&tv, NULL);
-   t_debut=tv.tv_usec;
-#endif
+    for (map<unsigned char, int>::iterator i = codes.begin(); i != codes.end(); i++)
+    {
+        codesV.push_back(make_pair(i->first, i->second));
+    }
 
-   printf("Compression en cours...\n");
-
-   /* création ou lecture de la table des fréquences */
-   if (frq==NULL)
-   {
-      index_frequence=huffman_calculer_frequences(src, &nbre_octets, &nbre_ascii);
-   }
-   else
-   {
-      printf("Utilisation d'un fichier de fréquences pour la création du dico\n");
-      fseek(src, 0, SEEK_END);
-      nbre_octets=ftell(src);
-      index_frequence=huffman_lire_frequences(frq);
-   }
-
-   /*Ecriture de la taille en octets du fichier original */
-   fwrite((char *)&nbre_octets, 4, 1, dst);
-   /*Ecriture de la taille de la table des fréquences */
-   fwrite(&nbre_ascii, 2, 1, dst);
-
-   /*Ecriture de la table des fréquences */
-   if (frq==NULL)
-   {
-      i=index_frequence;
-      while(i!=-1)
-      {
-         nbre_ascii=i;
-         fwrite(&nbre_ascii, 1, 1, dst);
-         fwrite((char *)&arbre_d[i].frequence, 4, 1, dst);
-         i=arbre_d[i].index_suivant;
-      }
-   }
-
-   /* Coinstruction de l'arbre à partir de la table des fréquences */
-   racine_arbre=huffman_creer_arbre(index_frequence);
-
-   /* Allocation de mémoire pour le dictionnaire */
-   if ((dico=(struct dictionnaire *)malloc(256*sizeof(struct dictionnaire)))==NULL)
-   {
-      /*free(arbre_d);
-      free(arbre);*/
-      perror("malloc");
-      return -1;
-   }
-
-   /* RAZ du champs taille du dico. Si on utilise une table de fréquences
-   prédéfinie pour la compression, et qu'un caractère à compresser n'est pas
-   présent dans la table, alors il ne sera pas traité */
-   for(i=0; i<256; i++)
-      dico[i].taille=0;
-
-   /* Création du dictionnaire à partir de l'arbre */
-   huffman_creer_dictionnaire(code, racine_arbre, 0);
-
-   /* Compression du fichier source et écriture dans le fichier cible */
-   fseek(src, 0, SEEK_SET);
-   code[0]=0;
-   bit_w=0x80;
-   /* Lecture de BUF_LEN octets dans le fichier source */
-   while ((r=fread(buffer, 1, BUF_LEN, src))>0)
-   {
-      /* Traitement octet par octet */
-      for(i=0; i<r; i++)
-      {
-         /* Ecriture du code correspondant au caractère dans le dictionnaire */
-         octet_r=0;
-         bit_r=0x80;
-         /* Ecriture bit par bit */
-         for(bit_count=0; bit_count<dico[buffer[i]].taille; bit_count++)
-         {
-            if (dico[buffer[i]].code[octet_r] & bit_r)
-               code[0]|=bit_w;
-            /*else
-               code[0]&=~(bit_w); */
-            bit_r>>=1;
-            if (bit_r==0)
-            {
-               octet_r++;
-               bit_r=0x80;
-            }
-            bit_w>>=1;
-            if (bit_w==0)
-            {
-               /*printf("%3x", code[0]);*/
-               fputc(code[0], dst);
-               code[0]=0;
-               bit_w=0x80;
-            }
-         }
-      }
-   }
-   if(bit_w!=0x80)
-      fputc(code[0], dst);
-
-   free(dico);
-#ifdef LINUX_COMPIL
-   gettimeofday(&tv, NULL);
-   printf("Compactage effectué en %u \xb5s. Taux de compression: %.2f\n", tv.tv_usec-t_debut, (float)nbre_octets/ftell(dst));
-#else
-   printf("Compactage terminé. Taux de compression : %.2f\n", (float)nbre_octets/ftell(dst));
-#endif
-   return 0;
+    return codesV;
 }
 
-/*
-Decompresse le fichier src
-Le résultat se trouve dans dst
-*/
-char huffman_decompacter(FILE *src, FILE *dst, FILE *frq)
+string getHuffmanBitstring(unsigned char *buffer, map<unsigned char, string> codes, int sz, int& paddedBits)
 {
-   int i, j, r;
-   unsigned long nbre_octets;
-   unsigned char nbre_ascii, bit_r;
-   short index_frequence;
-   short racine_arbre;
-   unsigned char buffer[BUF_LEN];
+    string outputBuffer="";
+    for(int i=0; i<sz; i++)
+    {
+        outputBuffer=outputBuffer+codes[buffer[i]];
+    }
 
-#ifdef LINUX_COMPIL
-   struct timeval tv;
-   unsigned int t_debut;
-   gettimeofday(&tv, NULL);
-   t_debut=tv.tv_usec;
-#endif
+    if(outputBuffer.size()%8!=0)
+    {
+        int deficit = 8*((outputBuffer.size()/8)+1)-outputBuffer.size();
+        paddedBits = deficit;
+        for(int i=0; i<deficit; i++)
+        {
+            outputBuffer+="0";
+        }
+    }
 
-   /* Lecture de la taille du fichier original */
-   fread((char *)&nbre_octets, 4, 1, src);
-   printf("Taille du fichier original : %d octets\n", nbre_octets);
-   printf("Décompression en cours...\n");
+    //Instead of adding zeroes to the end, add zero to the begining of the last byte
 
-   /* Lecture de la table des fréquences */
-   if (frq==NULL)
-   {
-      index_frequence=huffman_lire_frequences(src);
+    return outputBuffer;
+    
+}
+
+unsigned char* getBufferFromString(string bitstring, vector<unsigned char>&outputBuffer, int& sz)
+{
+    int interval = 0;
+    unsigned char bit = 0;
+
+    for(int i=0; i<sz; i++)
+    {
+         bit = (bit<<1)|(bitstring[i]-'0');
+         
+        interval++;
+        if(interval==8)
+        {
+            interval = 0;
+            outputBuffer.push_back(bit);
+            bit = 0;
+        
+        }   
+    }
+    sz = outputBuffer.size();
+    return outputBuffer.data();
+}
+
+string getStringFromBuffer(unsigned char* buffer, int sz)
+{
+    string bitstring = ""; 
+    for(int i=0; i<sz; i++)
+    {
+        bitstring+=toBinary(buffer[i]);
+    }
+
+    return bitstring;
+}
+
+unsigned char* getDecodedBuffer(string bitstring, vector<unsigned char>&buffer, map<unsigned char, string> codes, int &sz, int paddedBits)
+{
+    string bit = "";
+    map<string, unsigned char> reversecodes;
+    
+    for(map<unsigned char, string>::iterator i = codes.begin(); i!=codes.end(); i++)
+    {
+        reversecodes[i->second] = i->first;
+    }
+
+    for(int i=0; i<bitstring.size()-paddedBits; i++)
+    {
+        bit+=string(1, bitstring[i]);
+        if(reversecodes.find(bit)!=reversecodes.end())
+        {
+           buffer.push_back(reversecodes[bit]);
+           bit = "";
+        }
+    }
+
+    sz = buffer.size();
+    return buffer.data();
+}
+
+
+void writeHeader(char* path,map<unsigned char, string> codes,  int paddedBits){
+    
+    int size = codes.size();
+    writeFileFromBuffer(path, (unsigned char*)&paddedBits, sizeof(int), 0);
+    writeFileFromBuffer(path, (unsigned char*)&size, sizeof(int), 1);
+    char nullBit = '\0';
+    for(map<unsigned char, string>::iterator i = codes.begin(); i!=codes.end(); i++)
+    {
+        writeFileFromBuffer(path, (unsigned char*)&i->first, 1, 1);
+        int len = i->second.size();
+        writeFileFromBuffer(path, (unsigned char*)&len, sizeof(int), 1);
+        writeFileFromBuffer(path, (unsigned char*)i->second.c_str(), i->second.size(), 1);
+    }
+}
+
+
+unsigned char* readHeader(unsigned char* buffer, map<unsigned char, string> &codes, int& paddedBits, int &sz)
+{
+   paddedBits = *((int*)buffer);
+   buffer = buffer+4;
+   sz-=4;
+   int size = *((int*)buffer);
+   buffer = buffer+4;
+   sz-=4;
+   for(int i=0; i<size; i++)
+   {    
+       unsigned char key = buffer[0];
+       buffer++;
+       sz--;
+       int len = *((int*)buffer);
+       buffer+=4;
+       sz-=4;
+       char* value = (char*)malloc(len+1);
+
+       for(int j = 0; j<len; j++)
+       {
+           value[j]=buffer[j];
+       }
+    //    value = (char*)buffer;
+       buffer+=len;
+       sz-=len;
+       value[len]='\0';
+       codes[key] = value;
    }
-   else
-   {
-      fread(&nbre_ascii, 1, 1, src);
-      index_frequence=huffman_lire_frequences(frq);
-   }
 
-   if (index_frequence==-1)
-   {
-      printf("Erreur de lecture de la table des frequences\n");
-      return -1;
-   }
+   return buffer;
+}
 
-   /* Construction de l'arbre à partir de la table des fréquences */
-   racine_arbre=huffman_creer_arbre(index_frequence);
 
-   /* Decompression du fichier source et écriture du résultat dans le fichier cible */
-   j=racine_arbre;
-   /* Lecture de BUF_LEN octets dans le fichier source */
-   while ((r=fread(buffer, 1, BUF_LEN, src))>0)
-   {
-      /* Traitement octet par octet */
-      for(i=0; i<r && nbre_octets>0; i++)
-      {
-         /* Traitement bit par bit */
-         for(bit_r=0x80; bit_r!=0 && nbre_octets>0; bit_r>>=1)
-         {
-            if (buffer[i]&bit_r)
-               j=arbre[j].branche1;
-            else
-               j=arbre[j].branche0;
-            if ((arbre[j].branche0==-1) || (arbre[j].branche1==-1))
-            {
-               /*printf("%c", j);*/
-               fputc((char)j, dst);
-               nbre_octets--;
-               j=racine_arbre;
-            }
-         }
-      }
-   }
-#ifdef LINUX_COMPIL
-   gettimeofday(&tv, NULL);
-   printf("Décompression effectuée en %u\xb5s\n", tv.tv_usec-t_debut);
-#else
-   printf("Décompression terminée\n");
-#endif
-   return 0;
+
+//add amount padded 
+void compressFile(char *path, char *output_path, map<unsigned char, string> &codes)
+{
+    int sz = 0;
+    int paddedBits = 0;
+    map<unsigned char, int> freqtable;
+    unsigned char *buffer = readFileIntoBuffer(path, sz);
+    for (int i = 0; i < sz; i++)
+    {
+            freqtable[buffer[i]]++;
+    }
+    Tree *root = buildHuffmanTree(convertToVector(freqtable));
+    traverseHuffmanTree(root, "", "", codes);
+    string outputString = getHuffmanBitstring(buffer, codes, sz, paddedBits);
+    sz  = outputString.size();
+    vector<unsigned char> outputBufferV;
+    getBufferFromString(outputString, outputBufferV, sz);
+    unsigned char* outputBuffer = outputBufferV.data();
+    writeHeader(output_path, codes, paddedBits);
+    writeFileFromBuffer(output_path, outputBuffer, sz, 1);
+}
+
+void decompressFile( char* inputPath,  char* outputPath)
+{
+    int sz = 0;
+    map<unsigned char, string> codes;
+    int paddedBits = 0;
+    unsigned char* fileBuffer = readFileIntoBuffer(inputPath, sz);
+    fileBuffer = readHeader(fileBuffer, codes, paddedBits, sz);
+    string fileBitString = getStringFromBuffer(fileBuffer, sz);
+    // cout<<fileBitString<<endl;
+    vector<unsigned char> outputBufferV;
+    unsigned char* outputBuffer;
+    getDecodedBuffer(fileBitString,outputBufferV, codes, sz, paddedBits);
+    outputBuffer = outputBufferV.data();
+    writeFileFromBuffer(outputPath, outputBuffer,sz, 0);
+    //take care of appended zeroes
 }

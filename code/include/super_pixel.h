@@ -3,6 +3,7 @@
 #include <image.h>
 #include <format.h>
 #include <fstream>
+#include <util.h>
 
 struct Pixel {
     int superpixel_id, potential_sp_id;
@@ -66,21 +67,33 @@ struct SuperPixel{
 };
 
 
-void storeSNIC(int width, int height, const std::vector<Rgb> &palette, const std::vector<int> &superpixelIds) {
-    std::ofstream file("output/compressed.bin", std::ios::binary);
+void storeSNIC(int width, int height, const std::vector<Rgb> &palette, const std::vector<int> &superpixelIds, char *path) {
+    std::ofstream file(path, std::ios::binary);
     
     if (!file.is_open()) {
         std::cerr << "Error opening file for writing." << std::endl;
         return;
     }
-
-    file.write(reinterpret_cast<const char*>(&width), sizeof(int));
-    file.write(reinterpret_cast<const char*>(&height), sizeof(int));
-    int paletteSize = palette.size();
-    file.write(reinterpret_cast<const char*>(&paletteSize), sizeof(int));
     
+    int paletteSize = palette.size();
+
+    file << width << " " << height << " " << paletteSize << "\n";
+
     file.write(reinterpret_cast<const char*>(palette.data()), paletteSize * sizeof(Rgb));
-    file.write(reinterpret_cast<const char*>(superpixelIds.data()), superpixelIds.size() * sizeof(int));
+
+    std::vector<short int> differentialIndices;
+    int previousIdxVal = 0;
+    int maxDiff = 0;
+    for(int idx : superpixelIds){
+        int dist = abs(idx - previousIdxVal);
+        maxDiff = dist>maxDiff ? dist : maxDiff;
+
+        differentialIndices.push_back(idx - previousIdxVal);
+        previousIdxVal = idx;
+    }
+    std::cout << "Différence max entre 2 pixels : " << maxDiff << "\n";
+
+    file.write(reinterpret_cast<const char*>(differentialIndices.data()), differentialIndices.size() * sizeof(short int));
 }
 
 void readSNIC(const char *path, Image &image) {
@@ -92,16 +105,24 @@ void readSNIC(const char *path, Image &image) {
     }
     
     int width, height, paletteSize;
-    file.read(reinterpret_cast<char*>(&width), sizeof(int));
-    file.read(reinterpret_cast<char*>(&height), sizeof(int));
-    file.read(reinterpret_cast<char*>(&paletteSize), sizeof(int));
+    file >> width >> height >> paletteSize;
     
+    file.seekg(1, std::ios::cur);
+
     int totalSize = width * height;
     std::vector<Rgb> palette(paletteSize);
     file.read(reinterpret_cast<char*>(palette.data()), paletteSize * sizeof(Rgb));
-    
+
+    std::vector<short int> differentialIds(totalSize);
+    file.read(reinterpret_cast<char*>(differentialIds.data()), totalSize * sizeof(short int));
+
+
     std::vector<int> ids(totalSize);
-    file.read(reinterpret_cast<char*>(ids.data()), totalSize * sizeof(int));
+    ids[0] = differentialIds[0];
+    for(int i=1; i<totalSize; i++){
+        ids[i] = ids[i-1] + differentialIds[i];
+    }
+
     
     file.close();
     
@@ -232,10 +253,21 @@ void SNIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
         imageOut[i*3 + 2] = color.b;
     }
 
+    imageOut.write("output/SP_without_compression.ppm");
 
-    storeSNIC(imageIn.width, imageIn.height, colors, ids);
-    readSNIC("output/compressed.bin", imageOut);
+    storeSNIC(imageIn.width, imageIn.height, colors, ids, "output/taupe_SNIC.snic");
+    compressFile(true, "output/taupe_SNIC.snic", "output/taupe_SNIC_huff.bin");
+    compressFile(false, "output/taupe_SNIC_huff.bin", "output/taupe_SNIC_dehuff.snic");
+    readSNIC("output/taupe_SNIC_dehuff.snic", imageOut);
     imageOut.write("output/res.ppm");
+
+    long double inSize = getFileSize("output/res.ppm");
+    long double compressedSize = getFileSize("output/taupe_SNIC_huff.bin");
+
+    auto compressionRate = inSize / compressedSize;
+
+    std::cout << "taille d'origine: " << inSize / 1000. << "kb  /  taille compressée: " << compressedSize / 1000. << "kb\n";
+    std::cout << "taux de compression: " << compressionRate << "\n";
 
 
 
