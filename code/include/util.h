@@ -196,45 +196,43 @@ double BoundaryRecall(Image &Compressed, Image &BoundaryRecall){
 }
 
 
-void compressFile(bool compress, char *srcPath, char *dstPath)
-{
-    // FILE *src, *dst, *frq;
+// void compressFile(bool compress, char *srcPath, char *dstPath)
+// {
+//     // FILE *src, *dst, *frq;
 
-    // if ((src=fopen(srcPath, "rb"))==NULL) perror("fopen");
-    // if ((dst=fopen(dstPath, "wb"))==NULL) perror("fopen");
+//     // if ((src=fopen(srcPath, "rb"))==NULL) perror("fopen");
+//     // if ((dst=fopen(dstPath, "wb"))==NULL) perror("fopen");
 
-    // frq=NULL;
+//     // frq=NULL;
 
-    // if ((arbre_d=(struct arbre_data *)malloc(512*sizeof(struct arbre_data)))==NULL) perror("malloc");
+//     // if ((arbre_d=(struct arbre_data *)malloc(512*sizeof(struct arbre_data)))==NULL) perror("malloc");
 
-    // if ((arbre=(struct arbre *)malloc(512*sizeof(struct arbre)))==NULL) {
-    //     free(arbre_d);
-    //     perror("malloc");
-    // }
+//     // if ((arbre=(struct arbre *)malloc(512*sizeof(struct arbre)))==NULL) {
+//     //     free(arbre_d);
+//     //     perror("malloc");
+//     // }
 
-    // if (compress)
-    //     huffman_compacter(src, dst, frq);
-    // else
-    //     huffman_decompacter(src, dst, frq);
-
-
-    // free(arbre_d);
-    // free(arbre);
-
-    // fclose(src);
-    // fclose(dst);
-    // if (frq!=NULL)
-    //     fclose(frq);
+//     // if (compress)
+//     //     huffman_compacter(src, dst, frq);
+//     // else
+//     //     huffman_decompacter(src, dst, frq);
 
 
-    map<unsigned char, string> codes;
-    if(compress){
-        compressFile(srcPath, dstPath, codes);
-    } else {
-        decompressFile(srcPath, dstPath);
-    }
-    
-}
+//     // free(arbre_d);
+//     // free(arbre);
+
+//     // fclose(src);
+//     // fclose(dst);
+//     // if (frq!=NULL)
+//     //     fclose(frq);
+
+
+//     if(compress){
+//         compressFile(srcPath, dstPath);
+//     } else {
+//         decompressFile(srcPath, dstPath);
+//     }
+// }
 
 uintmax_t getFileSize(char *path){
     return filesystem::file_size(path);

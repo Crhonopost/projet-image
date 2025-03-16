@@ -18,15 +18,15 @@ class TreeComparator
     }
 };
 
-Tree *buildHuffmanTree(vector<pair<unsigned char, int> > freqtable)
+Tree *buildHuffmanTree(vector<int> freqTable)
 {
 
     priority_queue<Tree *, vector<Tree *>, TreeComparator> huffqueue;
-    for (int i = 0; i < freqtable.size(); i++)
+    for (int i = 0; i < freqTable.size(); i++)
     {
         Tree *node = new Tree();
-        node->frequency = freqtable[i].second;
-        node->character = freqtable[i].first;
+        node->frequency = freqTable[i];
+        node->character = (unsigned char) i;
         
         huffqueue.push(node);
     }
@@ -144,7 +144,7 @@ string getHuffmanBitstring(unsigned char *buffer, map<unsigned char, string> cod
     string outputBuffer="";
     for(int i=0; i<sz; i++)
     {
-        outputBuffer=outputBuffer+codes[buffer[i]];
+        outputBuffer.append(codes[buffer[i]]);
     }
 
     if(outputBuffer.size()%8!=0)
@@ -270,30 +270,28 @@ unsigned char* readHeader(unsigned char* buffer, map<unsigned char, string> &cod
 }
 
 
-
-//add amount padded 
-void compressFile(char *path, char *output_path, map<unsigned char, string> &codes)
-{
-    int sz = 0;
+void compressFile(char *path, std::vector<unsigned char> &data){
     int paddedBits = 0;
-    map<unsigned char, int> freqtable;
-    unsigned char *buffer = readFileIntoBuffer(path, sz);
-    for (int i = 0; i < sz; i++)
+    vector<int> freqTable(256, 0);
+    for (int i = 0; i < data.size(); i++)
     {
-            freqtable[buffer[i]]++;
+        freqTable[data[i]]++;
     }
-    Tree *root = buildHuffmanTree(convertToVector(freqtable));
+    Tree *root = buildHuffmanTree(freqTable);
+    map<unsigned char, string> codes;
     traverseHuffmanTree(root, "", "", codes);
-    string outputString = getHuffmanBitstring(buffer, codes, sz, paddedBits);
-    sz  = outputString.size();
+    string outputString = getHuffmanBitstring(&data[0], codes, data.size(), paddedBits);
+    
+    int size  = outputString.size();
     vector<unsigned char> outputBufferV;
-    getBufferFromString(outputString, outputBufferV, sz);
+    getBufferFromString(outputString, outputBufferV, size);
     unsigned char* outputBuffer = outputBufferV.data();
-    writeHeader(output_path, codes, paddedBits);
-    writeFileFromBuffer(output_path, outputBuffer, sz, 1);
+    writeHeader(path, codes, paddedBits);
+    writeFileFromBuffer(path, outputBuffer, size, 1);
 }
 
-void decompressFile( char* inputPath,  char* outputPath)
+
+void decompressFile( char* inputPath,  std::vector<unsigned char> &data)
 {
     int sz = 0;
     map<unsigned char, string> codes;
@@ -301,11 +299,6 @@ void decompressFile( char* inputPath,  char* outputPath)
     unsigned char* fileBuffer = readFileIntoBuffer(inputPath, sz);
     fileBuffer = readHeader(fileBuffer, codes, paddedBits, sz);
     string fileBitString = getStringFromBuffer(fileBuffer, sz);
-    // cout<<fileBitString<<endl;
-    vector<unsigned char> outputBufferV;
-    unsigned char* outputBuffer;
-    getDecodedBuffer(fileBitString,outputBufferV, codes, sz, paddedBits);
-    outputBuffer = outputBufferV.data();
-    writeFileFromBuffer(outputPath, outputBuffer,sz, 0);
-    //take care of appended zeroes
+    data.clear();
+    getDecodedBuffer(fileBitString, data, codes, sz, paddedBits);
 }

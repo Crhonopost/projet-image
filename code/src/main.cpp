@@ -1,6 +1,8 @@
 #include <image.h>
 #include <super_pixel.h>
 #include <util.h>
+#include <huffman.h>
+
 int main(int argc, char* argv[])
 {
     if (argc == 5 || argc == 6) {
@@ -55,7 +57,23 @@ int main(int argc, char* argv[])
 
     Image imageIn, imageOut;
     imageIn.read("images/taupe.ppm");
-    SNIC(imageIn, imageOut);
+    SNIC(imageIn, imageOut, 100000);
+
+    /////// read back from compressed file ///////
+    std::vector<unsigned char> data;
+    decompressFile("output/taupe.snic", data);
+    readSNIC(data, imageOut);
+    imageOut.write("output/res.ppm");
+
+    long double inSize = getFileSize("images/taupe.ppm");
+    long double compressedSize = getFileSize("output/taupe.snic");
+
+    auto compressionRate = inSize / compressedSize;
+
+    std::cout << "taille d'origine: " << inSize / 1000. << "kb  /  taille compressée: " << compressedSize / 1000. << "kb\n";
+    std::cout << "taux de compression: " << compressionRate << "\n";
+    //////////////////////////////////////////////
+
     // double recall = BoundaryRecall(imageOut, imageOut);
     // std::cout << "Boundary Recall : " << recall << std::endl;
     

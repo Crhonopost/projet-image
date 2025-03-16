@@ -4,6 +4,7 @@
 #include <format.h>
 #include <fstream>
 #include <util.h>
+#include <huffman.h>
 
 struct Pixel {
     int superpixel_id, potential_sp_id;
@@ -67,65 +68,69 @@ struct SuperPixel{
 };
 
 
-void storeSNIC(int width, int height, const std::vector<Rgb> &palette, const std::vector<int> &superpixelIds, char *path) {
-    std::ofstream file(path, std::ios::binary);
-    
-    if (!file.is_open()) {
-        std::cerr << "Error opening file for writing." << std::endl;
-        return;
-    }
-    
+void storeSNIC(int width, int height, const std::vector<Rgb> &palette, const std::vector<int> &superpixelIds, std::vector<unsigned char> &buffer) {
+    buffer.clear();
+
     int paletteSize = palette.size();
 
-    file << width << " " << height << " " << paletteSize << "\n";
+    buffer.insert(buffer.end(), reinterpret_cast<unsigned char*>(&width), reinterpret_cast<unsigned char*>(&width) + sizeof(int));
+    buffer.insert(buffer.end(), reinterpret_cast<unsigned char*>(&height), reinterpret_cast<unsigned char*>(&height) + sizeof(int));
+    buffer.insert(buffer.end(), reinterpret_cast<unsigned char*>(&paletteSize), reinterpret_cast<unsigned char*>(&paletteSize) + sizeof(int));
 
-    file.write(reinterpret_cast<const char*>(palette.data()), paletteSize * sizeof(Rgb));
+    buffer.insert(buffer.end(), reinterpret_cast<const unsigned char*>(palette.data()), reinterpret_cast<const unsigned char*>(palette.data()) + paletteSize * sizeof(Rgb));
 
     std::vector<short int> differentialIndices;
     int previousIdxVal = 0;
     int maxDiff = 0;
-    for(int idx : superpixelIds){
-        int dist = abs(idx - previousIdxVal);
-        maxDiff = dist>maxDiff ? dist : maxDiff;
 
-        differentialIndices.push_back(idx - previousIdxVal);
+    for(int idx : superpixelIds){
+        int diff = idx - previousIdxVal;
+        maxDiff = std::max(maxDiff, std::abs(diff));
+
+        differentialIndices.push_back(static_cast<short int>(diff));
         previousIdxVal = idx;
     }
+
     std::cout << "Différence max entre 2 pixels : " << maxDiff << "\n";
 
-    file.write(reinterpret_cast<const char*>(differentialIndices.data()), differentialIndices.size() * sizeof(short int));
+    buffer.insert(buffer.end(), reinterpret_cast<const unsigned char*>(differentialIndices.data()), reinterpret_cast<const unsigned char*>(differentialIndices.data()) + differentialIndices.size() * sizeof(short int));
 }
 
-void readSNIC(const char *path, Image &image) {
-    std::ifstream file(path, std::ios::binary);
-    
-    if (!file.is_open()) {
-        std::cerr << "Error opening file for reading." << std::endl;
+
+void readSNIC(const std::vector<unsigned char> &buffer, Image &image) {
+    if (buffer.empty()) {
+        std::cerr << "Error: Empty buffer." << std::endl;
         return;
     }
-    
+
+    size_t pos = 0;
+
+    // Lecture des métadonnées
     int width, height, paletteSize;
-    file >> width >> height >> paletteSize;
-    
-    file.seekg(1, std::ios::cur);
+    std::memcpy(&width, &buffer[pos], sizeof(int)); pos += sizeof(int);
+    std::memcpy(&height, &buffer[pos], sizeof(int)); pos += sizeof(int);
+    std::memcpy(&paletteSize, &buffer[pos], sizeof(int)); pos += sizeof(int);
 
     int totalSize = width * height;
+
+    // Lecture de la palette
     std::vector<Rgb> palette(paletteSize);
-    file.read(reinterpret_cast<char*>(palette.data()), paletteSize * sizeof(Rgb));
+    std::memcpy(palette.data(), &buffer[pos], paletteSize * sizeof(Rgb));
+    pos += paletteSize * sizeof(Rgb);
 
+    // Lecture des indices différentiels
     std::vector<short int> differentialIds(totalSize);
-    file.read(reinterpret_cast<char*>(differentialIds.data()), totalSize * sizeof(short int));
+    std::memcpy(differentialIds.data(), &buffer[pos], totalSize * sizeof(short int));
+    pos += totalSize * sizeof(short int);
 
-
+    // Reconstruction des indices absolus
     std::vector<int> ids(totalSize);
     ids[0] = differentialIds[0];
-    for(int i=1; i<totalSize; i++){
-        ids[i] = ids[i-1] + differentialIds[i];
+    for (int i = 1; i < totalSize; i++) {
+        ids[i] = ids[i - 1] + differentialIds[i];
     }
 
-    
-    file.close();
-    
+    // Création de l'image
     image = Image(width, height, true);
     for (int i = 0; i < image.nbPixel; i++) {
         Rgb pixelColor = palette[ids[i]];
@@ -253,23 +258,11 @@ void SNIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
         imageOut[i*3 + 2] = color.b;
     }
 
-    imageOut.write("output/SP_without_compression.ppm");
+    // imageOut.write("output/SP_without_compression.ppm");
 
-    storeSNIC(imageIn.width, imageIn.height, colors, ids, "output/taupe_SNIC.snic");
-    compressFile(true, "output/taupe_SNIC.snic", "output/taupe_SNIC_huff.bin");
-    compressFile(false, "output/taupe_SNIC_huff.bin", "output/taupe_SNIC_dehuff.snic");
-    readSNIC("output/taupe_SNIC_dehuff.snic", imageOut);
-    imageOut.write("output/res.ppm");
-
-    long double inSize = getFileSize("output/res.ppm");
-    long double compressedSize = getFileSize("output/taupe_SNIC_huff.bin");
-
-    auto compressionRate = inSize / compressedSize;
-
-    std::cout << "taille d'origine: " << inSize / 1000. << "kb  /  taille compressée: " << compressedSize / 1000. << "kb\n";
-    std::cout << "taux de compression: " << compressionRate << "\n";
-
-
+    std::vector<unsigned char> data;
+    storeSNIC(imageIn.width, imageIn.height, colors, ids, data);// "output/taupe_SNIC.snic");
+    compressFile("output/taupe.snic", data);
 
     for(Pixel * pixel: imagePixels){
         free(pixel);
