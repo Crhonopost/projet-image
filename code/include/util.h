@@ -239,4 +239,58 @@ uintmax_t getFileSize(char *path){
 }
 
 
+struct Pattern {
+    float *data;
+    int sideLength;
+
+    Pattern(float *values, int sideLength){
+        data = values;
+        this->sideLength = sideLength;
+    }
+
+    int apply(int idx, Image &image){
+        int offset = sideLength/2;
+
+        int topLeftIdx = idx - image.width * offset - offset;
+
+        float total = 0;
+
+        for(int i=0; i<sideLength; i++){
+            for(int j=0; j<sideLength; j++){
+                int correctIdx = topLeftIdx + i * image.width + j;
+                if(correctIdx >= 0 && correctIdx < image.nbPixel){
+                    total += data[i * sideLength + j] * (float) image.data[correctIdx];
+                }
+            }
+        }
+
+        return total;
+    }
+};
+
+void processGradient(Image &imageIn, Image &imageOut){
+    imageOut = Image(imageIn.width, imageIn.height, false);
+    
+
+    float sobelDataX[9] = {-1, 0, 1,
+                           -2, 0, 2,
+                           -1, 0, 1};
+    float sobelDataY[9] = {-1,-2,-1,
+                            0, 0, 0,
+                            1, 2, 1};
+    
+    Pattern Gx(sobelDataX, 3);
+    Pattern Gy(sobelDataY, 3);
+
+    for(int i=1; i<imageIn.height; i++){
+        for(int j=1; j<imageIn.width; j++){
+            float x = Gx.apply(i*imageIn.width + j, imageIn);
+            float y = Gy.apply(i*imageIn.width + j, imageIn);
+            float g = sqrt(x*x + y*y);
+            imageOut[i*imageIn.width + j] = g + 127;
+        }
+    }
+}
+
+
 

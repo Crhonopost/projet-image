@@ -57,8 +57,8 @@ int main(int argc, char* argv[])
 
     Image imageIn, imageOut, imageOutSLIC;
     imageIn.read("images/taupe.ppm");
-    SNIC(imageIn, imageOut, 200);
-    SLIC(imageIn, imageOutSLIC, 200);
+    SNIC(imageIn, imageOut, 10000);
+    SLIC(imageIn, imageOutSLIC, 10000);
 
     /////// read back from compressed file ///////
     std::vector<unsigned char> data;
@@ -73,6 +73,9 @@ int main(int argc, char* argv[])
 
     std::cout << "taille d'origine: " << inSize / 1000. << "kb  /  taille compressée: " << compressedSize / 1000. << "kb\n";
     std::cout << "taux de compression: " << compressionRate << "\n";
+    std::cout << "psnr: " << PSNR(imageIn, imageOut) << "\n";
+    std::cout << "psnr: " << PSNR(imageIn, imageOutSLIC) << "\n";
+    
     //////////////////////////////////////////////
 
     // double recall = BoundaryRecall(imageOut, imageOut);

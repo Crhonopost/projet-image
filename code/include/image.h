@@ -127,9 +127,10 @@ struct Image {
         imgOut = Image(width, height, false);
 
         for(int i=0; i<nbPixel; i++){
-            float total = data[i*3] + data[i*3 + 1] + data[i*3 + 2];
-            total /= 3.0f;
-            imgOut.data[i] = std::roundf(total);
+            float grey = 0.299f * (float) data[i*3] + 
+                         0.587f * (float) data[i*3 + 1] + 
+                         0.114f * (float) data[i*3 + 2];
+            imgOut.data[i] = std::roundf(grey);
         }
 
     }

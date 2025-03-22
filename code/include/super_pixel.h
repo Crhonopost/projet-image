@@ -168,6 +168,67 @@ void gridInitSLIC(Image &imageIn, std::vector<SuperPixel> &superPixels, std::vec
     double stepX = (double)imageIn.width / gridSize;
     double stepY = (double)imageIn.height / gridSize;
 
+    
+    Image inGrey, imageGradient;
+    imageIn.toPGM(inGrey);
+    processGradient(inGrey, imageGradient);
+    
+    struct coords {
+        int x,y;
+        coords(): x(0), y(0){};
+        coords(coords &other){
+            this->x = other.x;
+            this->y = other.y;
+        }
+        coords(int x, int y): x(x), y(y){}
+    };
+    std::vector<coords> bestCentroidsCoords(gridSize * gridSize);
+    for (int i = 0; i < gridSize; i++) {
+        for (int j = 0; j < gridSize; j++) {
+            int x = round((j + 0.5) * stepX);
+            int y = round((i + 0.5) * stepY);
+
+            x = std::min(x, imageIn.width - 1);
+            y = std::min(y, imageIn.height - 1);
+
+            coords c(x,y);
+            bestCentroidsCoords[i * gridSize + j] = c;
+        }
+    }
+
+    for(coords &centroid : bestCentroidsCoords){
+        int minGradient = abs(imageGradient[centroid.y * imageGradient.width + centroid.x] - 127);
+        coords bestCoords(centroid);
+
+        for(int x=-1; x<1; x++){
+            for(int y=-1; y<1; y++){
+                int neighborGradient = abs(imageGradient[(centroid.y + y) * imageGradient.width + centroid.x + x] - 127);
+                if(neighborGradient < minGradient){
+                    minGradient = neighborGradient;
+                    bestCoords.x = centroid.x + x;
+                    bestCoords.y = centroid.y + y;
+                }
+            }
+        }
+
+        centroid.x = bestCoords.x;
+        centroid.y = bestCoords.y;
+    }
+
+    for(coords &centroidCoords : bestCentroidsCoords){
+        int index = centroidCoords.y * imageIn.width + centroidCoords.x;
+        
+        Pixel *centroid = imagePixels[index];
+        centroid->superpixel_id = superPixels.size();
+        centroid->temp_id = superPixels.size();
+        centroid->distance = 0;
+    
+        SuperPixel sp;
+        sp.pixels.push_back(centroid);
+        superPixels.push_back(sp);
+    }
+
+
     for (int i = 0; i < gridSize; i++) {
         for (int j = 0; j < gridSize; j++) {
             int x = round((j + 0.5) * stepX);
@@ -279,6 +340,8 @@ void SNIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
     }
 }
 
+// https://vision.gel.ulaval.ca/~jflalonde/cours/4105/h17/tps/results/projet/111063028/index.html
+// https://darshita1405.medium.com/superpixels-and-slic-6b2d8a6e4f08
 
 void SLIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
     double s = sqrt((double)imageIn.nbPixel / (double)k); // Taille d'un superpixel
@@ -303,8 +366,14 @@ void SLIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
             int minX = max(average.x - s, 0.);
             int minY = max(average.y - s, 0.);
 
-            for(int i=0; i<s && i+minY<imageIn.height; i++){
-                for(int j=0; j<s && j+minX<imageIn.width; j++){
+            for(int i=0; 
+                i < 2*s && 
+                i+minY < imageIn.height; 
+                i++){
+                for(int j=0; 
+                    j < 2*s && 
+                    j+minX < imageIn.width; 
+                    j++){
                     Pixel *pix = imagePixels[(minY + i) * imageIn.width + j + minX];
                     double distance = Pixel::computeDistanceSLIC(*pix, average, s, m);
                     if(distance < pix->distance){
