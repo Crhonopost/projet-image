@@ -7,16 +7,22 @@
 #include <huffman.h>
 
 struct Pixel {
-    int superpixel_id, potential_sp_id;
+    int superpixel_id, temp_id;
     Lab lab;
     double distance, x, y;
 
-    Pixel() : x(0), y(0), superpixel_id(-1), potential_sp_id(-1), lab(), distance(MAXFLOAT) {}
+    Pixel() : x(0), y(0), superpixel_id(-1), temp_id(-1), lab(), distance(MAXFLOAT) {}
 
     static double computeDistance(const Pixel& A, const Pixel& B, double s, double m) {
         double posDist = pow(A.x - B.x, 2) + pow(A.y - B.y, 2);
         double labDist = pow(A.lab.l - B.lab.l, 2) + pow(A.lab.a - B.lab.a, 2) + pow(A.lab.b - B.lab.b, 2);
         return sqrt(posDist / s + labDist / m);
+    }
+
+    static double computeDistanceSLIC(const Pixel& A, const Pixel& B, double s, double m) {
+        double posDist = pow(A.x - B.x, 2) + pow(A.y - B.y, 2);
+        double labDist = pow(A.lab.l - B.lab.l, 2) + pow(A.lab.a - B.lab.a, 2) + pow(A.lab.b - B.lab.b, 2);
+        return sqrt(posDist + (m/s) * labDist);
     }
 };
 
@@ -45,19 +51,19 @@ void getNeighbors(Pixel p, Image &image, std::vector<Pixel*> &pixels, std::vecto
 
 
 struct SuperPixel{
-    std::vector<Pixel> pixels;
+    std::vector<Pixel*> pixels;
 
     SuperPixel(){
-        pixels = std::vector<Pixel>();
+        pixels = std::vector<Pixel*>();
     }
 
     Pixel getAveragePixel(){
         Pixel res = Pixel();
         res.distance = 0;
-        for(Pixel p : pixels){
-            res.lab.add(p.lab);
-            res.x += p.x;
-            res.y += p.y;
+        for(Pixel *p : pixels){
+            res.lab.add(p->lab);
+            res.x += p->x;
+            res.y += p->y;
         }
         res.lab.div(pixels.size());
         res.x /= pixels.size();
@@ -140,18 +146,7 @@ void readSNIC(const std::vector<unsigned char> &buffer, Image &image) {
     }
 }
 
-// ref: https://openaccess.thecvf.com/content_cvpr_2017/papers/Achanta_Superpixels_and_Polygons_CVPR_2017_paper.pdf
-// points clés de SNIC: n'utilise pas kmean, pas besoin de plusieurs itérations et meilleure connectivité dés le début
-// imageIn : image d'entrée
-// imageOut : image de sortie
-// k : nombre de superpixels
-// m : Facteur de compacité
-void SNIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
-    double s = sqrt((double)imageIn.nbPixel / (double)k); // Taille d'un superpixel
-
-    std::vector<SuperPixel> superPixels;
-    std::vector<Pixel*> imagePixels;
-
+void gridInitSLIC(Image &imageIn, std::vector<SuperPixel> &superPixels, std::vector<Pixel*> &imagePixels, int k){
     for (int i = 0; i < imageIn.height; i++) {
         for (int j = 0; j < imageIn.width; j++) {
             int idx = (i * imageIn.width + j) * 3;
@@ -169,9 +164,6 @@ void SNIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
         }
     }
 
-    std::priority_queue<Pixel*, std::vector<Pixel*>, ComparePixels> Q;
-    
-
     int gridSize = sqrt(k);
     double stepX = (double)imageIn.width / gridSize;
     double stepY = (double)imageIn.height / gridSize;
@@ -186,18 +178,36 @@ void SNIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
 
             int index = y * imageIn.width + x;
             
-            Pixel &centroid = *imagePixels[index];
-            centroid.superpixel_id = superPixels.size();
-            centroid.potential_sp_id = superPixels.size();
-            centroid.distance = 0;
-            Q.push(&centroid);
+            Pixel *centroid = imagePixels[index];
+            centroid->superpixel_id = superPixels.size();
+            centroid->temp_id = superPixels.size();
+            centroid->distance = 0;
 
             SuperPixel sp;
             sp.pixels.push_back(centroid);
             superPixels.push_back(sp);
         }
     }
+}
 
+// ref: https://openaccess.thecvf.com/content_cvpr_2017/papers/Achanta_Superpixels_and_Polygons_CVPR_2017_paper.pdf
+// points clés de SNIC: n'utilise pas kmean, pas besoin de plusieurs itérations et meilleure connectivité dés le début
+// imageIn : image d'entrée
+// imageOut : image de sortie
+// k : nombre de superpixels
+// m : Facteur de compacité
+void SNIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
+    double s = sqrt((double)imageIn.nbPixel / (double)k); // Taille d'un superpixel
+
+    std::vector<SuperPixel> superPixels;
+    std::vector<Pixel*> imagePixels;
+
+    gridInitSLIC(imageIn, superPixels, imagePixels, k);
+
+    std::priority_queue<Pixel*, std::vector<Pixel*>, ComparePixels> Q;
+    for(SuperPixel &p: superPixels){
+        Q.push(p.pixels[0]);
+    }
 
     int loop = 0;
 
@@ -208,30 +218,30 @@ void SNIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
         << "Q size : " << Q.size() << "\n";
 
         loop ++;
-        Pixel p = *Q.top();
+        Pixel *p = Q.top();
         Q.pop();
 
-        p.superpixel_id = p.potential_sp_id;
+        p->superpixel_id = p->temp_id;
 
-        if ((*imagePixels[p.y * imageIn.width + p.x]).superpixel_id == -1) {
-            (*imagePixels[p.y * imageIn.width + p.x]).superpixel_id = p.superpixel_id;
-            superPixels[p.superpixel_id].pixels.push_back(p);
+        if ((*imagePixels[p->y * imageIn.width + p->x]).superpixel_id == -1) {
+            (*imagePixels[p->y * imageIn.width + p->x]).superpixel_id = p->superpixel_id;
+            superPixels[p->superpixel_id].pixels.push_back(p);
         }
 
         
         std::vector<Pixel*> neighbors;
-        getNeighbors(p, imageIn, imagePixels, neighbors);
+        getNeighbors(*p, imageIn, imagePixels, neighbors);
         for (Pixel *neighborPtr : neighbors) {
             Pixel &neighbor = *neighborPtr;
-            double dist = Pixel::computeDistance(neighbor, superPixels[p.superpixel_id].getAveragePixel(), s, m);
+            double dist = Pixel::computeDistance(neighbor, superPixels[p->superpixel_id].getAveragePixel(), s, m);
             
-            if (neighbor.potential_sp_id == -1) {
+            if (neighbor.temp_id == -1) {
                 Q.push(&neighbor);
             }
 
             if(dist < neighbor.distance){
                 neighbor.distance = dist;
-                neighbor.potential_sp_id = p.superpixel_id;
+                neighbor.temp_id = p->superpixel_id;
             }
 
         }
@@ -267,4 +277,69 @@ void SNIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
     for(Pixel * pixel: imagePixels){
         free(pixel);
     }
+}
+
+
+void SLIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
+    double s = sqrt((double)imageIn.nbPixel / (double)k); // Taille d'un superpixel
+
+    std::vector<SuperPixel> superPixels;
+    std::vector<Pixel*> imagePixels;
+
+    gridInitSLIC(imageIn, superPixels, imagePixels, k);
+
+    for(Pixel *pix: imagePixels){
+        if(pix->superpixel_id == -1){
+            pix->superpixel_id = 0;
+            pix->temp_id = superPixels[0].pixels.size();
+            superPixels[0].pixels.push_back(pix);
+        } 
+    }
+
+    for(int iteration=0; iteration < 10; iteration++){
+        for(int spIdx=0; spIdx<superPixels.size(); spIdx++){
+            SuperPixel &sp = superPixels[spIdx];
+            Pixel average = sp.getAveragePixel();
+            int minX = max(average.x - s, 0.);
+            int minY = max(average.y - s, 0.);
+
+            for(int i=0; i<s && i+minY<imageIn.height; i++){
+                for(int j=0; j<s && j+minX<imageIn.width; j++){
+                    Pixel *pix = imagePixels[(minY + i) * imageIn.width + j + minX];
+                    double distance = Pixel::computeDistanceSLIC(*pix, average, s, m);
+                    if(distance < pix->distance){
+                        SuperPixel &concernedSP = superPixels[pix->superpixel_id];
+                        concernedSP.pixels.erase(concernedSP.pixels.begin() + pix->temp_id);
+
+                        pix->temp_id = sp.pixels.size();
+                        pix->superpixel_id = spIdx;
+                        pix->distance = distance;
+                        sp.pixels.push_back(pix);
+                    }
+                }
+            }
+        }
+    }
+
+    std::vector<Rgb> colors;
+    for(int i=0; i<superPixels.size(); i++){
+        Lab lab = superPixels[i].getAveragePixel().lab;
+        Rgb color = labToRgb(lab);
+        colors.push_back(color);
+    }
+    
+    
+    imageOut = Image(imageIn.width, imageIn.height, true);
+    std::vector<int> ids;
+    // Mise à jour des centroïdes
+    for(int i=0; i<imageOut.nbPixel; i++){
+        int superPixelIdx = (*imagePixels[i]).superpixel_id;
+        ids.push_back(superPixelIdx);
+        Rgb &color = colors[superPixelIdx];
+        imageOut[i*3] = color.r;
+        imageOut[i*3 + 1] = color.g;
+        imageOut[i*3 + 2] = color.b;
+    }
+
+    imageOut.write("output/res_SLIC.ppm");
 }

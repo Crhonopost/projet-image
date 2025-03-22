@@ -55,9 +55,10 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    Image imageIn, imageOut;
+    Image imageIn, imageOut, imageOutSLIC;
     imageIn.read("images/taupe.ppm");
-    SNIC(imageIn, imageOut, 100000);
+    SNIC(imageIn, imageOut, 200);
+    SLIC(imageIn, imageOutSLIC, 200);
 
     /////// read back from compressed file ///////
     std::vector<unsigned char> data;
