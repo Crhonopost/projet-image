@@ -409,6 +409,4 @@ void SLIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
         imageOut[i*3 + 1] = color.g;
         imageOut[i*3 + 2] = color.b;
     }
-
-    imageOut.write("output/res_SLIC.ppm");
 }

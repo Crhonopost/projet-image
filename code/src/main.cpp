@@ -53,28 +53,32 @@ int main(int argc, char* argv[])
     } else if(argc>1){
         std::cerr << "Usage: " << argv[0] << " |OU| " << argv[0] << " imageIn.ppm imageOut.ppm k m" << " [imageBoundaryRecall.pgm (test de boundary recall)]"  << std::endl;
         return 1;
+    } else {
+        Image imageIn, imageOut, imageOutSLIC;
+        imageIn.read("images/taupe.ppm");
+        
+        std::ofstream file("output/taupeComparison.dat");
+        long double inSize = getFileSize("images/taupe.ppm");
+        for(int k=1; k <= 150001; k += 10000){
+            SNIC(imageIn, imageOut, k);
+            SLIC(imageIn, imageOutSLIC, k);
+            float psnrSNIC = PSNR(imageIn, imageOut);
+            float psnrSLIC = PSNR(imageIn, imageOutSLIC);
+            
+            
+            long double compressedSize = getFileSize("output/taupe.snic");
+            auto compressionRate = inSize / compressedSize;
+            
+            file << k << " " << compressionRate << " " << psnrSNIC << " " << psnrSLIC << std::endl;
+        }
+        file.close();
+        
+        SNIC(imageIn, imageOut, 110001);
+        SLIC(imageIn, imageOutSLIC, 110001);
+        imageOut.write("output/taupe_SNIC.ppm");
+        imageOutSLIC.write("output/taupe_SLIC.ppm");
     }
 
-    Image imageIn, imageOut, imageOutSLIC;
-    imageIn.read("images/taupe.ppm");
-    SNIC(imageIn, imageOut, 10000);
-    SLIC(imageIn, imageOutSLIC, 10000);
-
-    /////// read back from compressed file ///////
-    std::vector<unsigned char> data;
-    decompressFile("output/taupe.snic", data);
-    readSNIC(data, imageOut);
-    imageOut.write("output/res.ppm");
-
-    long double inSize = getFileSize("images/taupe.ppm");
-    long double compressedSize = getFileSize("output/taupe.snic");
-
-    auto compressionRate = inSize / compressedSize;
-
-    std::cout << "taille d'origine: " << inSize / 1000. << "kb  /  taille compressée: " << compressedSize / 1000. << "kb\n";
-    std::cout << "taux de compression: " << compressionRate << "\n";
-    std::cout << "psnr: " << PSNR(imageIn, imageOut) << "\n";
-    std::cout << "psnr: " << PSNR(imageIn, imageOutSLIC) << "\n";
     
     //////////////////////////////////////////////
 
