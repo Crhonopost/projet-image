@@ -3,6 +3,7 @@
 #include <image.h>
 #include <huffman.h>
 #include <fstream>
+#include <structures.h>
 #include "huffman.h"
 
 void histoGrey(Image &img, unsigned int **data){
@@ -293,4 +294,163 @@ void processGradient(Image &imageIn, Image &imageOut){
 }
 
 
+void processGradientLab(std::vector<Pixel*> &imagePixels,std::vector<PixelNDG*> &ImgNormeGradientVector, Image &ImgNormeGradient){
+    for (int i = 0; i < ImgNormeGradient.height; i++)
+    {
+        for (int j = 0; j < ImgNormeGradient.width; j++)
+        {
+            // Gestion des bords
+            int normeGradient = 0;
+            if (i == ImgNormeGradient.height - 1 || j == ImgNormeGradient.width - 1)
+            {
+                if (i == ImgNormeGradient.height - 1)
+                {
+                    normeGradient = ImgNormeGradient[(i - 1) * ImgNormeGradient.width + j];
+                    ImgNormeGradient[i * ImgNormeGradient.width + j] = normeGradient;
 
+                }
+                else
+                {
+                    normeGradient = ImgNormeGradient[i * ImgNormeGradient.width + (j - 1)];
+                    ImgNormeGradient[i * ImgNormeGradient.width + j] = normeGradient;
+                }
+            }
+            else
+            {
+                Pixel* p = imagePixels[i * ImgNormeGradient.width + j];
+                Pixel* pRight = imagePixels[i * ImgNormeGradient.width + (j + 1)];
+                Pixel* pDown = imagePixels[(i + 1) * ImgNormeGradient.width + j];
+
+                // Calcul des différences Lab dans les directions droite et bas
+                double xL = pDown->lab.l - p->lab.l;
+                double yL = pRight->lab.l - p->lab.l;
+                double normeL = sqrt(xL * xL + yL * yL);
+
+                double xA = pDown->lab.a - p->lab.a;
+                double yA = pRight->lab.a - p->lab.a;
+                double normeA = sqrt(xA * xA + yA * yA);
+
+                double xB = pDown->lab.b - p->lab.b;
+                double yB = pRight->lab.b - p->lab.b;
+                double normeB = sqrt(xB * xB + yB * yB);
+
+                // Somme des normes des gradients
+                normeGradient = normeL + normeA + normeB;
+                // Limitation à 255 pour rester dans l'échelle des niveaux de gris
+                if (normeGradient > 255){
+                    normeGradient = 255;
+                }
+            }
+            ImgNormeGradient[i * ImgNormeGradient.width + j] = normeGradient;
+            PixelNDG* pixelNDG = new PixelNDG();
+            pixelNDG->y = i;
+            pixelNDG->x = j;
+            pixelNDG->value = normeGradient;
+            ImgNormeGradientVector.push_back(pixelNDG);
+        }
+    }
+}
+
+
+
+int getTheMarker(int indexBeginning, int cellSize,
+                   std::vector<int>& BestIndices,
+                   Image& imageNormeGradient){
+    std::vector<minimaLocal> minimaLocals; // Indices des pixels qui sont des minima locaux
+    // 1. Extraction de la cellule
+
+    int cellArea = cellSize * cellSize;
+
+    // 2. Parcourir la cellule et identifier les minima locaux
+    for (int i = 0; i < cellSize; i++)
+    {
+        for (int j = 0; j < cellSize; j++)
+        {
+            int currentIndex = indexBeginning + i * imageNormeGradient.width + j;
+            if (currentIndex >= imageNormeGradient.totalSize || BestIndices.at(currentIndex) == 0) continue;
+            // On ignore les pixels qui ne sont pas dans la cellule
+            int currentValue = imageNormeGradient[currentIndex];
+            //imageMarqueurCell[currentIndex] = currentValue;
+            bool isLocalMinimum = true;
+            // On parcourt les 8 voisins (en faisant attention aux bords de la cellule)
+            for (int di = -1; di <= 1; di++)
+            {
+                for (int dj = -1; dj <= 1; dj++)
+                {
+                    if (di == 0 && dj == 0) continue; // On ignore le pixel courant
+                    int ni = i + di, nj = j + dj;
+                    // Si le voisin est dans la cellule
+                    // Ici cellsize est la taille de la cellule mais on doit surtout vérifier que le voisin est dans l'image
+                    if (ni >= 0 && ni < cellSize && nj >= 0 && nj < cellSize)
+                    {
+                        int neighborIndex = indexBeginning + ni * imageNormeGradient.width + nj;
+                        if (neighborIndex >= 0 && neighborIndex < imageNormeGradient.totalSize &&
+                            BestIndices.at(neighborIndex) != 0 && imageNormeGradient[neighborIndex] <= currentValue)
+                        {
+                            //
+                            isLocalMinimum = false;
+                            break;
+                        }
+                    }
+                }
+                if (!isLocalMinimum) break;
+            }
+            if (isLocalMinimum)
+            {
+                minimaLocals.push_back({currentIndex, currentValue, 1, currentIndex});
+            }
+        }
+    }
+
+
+    // 3. Sélection selon les cas : Aucun minimum local trouvé, un seul minimum local trouvé, plusieurs minima locaux
+
+    int selectedMarkerIndex = -1;
+
+    if (minimaLocals.empty())
+    {
+        // Cas 1 : Aucun minimum local trouvé,
+        // On parcourt à nouveau la cellule pour trouver le pixel avec la plus faible valeur
+        int bestValue = 256; // Valeur supérieure à tout gradient possible (puisque gradient est limité à 255)
+        for (int i = 0; i < cellSize; i++)
+        {
+            for (int j = 0; j < cellSize; j++)
+            {
+                int currentIndex = indexBeginning + i * imageNormeGradient.width + j;
+                int currentValue = imageNormeGradient[currentIndex];
+                if (currentValue < bestValue && currentIndex < imageNormeGradient.totalSize)
+                {
+                    bestValue = currentValue;
+                    selectedMarkerIndex = currentIndex;
+                }
+            }
+        }
+    }
+    else if (minimaLocals.size() == 1)
+    {
+        // Cas 2 : Un seul minimum local trouvé
+        selectedMarkerIndex = minimaLocals[0].index;
+    }
+    else
+    {
+        // Cas 3 : Plusieurs minima locaux, on pourrait appliquer le critère d'extinction,
+        // à explorer plus tard si cela change grandement les résultats
+        // Pour simplifier, on va prendre le minima local plus proche du centre.
+        int bestDist = 1e9;
+        int centerX = cellSize / 2;
+        int centerY = cellSize / 2;
+        for (size_t idx = 0; idx < minimaLocals.size(); idx++)
+        {
+            int currentMinIndex = minimaLocals[idx].index;
+            int i = currentMinIndex / imageNormeGradient.width;
+            int j = currentMinIndex % imageNormeGradient.width;
+            int dist = (i - centerX) * (i - centerX) + (j - centerY) * (j - centerY);
+            if (dist < bestDist)
+            {
+                bestDist = dist;
+                selectedMarkerIndex = currentMinIndex;
+            }
+        }
+    }
+    return selectedMarkerIndex;
+}

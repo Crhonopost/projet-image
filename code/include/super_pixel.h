@@ -467,7 +467,7 @@ void Waterpixel(Image& imageIn, Image& imageOut, int k, float percentageRho=0.2f
                     * nW + j - 1] == 0)
             )
             {
-                indicesCentresSuperPixels.push_back(getTheMarqueur(index, rho * 2, bestIndices, ImgNormeGradient));
+                indicesCentresSuperPixels.push_back(getTheMarker(index, rho * 2, bestIndices, ImgNormeGradient));
             }
         }
     }
