@@ -4,33 +4,9 @@
 #include <format.h>
 #include <fstream>
 #include <util.h>
+#include <structures.h>
 #include <huffman.h>
 
-struct Pixel {
-    int superpixel_id, temp_id;
-    Lab lab;
-    double distance, x, y;
-
-    Pixel() : x(0), y(0), superpixel_id(-1), temp_id(-1), lab(), distance(MAXFLOAT) {}
-
-    static double computeDistance(const Pixel& A, const Pixel& B, double s, double m) {
-        double posDist = pow(A.x - B.x, 2) + pow(A.y - B.y, 2);
-        double labDist = pow(A.lab.l - B.lab.l, 2) + pow(A.lab.a - B.lab.a, 2) + pow(A.lab.b - B.lab.b, 2);
-        return sqrt(posDist / s + labDist / m);
-    }
-
-    static double computeDistanceSLIC(const Pixel& A, const Pixel& B, double s, double m) {
-        double posDist = pow(A.x - B.x, 2) + pow(A.y - B.y, 2);
-        double labDist = pow(A.lab.l - B.lab.l, 2) + pow(A.lab.a - B.lab.a, 2) + pow(A.lab.b - B.lab.b, 2);
-        return sqrt(posDist + (m/s) * labDist);
-    }
-};
-
-struct ComparePixels {
-    bool operator()(const Pixel* a, const Pixel* b) const {
-        return a->distance > b->distance; // Min-heap : plus petite distance en premier
-    }
-};
 
 void getNeighbors(Pixel p, Image &image, std::vector<Pixel*> &pixels, std::vector<Pixel*> &res){
     res.resize(0);
@@ -48,31 +24,6 @@ void getNeighbors(Pixel p, Image &image, std::vector<Pixel*> &pixels, std::vecto
         res.push_back(pixels[(p.y + 1) * image.width + p.x]);
     }
 }
-
-
-struct SuperPixel{
-    std::vector<Pixel*> pixels;
-
-    SuperPixel(){
-        pixels = std::vector<Pixel*>();
-    }
-
-    Pixel getAveragePixel(){
-        Pixel res = Pixel();
-        res.distance = 0;
-        for(Pixel *p : pixels){
-            res.lab.add(p->lab);
-            res.x += p->x;
-            res.y += p->y;
-        }
-        res.lab.div(pixels.size());
-        res.x /= pixels.size();
-        res.y /= pixels.size();
-        
-        return res;
-    }
-};
-
 
 void storeSNIC(int width, int height, const std::vector<Rgb> &palette, const std::vector<int> &superpixelIds, std::vector<unsigned char> &buffer) {
     buffer.clear();
@@ -146,7 +97,7 @@ void readSNIC(const std::vector<unsigned char> &buffer, Image &image) {
     }
 }
 
-void gridInitSLIC(Image &imageIn, std::vector<SuperPixel> &superPixels, std::vector<Pixel*> &imagePixels, int k){
+void conversionImageVector(Image &imageIn, std::vector<Pixel*> &imagePixels){
     for (int i = 0; i < imageIn.height; i++) {
         for (int j = 0; j < imageIn.width; j++) {
             int idx = (i * imageIn.width + j) * 3;
@@ -163,6 +114,10 @@ void gridInitSLIC(Image &imageIn, std::vector<SuperPixel> &superPixels, std::vec
             imagePixels.push_back(pix);
         }
     }
+}
+
+void gridInitSLIC(Image &imageIn, std::vector<SuperPixel> &superPixels, std::vector<Pixel*> &imagePixels, int k){
+    conversionImageVector(imageIn, imagePixels);
 
     int gridSize = sqrt(k);
     double stepX = (double)imageIn.width / gridSize;
@@ -172,16 +127,7 @@ void gridInitSLIC(Image &imageIn, std::vector<SuperPixel> &superPixels, std::vec
     Image inGrey, imageGradient;
     imageIn.toPGM(inGrey);
     processGradient(inGrey, imageGradient);
-    
-    struct coords {
-        int x,y;
-        coords(): x(0), y(0){};
-        coords(coords &other){
-            this->x = other.x;
-            this->y = other.y;
-        }
-        coords(int x, int y): x(x), y(y){}
-    };
+
     std::vector<coords> bestCentroidsCoords(gridSize * gridSize);
     for (int i = 0; i < gridSize; i++) {
         for (int j = 0; j < gridSize; j++) {
@@ -409,4 +355,327 @@ void SLIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
         imageOut[i*3 + 1] = color.g;
         imageOut[i*3 + 2] = color.b;
     }
+}
+
+// Reg sert a savoir si on veut plus de régularité ou plus suivre les contours
+// Plus reg est grand, plus on aura de régularité (grille carré)
+void Waterpixel(Image& imageIn, Image& imageOut, int k, float percentageRho=0.2f, double reg=50., bool debugMode = false){
+    int nH = imageIn.height;
+    int nW = imageIn.width;
+    int nTaille = nH * nW;
+
+    // Conversion en structure pixels
+    std::vector<Pixel*> imagePixels;
+    conversionImageVector(imageIn, imagePixels);
+
+    // ---------------------
+    // Calcul du gradient
+    // ---------------------
+    Image ImgNormeGradient;
+    ImgNormeGradient = Image(nW, nH, false);
+    std::vector<PixelNDG*> ImgNormeGradientVector;
+    processGradientLab(imagePixels, ImgNormeGradientVector, ImgNormeGradient);
+
+    // Debug
+    if (debugMode){
+        std::string normeGradient = std::string("WATERPIXEL-DEBUG_ImgNormeGradient.pgm");
+        ImgNormeGradient.write(normeGradient.c_str());
+    }
+
+    struct centersSquare{
+        int x, y;
+    };
+
+    // ---------------------
+    // Partie grille génération des centres
+    // ---------------------
+    std::vector<centersSquare> centers;
+    // Paramètres
+    float sigma = std::sqrt((nW * nH) / static_cast<float>(k));
+    float sigma_y = sigma * std::sqrt(3.f) / 2.f; // Sqrt pour avoir un petit décalage en haut et en bas
+    // On va rajouter une marge autour de nos hexagones/carrés
+    float rho = sigma * (percentageRho);
+    ;
+    // ---------------------
+    // Génération de la grille
+    // ---------------------
+    for (float y = 0.f; y < nH + sigma_y; y += sigma_y){
+        for (float x = 0.f; x < nW; x += sigma){
+            int x_center = static_cast<int>(x);
+            int y_center = static_cast<int>(y);
+
+            // On peut vérifier les bords
+            if (x_center >= 0 && x_center < nW && y_center >= 0){
+                centers.push_back({x_center, y_center});
+            }
+        }
+    }
+
+
+    std::vector<int> bestIndices;
+
+    Image ImgInterGrilleColor = Image(nW, nH, true);
+    // ---------------------
+    // Affectation de chaque pixel au centre le plus proche
+    // ---------------------
+    for (int y = 0; y < nH; y++)
+    {
+        for (int x = 0; x < nW; x++)
+        {
+            int minDist = 1e9, bestIndex = 0;
+
+            for (size_t i = 0; i < centers.size(); i++)
+            {
+                int dx = x - centers[i].x;
+                int dy = y - centers[i].y;
+                int dist = dx * dx + dy * dy;
+                if (dist < minDist && (x < centers[i].x + rho && x > centers[i].x - rho) && (y < centers[i].y + rho && y
+                    > centers[i].y - rho))
+                {
+                    minDist = dist;
+                    bestIndex = i + 1;
+                }
+            }
+
+            int index = (y * nW + x) * 3;
+            int color = bestIndex % 256;
+            ImgInterGrilleColor[index + 0] = (color * 3) % 256;
+            ImgInterGrilleColor[index + 1] = (color * 7) % 256;
+            ImgInterGrilleColor[index + 2] = (color * 5) % 256;
+            bestIndices.push_back(bestIndex);
+        }
+    }
+    if (debugMode){
+        std::string InterGrilleColor = std::string( "WATERPIXEL-DEBUG_ImgInterGrilleColor.ppm");
+        ImgInterGrilleColor.write(InterGrilleColor.c_str());
+    }
+
+    // ---------------------
+    // Extraction des marqueurs
+    // ---------------------
+    std::vector<int> indicesCentresSuperPixels;
+    for (int i = 0; i < nH; i++)
+    {
+        for (int j = 0; j < nW; j++)
+        {
+            int index = (i * nW + j);
+            // Si je suis le pixel en haut à droite de la petite zone
+            if ((i == 0 && j == 0 && bestIndices[index] != 0) ||
+                (i == 0 && bestIndices[(i) * nW + j] != 0 && bestIndices[(i) * nW + j - 1] == 0) ||
+                (j == 0 && bestIndices[(i) * nW + j] != 0 && bestIndices[(i - 1) * nW + j] == 0) ||
+                (i > 0 && j > 0 && bestIndices[(i) * nW + j] != 0 && bestIndices[(i - 1) * nW + j] == 0 && bestIndices[i
+                    * nW + j - 1] == 0)
+            )
+            {
+                indicesCentresSuperPixels.push_back(getTheMarqueur(index, rho * 2, bestIndices, ImgNormeGradient));
+            }
+        }
+    }
+
+
+    // On a maintenant les indices des centres des superpixels dans indicesCentresSuperPixels et on va les utiliser
+    // pour créer les ACM-waterpixels
+    std::vector<SuperPixel> superPixels;
+    for (int i = 0; i < indicesCentresSuperPixels.size(); i++)
+    {
+        Pixel *centroid = imagePixels[indicesCentresSuperPixels[i]];
+        centroid->superpixel_id = superPixels.size()+1;// On commence à 1 pour éviter les confusions avec les pixels non assignés
+        centroid->temp_id = superPixels.size()+1; // On commence à 1 pour éviter les confusions avec les pixels non assignés
+        centroid->distance = 0;
+        SuperPixel sp;
+        sp.pixels.push_back(centroid);
+        superPixels.push_back(sp);
+    }
+    Image ImgInterGrilleColorAfterChangeCenters = Image(nW, nH, true);
+
+
+    // Boucle pour assigner chaque pixel à un superpixel en fonction de la distance en une passe
+    // (formule fournis : dQ(p)=2/σ min(qi∈Q) d(p,qi) )
+
+    // Si on prends les mots de l'article en disant que les m-waterpixels sont
+    // quand on prends les bons marqueurs en prenant bien en compte les minima locaux
+    // Et les c-waterpixels sont les pixels qui sont les centres de cellules
+    // Alors les notres on peut les nommer les acm-waterpixels car on prends
+    // pas exactement les minima locaux, ni les centres de cellules donc "average center marker"
+    for (int i = 0; i < nH; i++)
+    {
+        for (int j = 0; j < nW; j++)
+        {
+            int index = i * nW + j;
+            Pixel *pix = imagePixels[index];
+            double minDist = std::numeric_limits<double>::max();
+            int bestSuperPixel = -1;
+            for (int spIdx = 0; spIdx < superPixels.size(); spIdx++)
+            {
+                SuperPixel &sp = superPixels[spIdx];
+                Pixel &centroid = *sp.pixels[0];
+                double distance = Pixel::computeSpaceDistance(*pix, centroid);
+                distance = 2 * distance / sigma;
+                if (distance < minDist){
+                    minDist = distance;
+                    bestSuperPixel = spIdx;
+                }
+            }
+            pix->distance = minDist;
+            pix->superpixel_id = bestSuperPixel+1; // On commence à 1 pour éviter les confusions avec les pixels non assignés
+
+            // si le pixel est le centroid, on l'ajoute pas une seconde fois
+            if (superPixels[bestSuperPixel].pixels[0]->x != pix->x || superPixels[bestSuperPixel].pixels[0]->y != pix->y)
+                superPixels[bestSuperPixel].pixels.push_back(pix);
+
+            ImgInterGrilleColorAfterChangeCenters[index*3 + 0] = labToRgb(superPixels[bestSuperPixel].pixels[0]->lab).r;
+            ImgInterGrilleColorAfterChangeCenters[index*3 + 1] = labToRgb(superPixels[bestSuperPixel].pixels[0]->lab).g;
+            ImgInterGrilleColorAfterChangeCenters[index*3 + 2] = labToRgb(superPixels[bestSuperPixel].pixels[0]->lab).b;
+        }
+    }
+
+    // Ecriutre
+    if (debugMode){
+        std::string InterGrilleColorAfterChangeCenters = std::string("WATERPIXEL-DEBUG_ImgInterGrilleColorAfterChangeCenters.ppm");
+        ImgInterGrilleColorAfterChangeCenters.write(InterGrilleColorAfterChangeCenters.c_str());
+    }
+
+
+    // Etape 5 : Régulariser spatialement le gradient
+    // on va construire notre image g_reg qui est une image de gradient régularisé en utilisant les ACM-waterpixels
+    // et en utilisant la formule fournis : g_reg(p) = g + reg*d(p, q) avec reg fournis par utilisateur
+    // Plus reg est grand et plus il y a de la régularisation
+    Image ImgNormeGradientReg = Image(nW, nH, false);
+    std::vector<PixelNDG*> ImgNormeGradientRegVector = std::vector<PixelNDG*>(nW*nH); // On va stocker les pixels de l'image régularisée
+
+    for (int spIdx = 0; spIdx < superPixels.size(); spIdx++){
+        SuperPixel &sp = superPixels[spIdx];
+        for (int pIdx = 0; pIdx < sp.pixels.size(); pIdx++){
+            Pixel &pix = *sp.pixels[pIdx];
+            double dQ = pix.distance;
+            ImgNormeGradientReg[pix.y*nW+pix.x] = ImgNormeGradientVector[pix.y*nW+pix.x]->value + reg * dQ;
+            if (ImgNormeGradientReg[pix.y*nW+pix.x]>255){
+                ImgNormeGradientReg[pix.y*nW+pix.x] = 255;
+            }
+            else if (ImgNormeGradientReg[pix.y*nW+pix.x]<0)
+            {
+                ImgNormeGradientReg[pix.y*nW+pix.x] = 0;
+            }
+
+            PixelNDG *pixNDG = new PixelNDG();
+            pixNDG->y = pix.y;
+            pixNDG->x = pix.x;
+            pixNDG->value = ImgNormeGradientReg[pix.y*nW+pix.x];
+            ImgNormeGradientRegVector[pix.y*nW+pix.x] = pixNDG;
+        }
+    }
+
+    if (debugMode){
+        std::string NormeGradientReg = std::string("WATERPIXEL-DEBUG_ImgNormeGradientReg.pgm");
+        ImgNormeGradientReg.write(NormeGradientReg.c_str());
+    }
+
+
+    // Création d'un vecteur labels qui contient les labels de chaque superpixel
+    // Pour l'instant on va initialiser les labels à 0 pour les pixels qui ne sont pas les centroids
+    // et à l'index du superpixel pour les pixels qui sont les centroids
+    Image imgMarqueurCell2 = Image(nW, nH, false);
+    std::vector<int> labels(nH*nW, 0);
+    for (int spIdx = 0; spIdx < superPixels.size(); spIdx++){
+        SuperPixel &sp = superPixels[spIdx];
+        // On met le label du superpixel pour le pixel qui est le centroid
+        labels[sp.pixels[0]->y*nW+sp.pixels[0]->x] = sp.pixels[0]->superpixel_id;
+        imgMarqueurCell2[sp.pixels[0]->y*nW+sp.pixels[0]->x] = 255;
+    }
+    // Ecriture de marqueur cell 2
+    if (debugMode){
+        std::string MarqueurCell2 = std::string("WATERPIXEL-DEBUG_ImgMarqueurCell2.pgm");
+        imgMarqueurCell2.write(MarqueurCell2.c_str());
+    }
+
+
+
+    // PARTIE WATERSHED : Pour cette partie, on va utiliser la norme du gradient régularisé calculé précédemment
+    // Les marqueurs de notre watershed sont représentés par les centroide des ACM-waterpixels (superpixels temporaires)
+    // Labels qui est un vecteur qui contient les labels de chaque pixel, qui a partir de la valeur 1 correspond à un superpixel
+    // On va utiliser une file de priorité pour parcourir les pixels en fonction de leur valeur de gradient régularisé
+    std::priority_queue<PixelNDG*, std::vector<PixelNDG*>, ComparePixelNDG> pq;
+
+    // On ajoute les marqueurs à la file de priorité
+    for (int spIdx = 0; spIdx < superPixels.size(); spIdx++){
+        SuperPixel &sp = superPixels[spIdx];
+        PixelNDG *pix = ImgNormeGradientRegVector[sp.pixels[0]->y*nW+sp.pixels[0]->x];
+        ImgNormeGradientReg[sp.pixels[0]->y*nW+sp.pixels[0]->x] = 255;
+        pq.push(pix);
+    }
+
+    // Processus d'inondation
+    while (!pq.empty()){
+        PixelNDG* p = pq.top();
+        pq.pop();
+
+
+        // Parcourir les voisins de p
+        for (int di = -1; di <= 1; di++){
+            for (int dj = -1; dj <= 1; dj++){
+                if (di == 0 && dj == 0) continue; // On ignore le pixel courant
+                int ni = p->y + di, nj = p->x + dj;
+                // Si le voisin est dans l'image
+                if (ni >= 0 && ni < nH && nj >= 0 && nj < nW){
+                    PixelNDG *neighbor = ImgNormeGradientRegVector[ni*nW+nj];
+                    if (labels[ni*nW+nj] == 0){
+                        labels[ni*nW+nj] = labels[p->y*nW+p->x];
+                        pq.push(neighbor);
+                    }
+                    // Si le voisin est déjà marqué par un autre superpixel et que je ne suis pas un watershed
+                    else if (labels[ni*nW+nj] != labels[p->y*nW+p->x] && labels[p->y*nW+p->x] != -1){
+                        int lab = labels[ni*nW+nj];
+                        int labCompare = labels[p->y*nW+p->x];
+                        //labels[ni*nW+nj] = -1; // Marquer comme watershed
+                    }
+                }
+            }
+        }
+    }
+
+    // colors sert à stocker les couleurs moyennes des superpixels pour l'écriture de l'image de sortie
+    std::vector<Rgb> colors;
+    for(int i=0; i<superPixels.size(); i++){
+        Lab lab = superPixels[i].getAveragePixel().lab;
+        Rgb color = labToRgb(lab);
+        colors.push_back(color);
+    }
+    // Ecriture de l'image de sortie
+    // Ici on a les labels de chaque pixel, qui a partir de la valeur 1 correspond à un superpixel, on a plus qu'à reconstruire l'image
+    // en mettant les couleurs moyennes des superpixels à la place des pixels
+    imageOut = Image(imageIn.width, imageIn.height, true);
+    for (int index = 0; index < labels.size(); index++){
+        if (labels[index] == -1){
+            imageOut[index*3 + 0] = 255;
+            imageOut[index*3 + 1] = 255;
+            imageOut[index*3 + 2] = 255;
+        }
+        else if (labels[index] == 0){
+            imageOut[index*3 + 0] = 0;
+            imageOut[index*3 + 1] = 0;
+            imageOut[index*3 + 2] = 0;
+        }
+        else{
+            int spIdx = labels[index] - 1;
+            Rgb color = colors[spIdx];
+            imageOut[index*3 + 0] = color.r;
+            imageOut[index*3 + 1] = color.g;
+            imageOut[index*3 + 2] = color.b;
+        }
+    }
+
+    // Ecriture de l'image de sortie
+    if (debugMode){
+        std::string imgOutName = std::string("WATERPIXEL-DEBUG_ImgOut.ppm");
+        imageOut.write(imgOutName.c_str());
+    }
+
+    // Libération de la mémoire
+    for (Pixel * pixel: imagePixels){
+        free(pixel);
+    }
+    for (PixelNDG * pixel: ImgNormeGradientRegVector){
+        free(pixel);
+    }
+
 }
