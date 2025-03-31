@@ -633,6 +633,15 @@ void Waterpixel(Image& imageIn, Image& imageOut, int k, float percentageRho=0.2f
         }
     }
 
+    // On va réintialiser la liste des superpixels pour avoir une couleur adaptée à l'image de sortie
+    for (int i = 0; i < superPixels.size(); i++){
+        superPixels[i].pixels.clear();
+    }
+    // Grâce à labels, on va pouvoir reconstruire les superpixels
+    for (int i = 0; i < labels.size(); i++){
+        superPixels[labels[i]-1].pixels.push_back(imagePixels[i]);
+    }
+
     // colors sert à stocker les couleurs moyennes des superpixels pour l'écriture de l'image de sortie
     std::vector<Rgb> colors;
     for(int i=0; i<superPixels.size(); i++){
