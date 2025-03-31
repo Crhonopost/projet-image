@@ -28,7 +28,7 @@ struct Pixel {
     static double computeDistanceSLIC(const Pixel& A, const Pixel& B, double s, double m) {
         double posDist = pow(A.x - B.x, 2) + pow(A.y - B.y, 2);
         double labDist = pow(A.lab.l - B.lab.l, 2) + pow(A.lab.a - B.lab.a, 2) + pow(A.lab.b - B.lab.b, 2);
-        return sqrt(posDist + (m/s) * labDist);
+        return (m/s) * sqrt(posDist) + sqrt(labDist);
     }
 
 

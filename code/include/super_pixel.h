@@ -6,6 +6,7 @@
 #include <util.h>
 #include <structures.h>
 #include <huffman.h>
+#include <logger.h>
 
 
 void getNeighbors(Pixel p, Image &image, std::vector<Pixel*> &pixels, std::vector<Pixel*> &res){
@@ -290,6 +291,7 @@ void SNIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
 // https://darshita1405.medium.com/superpixels-and-slic-6b2d8a6e4f08
 
 void SLIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
+    ScopedLogger logger("SLIC");
     double s = sqrt((double)imageIn.nbPixel / (double)k); // Taille d'un superpixel
 
     std::vector<SuperPixel> superPixels;
@@ -306,7 +308,10 @@ void SLIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
     }
 
     for(int iteration=0; iteration < 10; iteration++){
+        ScopedLogger logger("SLIC iteration");
+        auto startIte = std::chrono::high_resolution_clock::now();
         for(int spIdx=0; spIdx<superPixels.size(); spIdx++){
+            ScopedLogger logger("SLIC super pixels");
             SuperPixel &sp = superPixels[spIdx];
             Pixel average = sp.getAveragePixel();
             int minX = max(average.x - s, 0.);
@@ -320,11 +325,16 @@ void SLIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
                     j < 2*s && 
                     j+minX < imageIn.width; 
                     j++){
+                    ScopedLogger logger("SLIC pixels in super pixels");
                     Pixel *pix = imagePixels[(minY + i) * imageIn.width + j + minX];
                     double distance = Pixel::computeDistanceSLIC(*pix, average, s, m);
                     if(distance < pix->distance){
                         SuperPixel &concernedSP = superPixels[pix->superpixel_id];
                         concernedSP.pixels.erase(concernedSP.pixels.begin() + pix->temp_id);
+
+                        for(int i=pix->temp_id; i<concernedSP.pixels.size(); i++){
+                            concernedSP.pixels[i]->temp_id -= 1;
+                        }
 
                         pix->temp_id = sp.pixels.size();
                         pix->superpixel_id = spIdx;
@@ -355,6 +365,8 @@ void SLIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
         imageOut[i*3 + 1] = color.g;
         imageOut[i*3 + 2] = color.b;
     }
+
+    GlobalLogger::getInstance().printAverages();
 }
 
 // Reg sert a savoir si on veut plus de régularité ou plus suivre les contours
