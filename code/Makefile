@@ -1,105 +1,60 @@
-# Thomas Daley
-# September 13, 2021
-
-# A generic build template for C/C++ programs
-
-# executable name
+# Nom de l'exécutable
 EXE = main
 
-# build directories
+# Répertoires
 BIN = ./
 OBJ = obj
 SRC = src
 INC = include
+IMGUI = imgui
+BACKENDS = imgui/backends
 
-# C compiler
-CC = gcc
-# C++ compiler
-CXX = g++
-# linker
+# Compilateur
+CC = g++
 LD = g++
 
-
-# C flags
-CFLAGS = -Wall -O0
-# C++ flags
-CXXFLAGS = -Wall -O0
-# C/C++ flags
-CPPFLAGS = -Wall -g -I $(INC)
-# dependency-generation flags
+# Flags de compilation
+CXXFLAGS = -Wall -O0 -g -I $(INC) -I $(IMGUI) -I $(BACKENDS) 
 DEPFLAGS = -MMD -MP
-# linker flags
-LDFLAGS = 
-# library flags
-LDLIBS = 
 
-SOURCES := $(wildcard $(SRC)/*.c $(SRC)/*.cc $(SRC)/*.cpp $(SRC)/*.cxx)
+# Flags de l'éditeur de liens
+LDFLAGS = -lglfw -lGL -ldl -lpthread -lX11
 
-OBJECTS := \
-	$(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(wildcard $(SRC)/*.c)) \
-	$(patsubst $(SRC)/%.cc, $(OBJ)/%.o, $(wildcard $(SRC)/*.cc)) \
-	$(patsubst $(SRC)/%.cpp, $(OBJ)/%.o, $(wildcard $(SRC)/*.cpp)) \
-	$(patsubst $(SRC)/%.cxx, $(OBJ)/%.o, $(wildcard $(SRC)/*.cxx))
+# Détection des fichiers sources
+SOURCES := $(wildcard $(SRC)/*.cpp) $(wildcard $(IMGUI)/*.cpp) $(wildcard $(BACKENDS)/*.cpp)
 
-# include compiler-generated dependency rules
+# Génération des fichiers objets correspondants
+OBJECTS := $(patsubst %.cpp, $(OBJ)/%.o, $(SOURCES))
+
+# Inclusion des fichiers de dépendances générés
 DEPENDS := $(OBJECTS:.o=.d)
 
-# compile C source
-COMPILE.c = $(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c -o $@
-# compile C++ source
-COMPILE.cxx = $(CXX) $(DEPFLAGS) $(CXXFLAGS) $(CPPFLAGS) -c -o $@
-# link objects
-LINK.o = $(LD) $(LDFLAGS) $(LDLIBS) $(OBJECTS) -o $@
+# Compilation des sources
+$(OBJ)/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	$(CC) $(DEPFLAGS) $(CXXFLAGS) -c $< -o $@
 
-.DEFAULT_GOAL = all
-
+# Règle principale
 .PHONY: all
 all: $(BIN)/$(EXE)
 
-$(BIN)/$(EXE): $(SRC) $(OBJ) $(BIN) $(OBJECTS)
-	$(LINK.o)
+$(BIN)/$(EXE): $(OBJECTS)
+	$(LD) $(OBJECTS) $(LDFLAGS) -o $@
 
-$(SRC):
-	mkdir -p $(SRC)
-
-$(OBJ):
-	mkdir -p $(OBJ)
-
-$(BIN):
-	mkdir -p $(BIN)
-
-$(OBJ)/%.o:	$(SRC)/%.c
-	$(COMPILE.c) $<
-
-$(OBJ)/%.o:	$(SRC)/%.cc
-	$(COMPILE.cxx) $<
-
-$(OBJ)/%.o:	$(SRC)/%.cpp
-	$(COMPILE.cxx) $<
-
-$(OBJ)/%.o:	$(SRC)/%.cxx
-	$(COMPILE.cxx) $<
-
-# force rebuild
-.PHONY: remake
-remake:	clean $(BIN)/$(EXE)
-
-# execute the program
+# Exécution
 .PHONY: run
 run: $(BIN)/$(EXE)
 	./$(BIN)/$(EXE)
 
-# remove previous build and objects
+# Nettoyage
 .PHONY: clean
 clean:
-	$(RM) $(OBJECTS)
-	$(RM) $(DEPENDS)
-	$(RM) $(BIN)/$(EXE)
+	$(RM) $(OBJECTS) $(DEPENDS) $(BIN)/$(EXE)
 
-# remove everything except source
+# Nettoyage complet
 .PHONY: reset
 reset:
-	$(RM) -r $(OBJ)
-	$(RM) -r $(BIN)
+	$(RM) -r $(OBJ) $(BIN)
 
+# Inclusion des dépendances
 -include $(DEPENDS)
