@@ -7,6 +7,7 @@
 #include "imgui/backend/imgui_impl_opengl3.h"
 #include <GLFW/glfw3.h>
 #include <imgui/imfilebrowser.h>
+#include <interface/helper.hpp>
 
 int main() {
     glfwInit();
@@ -18,6 +19,10 @@ int main() {
     ImGui_ImplOpenGL3_Init();
 
     ImGui::FileBrowser fileDialog;
+
+    Image imgSelected;
+    GLuint textureId;
+    bool imgDisplay = false;
     
     // fileDialog.SetTitle("title");
     // fileDialog.SetTypeFilters({ ".h", ".cpp" });
@@ -36,8 +41,14 @@ int main() {
         fileDialog.Display();
         
         if(fileDialog.HasSelected()) {
-            std::cout << "Selected filename: " << fileDialog.GetSelected().string() << std::endl;
+            imgSelected.read(fileDialog.GetSelected().string().data());
+            imgDisplay = true;
+            LoadTextureFromMemory(imgSelected, &textureId);
+
             fileDialog.ClearSelected();
+        }
+        if(imgDisplay){
+            displayImage(imgSelected, textureId);
         }
     
         // Clear le buffer avant de dessiner
