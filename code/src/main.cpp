@@ -9,6 +9,9 @@
 #include <imgui/imfilebrowser.h>
 #include <interface/helper.hpp>
 
+
+InterfaceState currentState;
+
 int main() {
     glfwInit();
     GLFWwindow* window = glfwCreateWindow(800, 600, "Mon App", NULL, NULL);
@@ -19,10 +22,6 @@ int main() {
     ImGui_ImplOpenGL3_Init();
 
     ImGui::FileBrowser fileDialog;
-
-    Image imgSelected;
-    GLuint textureId;
-    bool imgDisplay = false;
     
     // fileDialog.SetTitle("title");
     // fileDialog.SetTypeFilters({ ".h", ".cpp" });
@@ -41,15 +40,11 @@ int main() {
         fileDialog.Display();
         
         if(fileDialog.HasSelected()) {
-            imgSelected.read(fileDialog.GetSelected().string().data());
-            imgDisplay = true;
-            LoadTextureFromMemory(imgSelected, &textureId);
-
+            currentState.setInputImage(fileDialog.GetSelected().string().data());
             fileDialog.ClearSelected();
         }
-        if(imgDisplay){
-            displayImage(imgSelected, textureId);
-        }
+
+        currentState.interfaceUpdate();
     
         // Clear le buffer avant de dessiner
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f); // Couleur de fond (gris foncé)
