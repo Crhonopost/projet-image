@@ -9,12 +9,14 @@
 #include <imgui/imfilebrowser.h>
 #include <interface/helper.hpp>
 
+const int WIDTH = 1200;
+const int HEIGHT = 800;
 
 InterfaceState currentState;
 
 int main() {
     glfwInit();
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Mon App", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Interface super-pixels", NULL, NULL);
     glfwMakeContextCurrent(window);
     
     ImGui::CreateContext();
@@ -32,10 +34,9 @@ int main() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
     
-        if(ImGui::Begin("Menu")) {
+        if(ImGui::Begin("App", nullptr, ImGuiWindowFlags_NoCollapse)) {
             if (ImGui::Button("File explo")) fileDialog.Open();
         }
-        ImGui::End();
     
         fileDialog.Display();
         
@@ -45,9 +46,9 @@ int main() {
         }
 
         currentState.interfaceUpdate();
+        ImGui::End();
     
-        // Clear le buffer avant de dessiner
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f); // Couleur de fond (gris foncé)
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
     
         ImGui::Render();

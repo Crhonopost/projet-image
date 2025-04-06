@@ -14,7 +14,12 @@ struct InterfaceState {
     int k=5000;
     float m=5;
 
+    float percentageRho = 0.2f;
+    double reg = 50.0;
+
+    char *outputPath = "output/compressed.spr";
     float psnr;
+    double inSize, compressionRate;
 
     bool LoadTextureFromMemory(Image &image, GLuint* out_texture)
     {    
@@ -37,8 +42,7 @@ struct InterfaceState {
         return true;
     }
 
-    void displayImage(Image &image, GLuint textureId, char *windowName) {
-        ImGui::Begin(windowName);
+    void displayImageInput(Image &image, GLuint textureId) {
         ImGui::Text("dimmensions = %d x %d", image.width, image.height);
         
         ImGui::RadioButton("SLIC", &compressionMode, 0); ImGui::SameLine();
@@ -49,19 +53,23 @@ struct InterfaceState {
             ImGui::Text("Paramètres");
             ImGui::InputInt("valeur de k", &k);
             ImGui::InputFloat("valeur de m", &m);
+        } else if(compressionMode == 2){
+            ImGui::InputInt("valeur de k", &k);
+            ImGui::SliderFloat("pourcentage rho", &percentageRho, 0.01f, 1.f);
+            ImGui::InputDouble("reg", &reg);
         }
     
         if(ImGui::Button("Compresser")){
             Image imageOut;
             switch(compressionMode){
                 case 0:
-                    SLIC(image, imageOut, k, m);
+                    SLIC(image, imageOut, k, m, outputPath);
                     break;
                 case 1:
-                    SNIC(image, imageOut, k, m);
+                    SNIC(image, imageOut, k, m, outputPath);
                     break;
                 case 2:
-                    Waterpixel(image, imageOut, k);
+                    Waterpixel(image, imageOut, k, percentageRho, reg, false, outputPath);
                     break;
             }
             setOutputImage(imageOut);
@@ -69,27 +77,33 @@ struct InterfaceState {
         
     
         ImGui::Image((ImTextureID)(intptr_t)textureId, ImVec2(image.width, image.height));
-        ImGui::End();
     }
 
     void interfaceUpdate(){
         if(inputDisplay){
-            displayImage(imgInput, inputId, "Image sélectionnée");
+            displayImageInput(imgInput, inputId);
         }
 
         if(outputDisplay){
-            ImGui::Begin("Résultat");
+            ImGui::SameLine();
+            ImGui::Image((ImTextureID)(intptr_t)outputId, ImVec2(imgOutput.width, imgOutput.height));
+
+            ImGui::Text("Image enregistrée sous '%s", outputPath);
 
             std::ostringstream oss;
             oss << std::fixed << std::setprecision(2) << psnr;  // 2 décimales
             ImGui::Text("PSNR = %sdB", oss.str().c_str());
 
-            ImGui::Image((ImTextureID)(intptr_t)outputId, ImVec2(imgOutput.width, imgOutput.height));
-            ImGui::End();
+            std::ostringstream crs;
+            crs << std::fixed << std::setprecision(2) << compressionRate;  // 2 décimales
+            ImGui::Text("Taux de compression = %s", crs.str().c_str());
+
+
         }
     }
 
     void setInputImage(char *path){
+        inSize = getFileSize(path);
         imgInput.read(path);
         inputDisplay = true;
         LoadTextureFromMemory(imgInput, &inputId);
@@ -99,6 +113,8 @@ struct InterfaceState {
         imgOutput = image;
         outputDisplay = true;
         psnr = PSNR(imgInput, imgOutput);
+        double outSize = getFileSize(outputPath);
+        compressionRate = inSize / outSize;
         LoadTextureFromMemory(imgOutput, &outputId);
     }
 };
