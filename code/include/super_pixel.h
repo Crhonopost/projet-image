@@ -677,7 +677,8 @@ void Waterpixel(Image& imageIn, Image& imageOut, int k, float percentageRho=0.2f
             imageOut[index*3 + 2] = 0;
         }
         else{
-            int spIdx = labels[index] - 1;
+            labels[index] = labels[index] - 1;
+            int spIdx = labels[index];
             Rgb color = colors[spIdx];
             imageOut[index*3 + 0] = color.r;
             imageOut[index*3 + 1] = color.g;
@@ -693,14 +694,8 @@ void Waterpixel(Image& imageIn, Image& imageOut, int k, float percentageRho=0.2f
 
 
 
-    // Sauvegarde du fichier compressé
-    std::vector<int> ids;
-    for(int i=0; i<imageOut.nbPixel; i++){
-        int superPixelIdx = (*imagePixels[i]).superpixel_id;
-        ids.push_back(superPixelIdx);
-    }
     std::vector<unsigned char> data;
-    getSuperPixelData(imageIn.width, imageIn.height, colors, ids, data);
+    getSuperPixelData(imageIn.width, imageIn.height, colors, labels, data);
     compressFile(path, data);
 
 
