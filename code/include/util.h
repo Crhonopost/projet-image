@@ -109,7 +109,7 @@ double PSNR(Image &original, Image &compressed){
  * Detects the contours of the superpixels via an RGB gradient, then compares with the ground truth
  * to assess the quality of adhesion to real contours. Returns a score between 0 and 1.
  */
-double BoundaryRecall(Image &Compressed, Image &BoundaryRecall){
+double BoundaryRecall(Image &Compressed, Image &BoundaryRecall, std::string path) {
     int xR, yR, normeR;
     int xG, yG, normeG;
     int xB, yB, normeB;
@@ -149,8 +149,13 @@ double BoundaryRecall(Image &Compressed, Image &BoundaryRecall){
         }
     }
 
+    std::string pathCompressed = path;
+    pathCompressed = pathCompressed.substr(0, pathCompressed.size() - 4) + "CompressedBoundary.ppm";
+    // Conversion path to charPath
+    char *charPath = new char[pathCompressed.size() + 1];
+    std::strcpy(charPath, pathCompressed.c_str());
     //Save the image of the detected contours
-    CompressedBoundary.write("output/CompressedBoundary.ppm");
+    CompressedBoundary.write(charPath);
 
     // Boundary Recall calculation
     double TP = 0, FP = 0, FN = 0;
@@ -190,8 +195,13 @@ double BoundaryRecall(Image &Compressed, Image &BoundaryRecall){
         }
     }
 
+    std::string pathRecall = path;
+    pathRecall = pathRecall.substr(0, pathRecall.size() - 4) + "BoundaryRecall.ppm";
+    // Conversion path to charPath
+    char *charPathRecall = new char[pathRecall.size() + 1];
+    std::strcpy(charPathRecall, pathRecall.c_str());
 	// Save the boundary recall map (useful for visualizing errors)
-    BoundaryRecall.write("output/BoundaryRecall.ppm");
+    BoundaryRecall.write(charPathRecall);
 
     return TP / (TP + FN); // Return the Boundary Recall
 }

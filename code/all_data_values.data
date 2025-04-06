@@ -1,0 +1,840 @@
+./output_stat/69040/69040_100_10.0.data : 
+SNIC : k :100 m :10 psnr :19.3731 SizeCompressed : 53428 Recall :0.336772
+SLIC : k :100 m :10 psnr :26.0893 SizeCompressed : 81708 Recall :0.843906
+WATERPIXEL : k :100 m :10 psnr :19.6746 SizeCompressed : 50579 Recall :0.293708
+./output_stat/69040/69040_100_0.5.data : 
+SNIC : k :100 m :0.5 psnr :19.8218 SizeCompressed : 54426 Recall :0.327832
+SLIC : k :100 m :0.5 psnr :27.7314 SizeCompressed : 102070 Recall :0.942926
+WATERPIXEL : k :100 m :0.5 psnr :19.4672 SizeCompressed : 52353 Recall :0.253051
+./output_stat/69040/69040_15000_4.0.data : 
+SNIC : k :15000 m :4 psnr :28.68 SizeCompressed : 225665 Recall :0.999914
+SLIC : k :15000 m :4 psnr :33.5639 SizeCompressed : 249156 Recall :1
+WATERPIXEL : k :15000 m :4 psnr :23.7068 SizeCompressed : 144148 Recall :0.991233
+./output_stat/69040/69040_100_8.0.data : 
+SNIC : k :100 m :8 psnr :19.6032 SizeCompressed : 53789 Recall :0.335052
+SLIC : k :100 m :8 psnr :26.5386 SizeCompressed : 85158 Recall :0.866512
+WATERPIXEL : k :100 m :8 psnr :19.7253 SizeCompressed : 50858 Recall :0.293106
+./output_stat/69040/69040_5000_0.5.data : 
+SNIC : k :5000 m :0.5 psnr :25.3748 SizeCompressed : 134726 Recall :0.96983
+SLIC : k :5000 m :0.5 psnr :31.9351 SizeCompressed : 182742 Recall :0.996132
+WATERPIXEL : k :5000 m :0.5 psnr :22.5216 SizeCompressed : 89765 Recall :0.893674
+./output_stat/69040/69040_15000_1.0.data : 
+SNIC : k :15000 m :1 psnr :28.7348 SizeCompressed : 229204 Recall :0.999828
+SLIC : k :15000 m :1 psnr :34.5492 SizeCompressed : 264044 Recall :1
+WATERPIXEL : k :15000 m :1 psnr :23.2599 SizeCompressed : 155563 Recall :0.985817
+./output_stat/69040/69040_5000_8.0.data : 
+SNIC : k :5000 m :8 psnr :25.1387 SizeCompressed : 130244 Recall :0.974128
+SLIC : k :5000 m :8 psnr :29.8923 SizeCompressed : 150290 Recall :0.990201
+WATERPIXEL : k :5000 m :8 psnr :22.7668 SizeCompressed : 81955 Recall :0.900894
+./output_stat/69040/69040_500_0.5.data : 
+SNIC : k :500 m :0.5 psnr :21.0641 SizeCompressed : 69968 Recall :0.640708
+SLIC : k :500 m :0.5 psnr :28.9245 SizeCompressed : 125646 Recall :0.972323
+WATERPIXEL : k :500 m :0.5 psnr :20.266 SizeCompressed : 56913 Recall :0.490889
+./output_stat/69040/69040_2500_0.5.data : 
+SNIC : k :2500 m :0.5 psnr :23.7206 SizeCompressed : 102975 Recall :0.9082
+SLIC : k :2500 m :0.5 psnr :30.6902 SizeCompressed : 150575 Recall :0.990889
+WATERPIXEL : k :2500 m :0.5 psnr :21.8658 SizeCompressed : 72543 Recall :0.796545
+./output_stat/69040/69040_20000_10.0.data : 
+SNIC : k :20000 m :10 psnr :29.3479 SizeCompressed : 260596 Recall :1
+SLIC : k :20000 m :10 psnr :32.6202 SizeCompressed : 269947 Recall :1
+WATERPIXEL : k :20000 m :10 psnr :24.6464 SizeCompressed : 149595 Recall :0.99957
+./output_stat/69040/69040_100_1.0.data : 
+SNIC : k :100 m :1 psnr :19.7567 SizeCompressed : 54388 Recall :0.353189
+SLIC : k :100 m :1 psnr :27.6795 SizeCompressed : 101127 Recall :0.936135
+WATERPIXEL : k :100 m :1 psnr :19.471 SizeCompressed : 51976 Recall :0.272047
+./output_stat/69040/69040_10000_1.0.data : 
+SNIC : k :10000 m :1 psnr :27.4493 SizeCompressed : 185917 Recall :0.998195
+SLIC : k :10000 m :1 psnr :33.1594 SizeCompressed : 223702 Recall :0.99957
+WATERPIXEL : k :10000 m :1 psnr :22.7003 SizeCompressed : 124439 Recall :0.957882
+./output_stat/69040/69040_5000_4.0.data : 
+SNIC : k :5000 m :4 psnr :25.2634 SizeCompressed : 132135 Recall :0.973526
+SLIC : k :5000 m :4 psnr :30.9854 SizeCompressed : 163434 Recall :0.992264
+WATERPIXEL : k :5000 m :4 psnr :22.7576 SizeCompressed : 85083 Recall :0.913529
+./output_stat/69040/69040_5000_1.0.data : 
+SNIC : k :5000 m :1 psnr :25.329 SizeCompressed : 134019 Recall :0.971033
+SLIC : k :5000 m :1 psnr :31.8291 SizeCompressed : 179594 Recall :0.994929
+WATERPIXEL : k :5000 m :1 psnr :22.5463 SizeCompressed : 89078 Recall :0.898573
+./output_stat/69040/69040_5000_10.0.data : 
+SNIC : k :5000 m :10 psnr :25.0824 SizeCompressed : 129483 Recall :0.974471
+SLIC : k :5000 m :10 psnr :29.392 SizeCompressed : 145834 Recall :0.990803
+WATERPIXEL : k :5000 m :10 psnr :22.7459 SizeCompressed : 80952 Recall :0.899691
+./output_stat/69040/69040_15000_0.5.data : 
+SNIC : k :15000 m :0.5 psnr :28.7514 SizeCompressed : 229955 Recall :0.999914
+SLIC : k :15000 m :0.5 psnr :34.7025 SizeCompressed : 267761 Recall :1
+WATERPIXEL : k :15000 m :0.5 psnr :23.2438 SizeCompressed : 155736 Recall :0.986161
+./output_stat/69040/69040_2500_2.0.data : 
+SNIC : k :2500 m :2 psnr :23.7063 SizeCompressed : 101514 Recall :0.907341
+SLIC : k :2500 m :2 psnr :30.3877 SizeCompressed : 142767 Recall :0.985989
+WATERPIXEL : k :2500 m :2 psnr :21.9461 SizeCompressed : 71796 Recall :0.809438
+./output_stat/69040/69040_2500_10.0.data : 
+SNIC : k :2500 m :10 psnr :23.4971 SizeCompressed : 98283 Recall :0.90863
+SLIC : k :2500 m :10 psnr :28.428 SizeCompressed : 118256 Recall :0.960461
+WATERPIXEL : k :2500 m :10 psnr :21.9269 SizeCompressed : 67893 Recall :0.77093
+./output_stat/69040/69040_500_8.0.data : 
+SNIC : k :500 m :8 psnr :20.8631 SizeCompressed : 66989 Recall :0.615352
+SLIC : k :500 m :8 psnr :27.4277 SizeCompressed : 100609 Recall :0.90141
+WATERPIXEL : k :500 m :8 psnr :20.4768 SizeCompressed : 55722 Recall :0.521403
+./output_stat/69040/69040_20000_2.0.data : 
+SNIC : k :20000 m :2 psnr :29.6551 SizeCompressed : 268459 Recall :1
+SLIC : k :20000 m :2 psnr :34.9902 SizeCompressed : 291135 Recall :1
+WATERPIXEL : k :20000 m :2 psnr :23.9822 SizeCompressed : 176687 Recall :0.996734
+./output_stat/69040/69040_20000_8.0.data : 
+SNIC : k :20000 m :8 psnr :29.4258 SizeCompressed : 261979 Recall :1
+SLIC : k :20000 m :8 psnr :33.1244 SizeCompressed : 272719 Recall :1
+WATERPIXEL : k :20000 m :8 psnr :24.5306 SizeCompressed : 154061 Recall :0.999226
+./output_stat/69040/69040_100_4.0.data : 
+SNIC : k :100 m :4 psnr :19.7224 SizeCompressed : 54072 Recall :0.345539
+SLIC : k :100 m :4 psnr :27.2678 SizeCompressed : 93804 Recall :0.906825
+WATERPIXEL : k :100 m :4 psnr :19.6354 SizeCompressed : 51780 Recall :0.3011
+./output_stat/69040/69040_5000_2.0.data : 
+SNIC : k :5000 m :2 psnr :25.2803 SizeCompressed : 133092 Recall :0.972237
+SLIC : k :5000 m :2 psnr :31.5508 SizeCompressed : 173713 Recall :0.993897
+WATERPIXEL : k :5000 m :2 psnr :22.6263 SizeCompressed : 87844 Recall :0.907341
+./output_stat/69040/69040_15000_2.0.data : 
+SNIC : k :15000 m :2 psnr :28.7133 SizeCompressed : 227888 Recall :0.999914
+SLIC : k :15000 m :2 psnr :34.2362 SizeCompressed : 257747 Recall :1
+WATERPIXEL : k :15000 m :2 psnr :23.4907 SizeCompressed : 150603 Recall :0.987622
+./output_stat/69040/69040_2500_8.0.data : 
+SNIC : k :2500 m :8 psnr :23.5272 SizeCompressed : 98840 Recall :0.90777
+SLIC : k :2500 m :8 psnr :28.8759 SizeCompressed : 122615 Recall :0.96579
+WATERPIXEL : k :2500 m :8 psnr :21.9566 SizeCompressed : 68681 Recall :0.782276
+./output_stat/69040/69040_10000_4.0.data : 
+SNIC : k :10000 m :4 psnr :27.3931 SizeCompressed : 183178 Recall :0.998367
+SLIC : k :10000 m :4 psnr :32.2652 SizeCompressed : 208785 Recall :0.999828
+WATERPIXEL : k :10000 m :4 psnr :23.1161 SizeCompressed : 117574 Recall :0.970603
+./output_stat/69040/69040_2500_1.0.data : 
+SNIC : k :2500 m :1 psnr :23.6749 SizeCompressed : 102463 Recall :0.907598
+SLIC : k :2500 m :1 psnr :30.609 SizeCompressed : 147948 Recall :0.988912
+WATERPIXEL : k :2500 m :1 psnr :21.8721 SizeCompressed : 72509 Recall :0.809438
+./output_stat/69040/69040_20000_1.0.data : 
+SNIC : k :20000 m :1 psnr :29.6647 SizeCompressed : 269535 Recall :1
+SLIC : k :20000 m :1 psnr :35.3497 SizeCompressed : 297812 Recall :1
+WATERPIXEL : k :20000 m :1 psnr :23.7362 SizeCompressed : 183817 Recall :0.994585
+./output_stat/69040/69040_500_10.0.data : 
+SNIC : k :500 m :10 psnr :20.8252 SizeCompressed : 66248 Recall :0.616813
+SLIC : k :500 m :10 psnr :26.9475 SizeCompressed : 96020 Recall :0.880523
+WATERPIXEL : k :500 m :10 psnr :20.4703 SizeCompressed : 55223 Recall :0.513667
+./output_stat/69040/69040_500_2.0.data : 
+SNIC : k :500 m :2 psnr :20.9794 SizeCompressed : 68807 Recall :0.636926
+SLIC : k :500 m :2 psnr :28.7101 SizeCompressed : 120128 Recall :0.966306
+WATERPIXEL : k :500 m :2 psnr :20.4167 SizeCompressed : 56927 Recall :0.517449
+./output_stat/69040/69040_100_2.0.data : 
+SNIC : k :100 m :2 psnr :19.7139 SizeCompressed : 54112 Recall :0.345023
+SLIC : k :100 m :2 psnr :27.5451 SizeCompressed : 98600 Recall :0.927798
+WATERPIXEL : k :100 m :2 psnr :19.5992 SizeCompressed : 52314 Recall :0.29749
+./output_stat/69040/69040_10000_2.0.data : 
+SNIC : k :10000 m :2 psnr :27.4377 SizeCompressed : 184681 Recall :0.997937
+SLIC : k :10000 m :2 psnr :32.8434 SizeCompressed : 218490 Recall :0.999828
+WATERPIXEL : k :10000 m :2 psnr :22.9285 SizeCompressed : 121492 Recall :0.964587
+./output_stat/69040/69040_20000_4.0.data : 
+SNIC : k :20000 m :4 psnr :29.5656 SizeCompressed : 265706 Recall :1
+SLIC : k :20000 m :4 psnr :34.3116 SizeCompressed : 282156 Recall :1
+WATERPIXEL : k :20000 m :4 psnr :24.1526 SizeCompressed : 169064 Recall :0.998109
+./output_stat/69040/69040_2500_4.0.data : 
+SNIC : k :2500 m :4 psnr :23.6165 SizeCompressed : 100656 Recall :0.906481
+SLIC : k :2500 m :4 psnr :29.8982 SizeCompressed : 134389 Recall :0.97662
+WATERPIXEL : k :2500 m :4 psnr :21.9872 SizeCompressed : 70567 Recall :0.808836
+./output_stat/69040/69040_10000_0.5.data : 
+SNIC : k :10000 m :0.5 psnr :27.4828 SizeCompressed : 186469 Recall :0.997335
+SLIC : k :10000 m :0.5 psnr :33.2658 SizeCompressed : 226651 Recall :0.999656
+WATERPIXEL : k :10000 m :0.5 psnr :22.6138 SizeCompressed : 124697 Recall :0.960117
+./output_stat/69040/69040_15000_8.0.data : 
+SNIC : k :15000 m :8 psnr :28.5418 SizeCompressed : 222845 Recall :0.999656
+SLIC : k :15000 m :8 psnr :32.3603 SizeCompressed : 239055 Recall :0.999914
+WATERPIXEL : k :15000 m :8 psnr :23.9678 SizeCompressed : 132943 Recall :0.995874
+./output_stat/69040/69040_500_4.0.data : 
+SNIC : k :500 m :4 psnr :20.9852 SizeCompressed : 67766 Recall :0.627557
+SLIC : k :500 m :4 psnr :28.3251 SizeCompressed : 112397 Recall :0.941465
+WATERPIXEL : k :500 m :4 psnr :20.5024 SizeCompressed : 56357 Recall :0.544181
+./output_stat/69040/69040_10000_8.0.data : 
+SNIC : k :10000 m :8 psnr :27.2659 SizeCompressed : 180643 Recall :0.997765
+SLIC : k :10000 m :8 psnr :31.1616 SizeCompressed : 196645 Recall :0.999742
+WATERPIXEL : k :10000 m :8 psnr :23.3096 SizeCompressed : 110543 Recall :0.979113
+./output_stat/69040/69040_20000_0.5.data : 
+SNIC : k :20000 m :0.5 psnr :29.6843 SizeCompressed : 270413 Recall :1
+SLIC : k :20000 m :0.5 psnr :35.4679 SizeCompressed : 301846 Recall :1
+WATERPIXEL : k :20000 m :0.5 psnr :23.7347 SizeCompressed : 185400 Recall :0.994499
+./output_stat/69040/69040_10000_10.0.data : 
+SNIC : k :10000 m :10 psnr :27.2024 SizeCompressed : 179662 Recall :0.997765
+SLIC : k :10000 m :10 psnr :30.6736 SizeCompressed : 192615 Recall :0.999828
+WATERPIXEL : k :10000 m :10 psnr :23.3794 SizeCompressed : 107415 Recall :0.980918
+./output_stat/69040/69040_500_1.0.data : 
+SNIC : k :500 m :1 psnr :21.0047 SizeCompressed : 69019 Recall :0.638044
+SLIC : k :500 m :1 psnr :28.8597 SizeCompressed : 123814 Recall :0.969314
+WATERPIXEL : k :500 m :1 psnr :20.371 SizeCompressed : 56825 Recall :0.499312
+./output_stat/69040/69040_15000_10.0.data : 
+SNIC : k :15000 m :10 psnr :28.4758 SizeCompressed : 221881 Recall :0.999656
+SLIC : k :15000 m :10 psnr :31.8638 SizeCompressed : 235138 Recall :1
+WATERPIXEL : k :15000 m :10 psnr :24.0791 SizeCompressed : 129299 Recall :0.997249
+./output_stat/157055/157055_10000_4.0.data : 
+SNIC : k :10000 m :4 psnr :27.4439 SizeCompressed : 180840 Recall :0.99867
+SLIC : k :10000 m :4 psnr :32.2846 SizeCompressed : 200646 Recall :0.999947
+WATERPIXEL : k :10000 m :4 psnr :23.6522 SizeCompressed : 117026 Recall :0.985854
+./output_stat/157055/157055_2500_2.0.data : 
+SNIC : k :2500 m :2 psnr :24.4097 SizeCompressed : 99403 Recall :0.952031
+SLIC : k :2500 m :2 psnr :29.9901 SizeCompressed : 128408 Recall :0.989524
+WATERPIXEL : k :2500 m :2 psnr :22.4353 SizeCompressed : 72564 Recall :0.889492
+./output_stat/157055/157055_5000_8.0.data : 
+SNIC : k :5000 m :8 psnr :25.5268 SizeCompressed : 126000 Recall :0.986545
+SLIC : k :5000 m :8 psnr :30.0158 SizeCompressed : 139592 Recall :0.994097
+WATERPIXEL : k :5000 m :8 psnr :23.2869 SizeCompressed : 80013 Recall :0.93996
+./output_stat/157055/157055_2500_4.0.data : 
+SNIC : k :2500 m :4 psnr :24.3641 SizeCompressed : 97117 Recall :0.952829
+SLIC : k :2500 m :4 psnr :29.624 SizeCompressed : 119933 Recall :0.982557
+WATERPIXEL : k :2500 m :4 psnr :22.488 SizeCompressed : 69913 Recall :0.882046
+./output_stat/157055/157055_10000_2.0.data : 
+SNIC : k :10000 m :2 psnr :27.5009 SizeCompressed : 183655 Recall :0.998777
+SLIC : k :10000 m :2 psnr :32.7359 SizeCompressed : 210199 Recall :0.999894
+WATERPIXEL : k :10000 m :2 psnr :23.4405 SizeCompressed : 122762 Recall :0.982823
+./output_stat/157055/157055_5000_2.0.data : 
+SNIC : k :5000 m :2 psnr :25.7083 SizeCompressed : 131126 Recall :0.986758
+SLIC : k :5000 m :2 psnr :31.3512 SizeCompressed : 160887 Recall :0.997128
+WATERPIXEL : k :5000 m :2 psnr :23.1324 SizeCompressed : 88213 Recall :0.948734
+./output_stat/157055/157055_5000_1.0.data : 
+SNIC : k :5000 m :1 psnr :25.712 SizeCompressed : 132902 Recall :0.985269
+SLIC : k :5000 m :1 psnr :31.5808 SizeCompressed : 168440 Recall :0.997979
+WATERPIXEL : k :5000 m :1 psnr :22.9726 SizeCompressed : 91819 Recall :0.945012
+./output_stat/157055/157055_5000_4.0.data : 
+SNIC : k :5000 m :4 psnr :25.6212 SizeCompressed : 128833 Recall :0.987077
+SLIC : k :5000 m :4 psnr :30.8746 SizeCompressed : 150581 Recall :0.995852
+WATERPIXEL : k :5000 m :4 psnr :23.2258 SizeCompressed : 83405 Recall :0.949426
+./output_stat/157055/157055_500_2.0.data : 
+SNIC : k :500 m :2 psnr :21.5304 SizeCompressed : 66115 Recall :0.786801
+SLIC : k :500 m :2 psnr :27.3239 SizeCompressed : 98108 Recall :0.961338
+WATERPIXEL : k :500 m :2 psnr :20.6075 SizeCompressed : 54897 Recall :0.70602
+./output_stat/157055/157055_500_8.0.data : 
+SNIC : k :500 m :8 psnr :21.1858 SizeCompressed : 63134 Recall :0.759253
+SLIC : k :500 m :8 psnr :26.505 SizeCompressed : 82454 Recall :0.91188
+WATERPIXEL : k :500 m :8 psnr :20.788 SizeCompressed : 52810 Recall :0.682621
+./output_stat/157055/157055_15000_1.0.data : 
+SNIC : k :15000 m :1 psnr :28.6926 SizeCompressed : 230189 Recall :0.999575
+SLIC : k :15000 m :1 psnr :34.2814 SizeCompressed : 260650 Recall :1
+WATERPIXEL : k :15000 m :1 psnr :23.6852 SizeCompressed : 162327 Recall :0.993246
+./output_stat/157055/157055_10000_8.0.data : 
+SNIC : k :10000 m :8 psnr :27.3487 SizeCompressed : 177530 Recall :0.998511
+SLIC : k :10000 m :8 psnr :31.4061 SizeCompressed : 190633 Recall :0.999894
+WATERPIXEL : k :10000 m :8 psnr :23.8016 SizeCompressed : 108524 Recall :0.986386
+./output_stat/157055/157055_15000_8.0.data : 
+SNIC : k :15000 m :8 psnr :28.5034 SizeCompressed : 221021 Recall :0.999787
+SLIC : k :15000 m :8 psnr :32.516 SizeCompressed : 236788 Recall :1
+WATERPIXEL : k :15000 m :8 psnr :24.4001 SizeCompressed : 129804 Recall :0.997607
+./output_stat/157055/157055_15000_4.0.data : 
+SNIC : k :15000 m :4 psnr :28.609 SizeCompressed : 224114 Recall :0.99984
+SLIC : k :15000 m :4 psnr :33.4851 SizeCompressed : 246033 Recall :1
+WATERPIXEL : k :15000 m :4 psnr :24.2198 SizeCompressed : 140899 Recall :0.99649
+./output_stat/157055/157055_500_10.0.data : 
+SNIC : k :500 m :10 psnr :21.0356 SizeCompressed : 62553 Recall :0.752234
+SLIC : k :500 m :10 psnr :26.2074 SizeCompressed : 79751 Recall :0.898958
+WATERPIXEL : k :500 m :10 psnr :20.7787 SizeCompressed : 52530 Recall :0.666082
+./output_stat/157055/157055_2500_0.5.data : 
+SNIC : k :2500 m :0.5 psnr :24.4352 SizeCompressed : 102159 Recall :0.9515
+SLIC : k :2500 m :0.5 psnr :30.2278 SizeCompressed : 137993 Recall :0.993246
+WATERPIXEL : k :2500 m :0.5 psnr :22.3074 SizeCompressed : 74061 Recall :0.880291
+./output_stat/157055/157055_5000_0.5.data : 
+SNIC : k :5000 m :0.5 psnr :25.7418 SizeCompressed : 134284 Recall :0.985907
+SLIC : k :5000 m :0.5 psnr :31.6788 SizeCompressed : 173082 Recall :0.998192
+WATERPIXEL : k :5000 m :0.5 psnr :22.9569 SizeCompressed : 93187 Recall :0.940332
+./output_stat/157055/157055_2500_1.0.data : 
+SNIC : k :2500 m :1 psnr :24.4335 SizeCompressed : 100735 Recall :0.951925
+SLIC : k :2500 m :1 psnr :30.1708 SizeCompressed : 134427 Recall :0.992342
+WATERPIXEL : k :2500 m :1 psnr :22.3031 SizeCompressed : 73608 Recall :0.882312
+./output_stat/157055/157055_10000_1.0.data : 
+SNIC : k :10000 m :1 psnr :27.5215 SizeCompressed : 186035 Recall :0.99867
+SLIC : k :10000 m :1 psnr :33.005 SizeCompressed : 218011 Recall :1
+WATERPIXEL : k :10000 m :1 psnr :23.1593 SizeCompressed : 128489 Recall :0.980217
+./output_stat/157055/157055_20000_2.0.data : 
+SNIC : k :20000 m :2 psnr :29.5079 SizeCompressed : 269682 Recall :0.999947
+SLIC : k :20000 m :2 psnr :34.8217 SizeCompressed : 290835 Recall :1
+WATERPIXEL : k :20000 m :2 psnr :24.4719 SizeCompressed : 176148 Recall :0.999043
+./output_stat/157055/157055_2500_8.0.data : 
+SNIC : k :2500 m :8 psnr :24.2253 SizeCompressed : 94910 Recall :0.951287
+SLIC : k :2500 m :8 psnr :28.9019 SizeCompressed : 109636 Recall :0.975643
+WATERPIXEL : k :2500 m :8 psnr :22.5169 SizeCompressed : 66664 Recall :0.856414
+./output_stat/157055/157055_100_10.0.data : 
+SNIC : k :100 m :10 psnr :17.7185 SizeCompressed : 51863 Recall :0.509892
+SLIC : k :100 m :10 psnr :24.2007 SizeCompressed : 66424 Recall :0.844767
+WATERPIXEL : k :100 m :10 psnr :18.6053 SizeCompressed : 49607 Recall :0.488513
+./output_stat/157055/157055_15000_0.5.data : 
+SNIC : k :15000 m :0.5 psnr :28.7226 SizeCompressed : 232114 Recall :0.999521
+SLIC : k :15000 m :0.5 psnr :34.4092 SizeCompressed : 265456 Recall :1
+WATERPIXEL : k :15000 m :0.5 psnr :23.714 SizeCompressed : 162861 Recall :0.993831
+./output_stat/157055/157055_2500_10.0.data : 
+SNIC : k :2500 m :10 psnr :24.1661 SizeCompressed : 94091 Recall :0.951127
+SLIC : k :2500 m :10 psnr :28.5651 SizeCompressed : 106367 Recall :0.972719
+WATERPIXEL : k :2500 m :10 psnr :22.4688 SizeCompressed : 65904 Recall :0.846682
+./output_stat/157055/157055_20000_1.0.data : 
+SNIC : k :20000 m :1 psnr :29.549 SizeCompressed : 272804 Recall :0.999947
+SLIC : k :20000 m :1 psnr :35.0795 SizeCompressed : 297816 Recall :1
+WATERPIXEL : k :20000 m :1 psnr :24.1913 SizeCompressed : 191415 Recall :0.998458
+./output_stat/157055/157055_100_2.0.data : 
+SNIC : k :100 m :2 psnr :18.5848 SizeCompressed : 52789 Recall :0.559934
+SLIC : k :100 m :2 psnr :24.8995 SizeCompressed : 78239 Recall :0.92007
+WATERPIXEL : k :100 m :2 psnr :18.4764 SizeCompressed : 50340 Recall :0.509466
+./output_stat/157055/157055_5000_10.0.data : 
+SNIC : k :5000 m :10 psnr :25.4643 SizeCompressed : 124998 Recall :0.98628
+SLIC : k :5000 m :10 psnr :29.644 SizeCompressed : 136270 Recall :0.993672
+WATERPIXEL : k :5000 m :10 psnr :23.2657 SizeCompressed : 79112 Recall :0.937407
+./output_stat/157055/157055_20000_10.0.data : 
+SNIC : k :20000 m :10 psnr :29.2565 SizeCompressed : 261209 Recall :0.999894
+SLIC : k :20000 m :10 psnr :32.9158 SizeCompressed : 273186 Recall :1
+WATERPIXEL : k :20000 m :10 psnr :25.0346 SizeCompressed : 149793 Recall :0.999894
+./output_stat/157055/157055_20000_4.0.data : 
+SNIC : k :20000 m :4 psnr :29.4413 SizeCompressed : 266202 Recall :0.999894
+SLIC : k :20000 m :4 psnr :34.2654 SizeCompressed : 282611 Recall :1
+WATERPIXEL : k :20000 m :4 psnr :24.645 SizeCompressed : 165607 Recall :0.999362
+./output_stat/157055/157055_500_0.5.data : 
+SNIC : k :500 m :0.5 psnr :21.6364 SizeCompressed : 68087 Recall :0.796692
+SLIC : k :500 m :0.5 psnr :27.5557 SizeCompressed : 104175 Recall :0.970432
+WATERPIXEL : k :500 m :0.5 psnr :20.5276 SizeCompressed : 54934 Recall :0.687566
+./output_stat/157055/157055_20000_8.0.data : 
+SNIC : k :20000 m :8 psnr :29.3277 SizeCompressed : 262543 Recall :0.999894
+SLIC : k :20000 m :8 psnr :33.3139 SizeCompressed : 275205 Recall :1
+WATERPIXEL : k :20000 m :8 psnr :24.9404 SizeCompressed : 152892 Recall :0.999681
+./output_stat/157055/157055_100_1.0.data : 
+SNIC : k :100 m :1 psnr :18.7285 SizeCompressed : 53138 Recall :0.56472
+SLIC : k :100 m :1 psnr :24.8734 SizeCompressed : 79933 Recall :0.918156
+WATERPIXEL : k :100 m :1 psnr :18.2895 SizeCompressed : 50167 Recall :0.484525
+./output_stat/157055/157055_20000_0.5.data : 
+SNIC : k :20000 m :0.5 psnr :29.5507 SizeCompressed : 275312 Recall :0.999894
+SLIC : k :20000 m :0.5 psnr :35.2442 SizeCompressed : 302864 Recall :1
+WATERPIXEL : k :20000 m :0.5 psnr :24.1111 SizeCompressed : 194681 Recall :0.998245
+./output_stat/157055/157055_100_4.0.data : 
+SNIC : k :100 m :4 psnr :18.3329 SizeCompressed : 52407 Recall :0.535418
+SLIC : k :100 m :4 psnr :24.7654 SizeCompressed : 74093 Recall :0.900181
+WATERPIXEL : k :100 m :4 psnr :18.6811 SizeCompressed : 50120 Recall :0.516805
+./output_stat/157055/157055_10000_10.0.data : 
+SNIC : k :10000 m :10 psnr :27.327 SizeCompressed : 176451 Recall :0.998617
+SLIC : k :10000 m :10 psnr :31.0305 SizeCompressed : 187592 Recall :0.99984
+WATERPIXEL : k :10000 m :10 psnr :23.8369 SizeCompressed : 105718 Recall :0.986705
+./output_stat/157055/157055_500_4.0.data : 
+SNIC : k :500 m :4 psnr :21.4476 SizeCompressed : 64770 Recall :0.775314
+SLIC : k :500 m :4 psnr :27.0344 SizeCompressed : 91177 Recall :0.946501
+WATERPIXEL : k :500 m :4 psnr :20.776 SizeCompressed : 54489 Recall :0.709743
+./output_stat/157055/157055_15000_10.0.data : 
+SNIC : k :15000 m :10 psnr :28.4405 SizeCompressed : 219976 Recall :0.999787
+SLIC : k :15000 m :10 psnr :32.1103 SizeCompressed : 233783 Recall :0.999947
+WATERPIXEL : k :15000 m :10 psnr :24.4751 SizeCompressed : 127558 Recall :0.998086
+./output_stat/157055/157055_100_0.5.data : 
+SNIC : k :100 m :0.5 psnr :18.661 SizeCompressed : 53197 Recall :0.568922
+SLIC : k :100 m :0.5 psnr :24.8297 SizeCompressed : 80661 Recall :0.92007
+WATERPIXEL : k :100 m :0.5 psnr :18.3356 SizeCompressed : 49953 Recall :0.508509
+./output_stat/157055/157055_15000_2.0.data : 
+SNIC : k :15000 m :2 psnr :28.6524 SizeCompressed : 227224 Recall :0.999681
+SLIC : k :15000 m :2 psnr :34.0465 SizeCompressed : 253909 Recall :0.999894
+WATERPIXEL : k :15000 m :2 psnr :24.0314 SizeCompressed : 152076 Recall :0.995054
+./output_stat/157055/157055_100_8.0.data : 
+SNIC : k :100 m :8 psnr :17.9882 SizeCompressed : 52177 Recall :0.521325
+SLIC : k :100 m :8 psnr :24.3828 SizeCompressed : 68409 Recall :0.859711
+WATERPIXEL : k :100 m :8 psnr :18.8091 SizeCompressed : 49860 Recall :0.512816
+./output_stat/157055/157055_10000_0.5.data : 
+SNIC : k :10000 m :0.5 psnr :27.5389 SizeCompressed : 187700 Recall :0.998564
+SLIC : k :10000 m :0.5 psnr :33.1031 SizeCompressed : 223169 Recall :1
+WATERPIXEL : k :10000 m :0.5 psnr :23.0583 SizeCompressed : 130582 Recall :0.980164
+./output_stat/157055/157055_500_1.0.data : 
+SNIC : k :500 m :1 psnr :21.569 SizeCompressed : 67199 Recall :0.79983
+SLIC : k :500 m :1 psnr :27.4242 SizeCompressed : 102176 Recall :0.968517
+WATERPIXEL : k :500 m :1 psnr :20.5389 SizeCompressed : 54948 Recall :0.69916
+./output_stat/41069/41069_2500_8.0.data : 
+SNIC : k :2500 m :8 psnr :22.13 SizeCompressed : 96987 Recall :0.922661
+SLIC : k :2500 m :8 psnr :28.2876 SizeCompressed : 133581 Recall :0.989706
+WATERPIXEL : k :2500 m :8 psnr :21.0065 SizeCompressed : 67284 Recall :0.828032
+./output_stat/41069/41069_2500_10.0.data : 
+SNIC : k :2500 m :10 psnr :22.0713 SizeCompressed : 96496 Recall :0.925036
+SLIC : k :2500 m :10 psnr :27.7335 SizeCompressed : 128396 Recall :0.984559
+WATERPIXEL : k :2500 m :10 psnr :20.9947 SizeCompressed : 66666 Recall :0.824733
+./output_stat/41069/41069_100_1.0.data : 
+SNIC : k :100 m :1 psnr :19.4291 SizeCompressed : 52117 Recall :0.576613
+SLIC : k :100 m :1 psnr :27.6811 SizeCompressed : 107003 Recall :0.943645
+WATERPIXEL : k :100 m :1 psnr :19.1042 SizeCompressed : 49164 Recall :0.443579
+./output_stat/41069/41069_500_8.0.data : 
+SNIC : k :500 m :8 psnr :20.4043 SizeCompressed : 64542 Recall :0.734196
+SLIC : k :500 m :8 psnr :27.3923 SizeCompressed : 111693 Recall :0.960406
+WATERPIXEL : k :500 m :8 psnr :20.0662 SizeCompressed : 52409 Recall :0.614623
+./output_stat/41069/41069_100_2.0.data : 
+SNIC : k :100 m :2 psnr :19.367 SizeCompressed : 52043 Recall :0.573314
+SLIC : k :100 m :2 psnr :27.4717 SizeCompressed : 104459 Recall :0.942062
+WATERPIXEL : k :100 m :2 psnr :19.1632 SizeCompressed : 49643 Recall :0.451498
+./output_stat/41069/41069_100_8.0.data : 
+SNIC : k :100 m :8 psnr :19.2623 SizeCompressed : 51519 Recall :0.547974
+SLIC : k :100 m :8 psnr :26.4906 SizeCompressed : 89363 Recall :0.918173
+WATERPIXEL : k :100 m :8 psnr :19.0904 SizeCompressed : 49034 Recall :0.437244
+./output_stat/41069/41069_100_4.0.data : 
+SNIC : k :100 m :4 psnr :19.3324 SizeCompressed : 51773 Recall :0.558796
+SLIC : k :100 m :4 psnr :27.1613 SizeCompressed : 99241 Recall :0.935331
+WATERPIXEL : k :100 m :4 psnr :19.2576 SizeCompressed : 49596 Recall :0.427082
+./output_stat/41069/41069_5000_2.0.data : 
+SNIC : k :5000 m :2 psnr :23.1225 SizeCompressed : 130600 Recall :0.984691
+SLIC : k :5000 m :2 psnr :30.901 SizeCompressed : 188946 Recall :0.999604
+WATERPIXEL : k :5000 m :2 psnr :21.344 SizeCompressed : 85575 Recall :0.923321
+./output_stat/41069/41069_15000_0.5.data : 
+SNIC : k :15000 m :0.5 psnr :25.9757 SizeCompressed : 227793 Recall :1
+SLIC : k :15000 m :0.5 psnr :33.1061 SizeCompressed : 280012 Recall :1
+WATERPIXEL : k :15000 m :0.5 psnr :21.8575 SizeCompressed : 154579 Recall :0.989046
+./output_stat/41069/41069_10000_1.0.data : 
+SNIC : k :10000 m :1 psnr :24.8763 SizeCompressed : 182421 Recall :0.99934
+SLIC : k :10000 m :1 psnr :31.8846 SizeCompressed : 235752 Recall :1
+WATERPIXEL : k :10000 m :1 psnr :21.4672 SizeCompressed : 122232 Recall :0.968721
+./output_stat/41069/41069_15000_10.0.data : 
+SNIC : k :15000 m :10 psnr :25.8817 SizeCompressed : 225026 Recall :1
+SLIC : k :15000 m :10 psnr :30.101 SizeCompressed : 246226 Recall :1
+WATERPIXEL : k :15000 m :10 psnr :22.3794 SizeCompressed : 136260 Recall :0.995777
+./output_stat/41069/41069_2500_4.0.data : 
+SNIC : k :2500 m :4 psnr :22.1775 SizeCompressed : 98373 Recall :0.9286
+SLIC : k :2500 m :4 psnr :29.4855 SizeCompressed : 147849 Recall :0.996305
+WATERPIXEL : k :2500 m :4 psnr :21.0016 SizeCompressed : 68722 Recall :0.851524
+./output_stat/41069/41069_500_4.0.data : 
+SNIC : k :500 m :4 psnr :20.4717 SizeCompressed : 65465 Recall :0.736835
+SLIC : k :500 m :4 psnr :28.5215 SizeCompressed : 125126 Recall :0.980203
+WATERPIXEL : k :500 m :4 psnr :20.0471 SizeCompressed : 53096 Recall :0.629669
+./output_stat/41069/41069_15000_8.0.data : 
+SNIC : k :15000 m :8 psnr :25.9179 SizeCompressed : 225482 Recall :1
+SLIC : k :15000 m :8 psnr :30.6123 SizeCompressed : 249549 Recall :1
+WATERPIXEL : k :15000 m :8 psnr :22.2943 SizeCompressed : 139756 Recall :0.995513
+./output_stat/41069/41069_10000_2.0.data : 
+SNIC : k :10000 m :2 psnr :24.8778 SizeCompressed : 182081 Recall :0.99934
+SLIC : k :10000 m :2 psnr :31.5659 SizeCompressed : 230093 Recall :0.999868
+WATERPIXEL : k :10000 m :2 psnr :21.5791 SizeCompressed : 120310 Recall :0.973076
+./output_stat/41069/41069_20000_2.0.data : 
+SNIC : k :20000 m :2 psnr :27.0028 SizeCompressed : 268184 Recall :1
+SLIC : k :20000 m :2 psnr :33.4058 SizeCompressed : 303961 Recall :1
+WATERPIXEL : k :20000 m :2 psnr :22.3864 SizeCompressed : 179372 Recall :0.995777
+./output_stat/41069/41069_10000_10.0.data : 
+SNIC : k :10000 m :10 psnr :24.7804 SizeCompressed : 179900 Recall :0.99934
+SLIC : k :10000 m :10 psnr :29.1612 SizeCompressed : 203262 Recall :0.999736
+WATERPIXEL : k :10000 m :10 psnr :21.9141 SizeCompressed : 111216 Recall :0.983503
+./output_stat/41069/41069_500_2.0.data : 
+SNIC : k :500 m :2 psnr :20.487 SizeCompressed : 66304 Recall :0.762571
+SLIC : k :500 m :2 psnr :28.9033 SizeCompressed : 133822 Recall :0.984691
+WATERPIXEL : k :500 m :2 psnr :20.0105 SizeCompressed : 53683 Recall :0.631648
+./output_stat/41069/41069_500_1.0.data : 
+SNIC : k :500 m :1 psnr :20.5197 SizeCompressed : 66566 Recall :0.754388
+SLIC : k :500 m :1 psnr :29.0811 SizeCompressed : 137865 Recall :0.98733
+WATERPIXEL : k :500 m :1 psnr :19.9603 SizeCompressed : 54017 Recall :0.616207
+./output_stat/41069/41069_100_10.0.data : 
+SNIC : k :100 m :10 psnr :19.2263 SizeCompressed : 51424 Recall :0.522634
+SLIC : k :100 m :10 psnr :26.0646 SizeCompressed : 85761 Recall :0.909595
+WATERPIXEL : k :100 m :10 psnr :19.0799 SizeCompressed : 49213 Recall :0.412828
+./output_stat/41069/41069_20000_1.0.data : 
+SNIC : k :20000 m :1 psnr :27.0213 SizeCompressed : 268786 Recall :1
+SLIC : k :20000 m :1 psnr :33.7239 SizeCompressed : 310101 Recall :1
+WATERPIXEL : k :20000 m :1 psnr :22.264 SizeCompressed : 184316 Recall :0.994457
+./output_stat/41069/41069_20000_0.5.data : 
+SNIC : k :20000 m :0.5 psnr :27.0203 SizeCompressed : 269133 Recall :1
+SLIC : k :20000 m :0.5 psnr :33.881 SizeCompressed : 314067 Recall :1
+WATERPIXEL : k :20000 m :0.5 psnr :22.2356 SizeCompressed : 185295 Recall :0.994061
+./output_stat/41069/41069_15000_1.0.data : 
+SNIC : k :15000 m :1 psnr :25.9857 SizeCompressed : 227723 Recall :1
+SLIC : k :15000 m :1 psnr :32.9723 SizeCompressed : 276107 Recall :1
+WATERPIXEL : k :15000 m :1 psnr :21.8714 SizeCompressed : 154530 Recall :0.98865
+./output_stat/41069/41069_10000_8.0.data : 
+SNIC : k :10000 m :8 psnr :24.8065 SizeCompressed : 180341 Recall :0.999604
+SLIC : k :10000 m :8 psnr :29.6881 SizeCompressed : 208219 Recall :0.999736
+WATERPIXEL : k :10000 m :8 psnr :21.8596 SizeCompressed : 113722 Recall :0.980467
+./output_stat/41069/41069_5000_10.0.data : 
+SNIC : k :5000 m :10 psnr :23.0827 SizeCompressed : 128227 Recall :0.981919
+SLIC : k :5000 m :10 psnr :28.379 SizeCompressed : 157092 Recall :0.996964
+WATERPIXEL : k :5000 m :10 psnr :21.4187 SizeCompressed : 80881 Recall :0.922661
+./output_stat/41069/41069_100_0.5.data : 
+SNIC : k :100 m :0.5 psnr :19.4011 SizeCompressed : 51698 Recall :0.581761
+SLIC : k :100 m :0.5 psnr :27.4527 SizeCompressed : 107471 Recall :0.93863
+WATERPIXEL : k :100 m :0.5 psnr :18.9578 SizeCompressed : 49191 Recall :0.413752
+./output_stat/41069/41069_20000_4.0.data : 
+SNIC : k :20000 m :4 psnr :26.9991 SizeCompressed : 267230 Recall :1
+SLIC : k :20000 m :4 psnr :32.6853 SizeCompressed : 294645 Recall :1
+WATERPIXEL : k :20000 m :4 psnr :22.5214 SizeCompressed : 174214 Recall :0.997756
+./output_stat/41069/41069_10000_0.5.data : 
+SNIC : k :10000 m :0.5 psnr :24.882 SizeCompressed : 182763 Recall :0.999208
+SLIC : k :10000 m :0.5 psnr :32.0031 SizeCompressed : 238954 Recall :1
+WATERPIXEL : k :10000 m :0.5 psnr :21.4135 SizeCompressed : 122524 Recall :0.972285
+./output_stat/41069/41069_5000_8.0.data : 
+SNIC : k :5000 m :8 psnr :23.1167 SizeCompressed : 128689 Recall :0.982579
+SLIC : k :5000 m :8 psnr :28.9506 SizeCompressed : 162631 Recall :0.997624
+WATERPIXEL : k :5000 m :8 psnr :21.4147 SizeCompressed : 81654 Recall :0.922265
+./output_stat/41069/41069_2500_0.5.data : 
+SNIC : k :2500 m :0.5 psnr :22.2105 SizeCompressed : 100191 Recall :0.937178
+SLIC : k :2500 m :0.5 psnr :30.3439 SizeCompressed : 166373 Recall :0.99934
+WATERPIXEL : k :2500 m :0.5 psnr :20.9348 SizeCompressed : 70304 Recall :0.836611
+./output_stat/41069/41069_5000_4.0.data : 
+SNIC : k :5000 m :4 psnr :23.1313 SizeCompressed : 129662 Recall :0.983635
+SLIC : k :5000 m :4 psnr :30.2519 SizeCompressed : 178510 Recall :0.999208
+WATERPIXEL : k :5000 m :4 psnr :21.3876 SizeCompressed : 83988 Recall :0.92596
+./output_stat/41069/41069_2500_2.0.data : 
+SNIC : k :2500 m :2 psnr :22.1699 SizeCompressed : 98898 Recall :0.920813
+SLIC : k :2500 m :2 psnr :30.0294 SizeCompressed : 157493 Recall :0.998812
+WATERPIXEL : k :2500 m :2 psnr :20.9736 SizeCompressed : 69508 Recall :0.843738
+./output_stat/41069/41069_15000_4.0.data : 
+SNIC : k :15000 m :4 psnr :25.9469 SizeCompressed : 226368 Recall :0.999868
+SLIC : k :15000 m :4 psnr :31.9362 SizeCompressed : 260632 Recall :1
+WATERPIXEL : k :15000 m :4 psnr :22.1093 SizeCompressed : 147056 Recall :0.99063
+./output_stat/41069/41069_15000_2.0.data : 
+SNIC : k :15000 m :2 psnr :25.9655 SizeCompressed : 227134 Recall :1
+SLIC : k :15000 m :2 psnr :32.6564 SizeCompressed : 269867 Recall :1
+WATERPIXEL : k :15000 m :2 psnr :22.0074 SizeCompressed : 151345 Recall :0.989442
+./output_stat/41069/41069_5000_0.5.data : 
+SNIC : k :5000 m :0.5 psnr :23.1244 SizeCompressed : 131051 Recall :0.981259
+SLIC : k :5000 m :0.5 psnr :31.3377 SizeCompressed : 197252 Recall :0.999736
+WATERPIXEL : k :5000 m :0.5 psnr :21.3095 SizeCompressed : 87097 Recall :0.916854
+./output_stat/41069/41069_20000_10.0.data : 
+SNIC : k :20000 m :10 psnr :26.8941 SizeCompressed : 265216 Recall :1
+SLIC : k :20000 m :10 psnr :30.8862 SizeCompressed : 280520 Recall :1
+WATERPIXEL : k :20000 m :10 psnr :22.8604 SizeCompressed : 158672 Recall :0.999604
+./output_stat/41069/41069_5000_1.0.data : 
+SNIC : k :5000 m :1 psnr :23.1392 SizeCompressed : 130783 Recall :0.984163
+SLIC : k :5000 m :1 psnr :31.2243 SizeCompressed : 194664 Recall :0.999736
+WATERPIXEL : k :5000 m :1 psnr :21.3252 SizeCompressed : 86635 Recall :0.919229
+./output_stat/41069/41069_500_0.5.data : 
+SNIC : k :500 m :0.5 psnr :20.5787 SizeCompressed : 66588 Recall :0.756368
+SLIC : k :500 m :0.5 psnr :29.1536 SizeCompressed : 140022 Recall :0.988914
+WATERPIXEL : k :500 m :0.5 psnr :19.9145 SizeCompressed : 54075 Recall :0.613435
+./output_stat/41069/41069_10000_4.0.data : 
+SNIC : k :10000 m :4 psnr :24.8637 SizeCompressed : 181365 Recall :0.998944
+SLIC : k :10000 m :4 psnr :30.8942 SizeCompressed : 221935 Recall :0.999868
+WATERPIXEL : k :10000 m :4 psnr :21.689 SizeCompressed : 118307 Recall :0.977564
+./output_stat/41069/41069_500_10.0.data : 
+SNIC : k :500 m :10 psnr :20.3362 SizeCompressed : 64302 Recall :0.738023
+SLIC : k :500 m :10 psnr :26.8981 SizeCompressed : 106317 Recall :0.951564
+WATERPIXEL : k :500 m :10 psnr :20.0763 SizeCompressed : 52068 Recall :0.598918
+./output_stat/41069/41069_2500_1.0.data : 
+SNIC : k :2500 m :1 psnr :22.1856 SizeCompressed : 99493 Recall :0.921605
+SLIC : k :2500 m :1 psnr :30.2822 SizeCompressed : 163425 Recall :0.998812
+WATERPIXEL : k :2500 m :1 psnr :20.9358 SizeCompressed : 70233 Recall :0.836215
+./output_stat/41069/41069_20000_8.0.data : 
+SNIC : k :20000 m :8 psnr :26.9288 SizeCompressed : 265871 Recall :1
+SLIC : k :20000 m :8 psnr :31.4321 SizeCompressed : 283804 Recall :1
+WATERPIXEL : k :20000 m :8 psnr :22.7786 SizeCompressed : 163757 Recall :0.99934
+./output_stat/241004/241004_5000_1.0.data : 
+SNIC : k :5000 m :1 psnr :31.5936 SizeCompressed : 120152 Recall :0.984507
+SLIC : k :5000 m :1 psnr :37.6645 SizeCompressed : 155082 Recall :0.999326
+WATERPIXEL : k :5000 m :1 psnr :28.6839 SizeCompressed : 86588 Recall :0.956888
+./output_stat/241004/241004_500_2.0.data : 
+SNIC : k :500 m :2 psnr :27.7113 SizeCompressed : 59728 Recall :0.82845
+SLIC : k :500 m :2 psnr :33.4128 SizeCompressed : 89798 Recall :0.978668
+WATERPIXEL : k :500 m :2 psnr :26.0544 SizeCompressed : 52324 Recall :0.760862
+./output_stat/241004/241004_15000_4.0.data : 
+SNIC : k :15000 m :4 psnr :34.3532 SizeCompressed : 205516 Recall :1
+SLIC : k :15000 m :4 psnr :38.8042 SizeCompressed : 225908 Recall :0.999775
+WATERPIXEL : k :15000 m :4 psnr :30.0613 SizeCompressed : 127804 Recall :0.995509
+./output_stat/241004/241004_20000_0.5.data : 
+SNIC : k :20000 m :0.5 psnr :35.4898 SizeCompressed : 249000 Recall :1
+SLIC : k :20000 m :0.5 psnr :41.4456 SizeCompressed : 284431 Recall :1
+WATERPIXEL : k :20000 m :0.5 psnr :29.8806 SizeCompressed : 184122 Recall :0.99854
+./output_stat/241004/241004_15000_2.0.data : 
+SNIC : k :15000 m :2 psnr :34.4847 SizeCompressed : 206991 Recall :0.999888
+SLIC : k :15000 m :2 psnr :39.7622 SizeCompressed : 234692 Recall :1
+WATERPIXEL : k :15000 m :2 psnr :29.816 SizeCompressed : 137973 Recall :0.996183
+./output_stat/241004/241004_20000_1.0.data : 
+SNIC : k :20000 m :1 psnr :35.4623 SizeCompressed : 248022 Recall :0.999888
+SLIC : k :20000 m :1 psnr :41.1329 SizeCompressed : 278315 Recall :1
+WATERPIXEL : k :20000 m :1 psnr :30.016 SizeCompressed : 177904 Recall :0.998877
+./output_stat/241004/241004_20000_4.0.data : 
+SNIC : k :20000 m :4 psnr :35.2466 SizeCompressed : 245008 Recall :0.999888
+SLIC : k :20000 m :4 psnr :39.5992 SizeCompressed : 264434 Recall :1
+WATERPIXEL : k :20000 m :4 psnr :30.6591 SizeCompressed : 149940 Recall :0.999439
+./output_stat/241004/241004_100_1.0.data : 
+SNIC : k :100 m :1 psnr :25.3197 SizeCompressed : 50488 Recall :0.69058
+SLIC : k :100 m :1 psnr :31.1335 SizeCompressed : 74007 Recall :0.953407
+WATERPIXEL : k :100 m :1 psnr :23.9726 SizeCompressed : 49063 Recall :0.655889
+./output_stat/241004/241004_10000_8.0.data : 
+SNIC : k :10000 m :8 psnr :32.9141 SizeCompressed : 162406 Recall :0.99899
+SLIC : k :10000 m :8 psnr :36.3367 SizeCompressed : 174938 Recall :0.999888
+WATERPIXEL : k :10000 m :8 psnr :29.7126 SizeCompressed : 100023 Recall :0.987426
+./output_stat/241004/241004_500_1.0.data : 
+SNIC : k :500 m :1 psnr :27.7889 SizeCompressed : 60674 Recall :0.831481
+SLIC : k :500 m :1 psnr :33.6718 SizeCompressed : 96714 Recall :0.983159
+WATERPIXEL : k :500 m :1 psnr :25.7969 SizeCompressed : 53020 Recall :0.755361
+./output_stat/241004/241004_2500_8.0.data : 
+SNIC : k :2500 m :8 psnr :30.0002 SizeCompressed : 86226 Recall :0.948917
+SLIC : k :2500 m :8 psnr :33.8483 SizeCompressed : 97178 Recall :0.980465
+WATERPIXEL : k :2500 m :8 psnr :28.2455 SizeCompressed : 62521 Recall :0.86404
+./output_stat/241004/241004_5000_0.5.data : 
+SNIC : k :5000 m :0.5 psnr :31.6417 SizeCompressed : 121175 Recall :0.983833
+SLIC : k :5000 m :0.5 psnr :37.8561 SizeCompressed : 161838 Recall :0.999551
+WATERPIXEL : k :5000 m :0.5 psnr :28.6178 SizeCompressed : 87564 Recall :0.952734
+./output_stat/241004/241004_100_0.5.data : 
+SNIC : k :100 m :0.5 psnr :25.3764 SizeCompressed : 50602 Recall :0.696306
+SLIC : k :100 m :0.5 psnr :31.1972 SizeCompressed : 75981 Recall :0.955541
+WATERPIXEL : k :100 m :0.5 psnr :24.3085 SizeCompressed : 48954 Recall :0.665881
+./output_stat/241004/241004_15000_0.5.data : 
+SNIC : k :15000 m :0.5 psnr :34.6066 SizeCompressed : 209663 Recall :0.999888
+SLIC : k :15000 m :0.5 psnr :40.5677 SizeCompressed : 249510 Recall :1
+WATERPIXEL : k :15000 m :0.5 psnr :29.3721 SizeCompressed : 153354 Recall :0.994723
+./output_stat/241004/241004_10000_10.0.data : 
+SNIC : k :10000 m :10 psnr :32.7995 SizeCompressed : 161669 Recall :0.998765
+SLIC : k :10000 m :10 psnr :35.8484 SizeCompressed : 172830 Recall :0.999775
+WATERPIXEL : k :10000 m :10 psnr :29.748 SizeCompressed : 97376 Recall :0.987875
+./output_stat/241004/241004_100_8.0.data : 
+SNIC : k :100 m :8 psnr :24.4691 SizeCompressed : 50013 Recall :0.631413
+SLIC : k :100 m :8 psnr :29.8743 SizeCompressed : 60002 Recall :0.889525
+WATERPIXEL : k :100 m :8 psnr :24.7336 SizeCompressed : 48809 Recall :0.633322
+./output_stat/241004/241004_2500_2.0.data : 
+SNIC : k :2500 m :2 psnr :30.3027 SizeCompressed : 89131 Recall :0.956663
+SLIC : k :2500 m :2 psnr :35.7447 SizeCompressed : 116339 Recall :0.994386
+WATERPIXEL : k :2500 m :2 psnr :28.1277 SizeCompressed : 68985 Recall :0.911418
+./output_stat/241004/241004_100_2.0.data : 
+SNIC : k :100 m :2 psnr :25.3427 SizeCompressed : 50425 Recall :0.675087
+SLIC : k :100 m :2 psnr :30.9558 SizeCompressed : 70923 Recall :0.941843
+WATERPIXEL : k :100 m :2 psnr :24.6767 SizeCompressed : 49090 Recall :0.654878
+./output_stat/241004/241004_2500_4.0.data : 
+SNIC : k :2500 m :4 psnr :30.1643 SizeCompressed : 87726 Recall :0.955877
+SLIC : k :2500 m :4 psnr :35.0319 SizeCompressed : 106521 Recall :0.990345
+WATERPIXEL : k :2500 m :4 psnr :28.2775 SizeCompressed : 64737 Recall :0.90165
+./output_stat/241004/241004_10000_0.5.data : 
+SNIC : k :10000 m :0.5 psnr :33.3709 SizeCompressed : 168713 Recall :0.998653
+SLIC : k :10000 m :0.5 psnr :39.2133 SizeCompressed : 207523 Recall :1
+WATERPIXEL : k :10000 m :0.5 psnr :28.523 SizeCompressed : 122068 Recall :0.98518
+./output_stat/241004/241004_5000_4.0.data : 
+SNIC : k :5000 m :4 psnr :31.4328 SizeCompressed : 116553 Recall :0.986415
+SLIC : k :5000 m :4 psnr :36.39 SizeCompressed : 135214 Recall :0.997979
+WATERPIXEL : k :5000 m :4 psnr :28.9474 SizeCompressed : 77492 Recall :0.946896
+./output_stat/241004/241004_15000_10.0.data : 
+SNIC : k :15000 m :10 psnr :34.0177 SizeCompressed : 203309 Recall :0.999888
+SLIC : k :15000 m :10 psnr :36.9639 SizeCompressed : 217448 Recall :0.999775
+WATERPIXEL : k :15000 m :10 psnr :30.3753 SizeCompressed : 117423 Recall :0.998765
+./output_stat/241004/241004_5000_10.0.data : 
+SNIC : k :5000 m :10 psnr :31.1126 SizeCompressed : 113695 Recall :0.985517
+SLIC : k :5000 m :10 psnr :34.5331 SizeCompressed : 123037 Recall :0.996183
+WATERPIXEL : k :5000 m :10 psnr :28.9584 SizeCompressed : 73966 Recall :0.93376
+./output_stat/241004/241004_10000_1.0.data : 
+SNIC : k :10000 m :1 psnr :33.3502 SizeCompressed : 167629 Recall :0.999102
+SLIC : k :10000 m :1 psnr :39.0075 SizeCompressed : 200721 Recall :1
+WATERPIXEL : k :10000 m :1 psnr :28.7646 SizeCompressed : 117530 Recall :0.986415
+./output_stat/241004/241004_2500_1.0.data : 
+SNIC : k :2500 m :1 psnr :30.3885 SizeCompressed : 90693 Recall :0.95599
+SLIC : k :2500 m :1 psnr :36.0921 SizeCompressed : 124610 Recall :0.996856
+WATERPIXEL : k :2500 m :1 psnr :27.9656 SizeCompressed : 70646 Recall :0.907938
+./output_stat/241004/241004_5000_2.0.data : 
+SNIC : k :5000 m :2 psnr :31.5513 SizeCompressed : 118375 Recall :0.985742
+SLIC : k :5000 m :2 psnr :37.2498 SizeCompressed : 145872 Recall :0.99854
+WATERPIXEL : k :5000 m :2 psnr :28.8401 SizeCompressed : 81361 Recall :0.957449
+./output_stat/241004/241004_20000_2.0.data : 
+SNIC : k :20000 m :2 psnr :35.3666 SizeCompressed : 246523 Recall :0.999888
+SLIC : k :20000 m :2 psnr :40.6219 SizeCompressed : 271261 Recall :1
+WATERPIXEL : k :20000 m :2 psnr :30.428 SizeCompressed : 160538 Recall :0.998653
+./output_stat/241004/241004_20000_8.0.data : 
+SNIC : k :20000 m :8 psnr :34.9934 SizeCompressed : 243211 Recall :1
+SLIC : k :20000 m :8 psnr :38.2782 SizeCompressed : 258957 Recall :1
+WATERPIXEL : k :20000 m :8 psnr :30.9482 SizeCompressed : 141220 Recall :0.999888
+./output_stat/241004/241004_2500_0.5.data : 
+SNIC : k :2500 m :0.5 psnr :30.397 SizeCompressed : 91971 Recall :0.958123
+SLIC : k :2500 m :0.5 psnr :36.2733 SizeCompressed : 130368 Recall :0.997867
+WATERPIXEL : k :2500 m :0.5 psnr :27.87 SizeCompressed : 70328 Recall :0.905804
+./output_stat/241004/241004_2500_10.0.data : 
+SNIC : k :2500 m :10 psnr :29.8962 SizeCompressed : 85856 Recall :0.950488
+SLIC : k :2500 m :10 psnr :33.4175 SizeCompressed : 94739 Recall :0.975525
+WATERPIXEL : k :2500 m :10 psnr :28.2176 SizeCompressed : 62068 Recall :0.85517
+./output_stat/241004/241004_10000_4.0.data : 
+SNIC : k :10000 m :4 psnr :33.1482 SizeCompressed : 164359 Recall :0.998877
+SLIC : k :10000 m :4 psnr :37.6964 SizeCompressed : 182690 Recall :1
+WATERPIXEL : k :10000 m :4 psnr :29.3782 SizeCompressed : 107828 Recall :0.988212
+./output_stat/241004/241004_20000_10.0.data : 
+SNIC : k :20000 m :10 psnr :34.8706 SizeCompressed : 242665 Recall :1
+SLIC : k :20000 m :10 psnr :37.7795 SizeCompressed : 257399 Recall :1
+WATERPIXEL : k :20000 m :10 psnr :31.0501 SizeCompressed : 139294 Recall :1
+./output_stat/241004/241004_5000_8.0.data : 
+SNIC : k :5000 m :8 psnr :31.2005 SizeCompressed : 114374 Recall :0.986191
+SLIC : k :5000 m :8 psnr :35.0264 SizeCompressed : 125510 Recall :0.995958
+WATERPIXEL : k :5000 m :8 psnr :28.972 SizeCompressed : 74731 Recall :0.938475
+./output_stat/241004/241004_500_0.5.data : 
+SNIC : k :500 m :0.5 psnr :27.8584 SizeCompressed : 61630 Recall :0.848771
+SLIC : k :500 m :0.5 psnr :33.7875 SizeCompressed : 100719 Recall :0.986078
+WATERPIXEL : k :500 m :0.5 psnr :26.043 SizeCompressed : 52534 Recall :0.751431
+./output_stat/241004/241004_15000_1.0.data : 
+SNIC : k :15000 m :1 psnr :34.5713 SizeCompressed : 208629 Recall :0.999888
+SLIC : k :15000 m :1 psnr :40.2832 SizeCompressed : 243374 Recall :1
+WATERPIXEL : k :15000 m :1 psnr :29.4355 SizeCompressed : 151375 Recall :0.99405
+./output_stat/241004/241004_500_8.0.data : 
+SNIC : k :500 m :8 psnr :27.2985 SizeCompressed : 57977 Recall :0.796115
+SLIC : k :500 m :8 psnr :31.9282 SizeCompressed : 72043 Recall :0.930504
+WATERPIXEL : k :500 m :8 psnr :26.1345 SizeCompressed : 50461 Recall :0.694398
+./output_stat/241004/241004_500_4.0.data : 
+SNIC : k :500 m :4 psnr :27.5537 SizeCompressed : 58994 Recall :0.814977
+SLIC : k :500 m :4 psnr :32.8557 SizeCompressed : 81170 Recall :0.965196
+WATERPIXEL : k :500 m :4 psnr :26.185 SizeCompressed : 51899 Recall :0.75233
+./output_stat/241004/241004_100_10.0.data : 
+SNIC : k :100 m :10 psnr :24.3303 SizeCompressed : 49975 Recall :0.615134
+SLIC : k :100 m :10 psnr :29.6359 SizeCompressed : 58775 Recall :0.866622
+WATERPIXEL : k :100 m :10 psnr :24.3469 SizeCompressed : 48655 Recall :0.587403
+./output_stat/241004/241004_500_10.0.data : 
+SNIC : k :500 m :10 psnr :27.2304 SizeCompressed : 57752 Recall :0.795666
+SLIC : k :500 m :10 psnr :31.486 SizeCompressed : 69394 Recall :0.914
+WATERPIXEL : k :500 m :10 psnr :26.181 SizeCompressed : 50042 Recall :0.673066
+./output_stat/241004/241004_10000_2.0.data : 
+SNIC : k :10000 m :2 psnr :33.2703 SizeCompressed : 166101 Recall :0.99899
+SLIC : k :10000 m :2 psnr :38.5096 SizeCompressed : 191906 Recall :0.999888
+WATERPIXEL : k :10000 m :2 psnr :29.1075 SizeCompressed : 112071 Recall :0.987426
+./output_stat/241004/241004_100_4.0.data : 
+SNIC : k :100 m :4 psnr :24.9946 SizeCompressed : 50460 Recall :0.645223
+SLIC : k :100 m :4 psnr :30.5077 SizeCompressed : 65228 Recall :0.919389
+WATERPIXEL : k :100 m :4 psnr :24.667 SizeCompressed : 48907 Recall :0.653194
+./output_stat/241004/241004_15000_8.0.data : 
+SNIC : k :15000 m :8 psnr :34.1237 SizeCompressed : 203877 Recall :0.999888
+SLIC : k :15000 m :8 psnr :37.4333 SizeCompressed : 219023 Recall :0.999775
+WATERPIXEL : k :15000 m :8 psnr :30.2601 SizeCompressed : 119772 Recall :0.997755
+./output_stat/42049/42049_100_8.0.data : 
+SNIC : k :100 m :8 psnr :20.1131 SizeCompressed : 50127 Recall :0.670932
+SLIC : k :100 m :8 psnr :26.6319 SizeCompressed : 56218 Recall :0.950674
+WATERPIXEL : k :100 m :8 psnr :21.8346 SizeCompressed : 49588 Recall :0.711662
+./output_stat/42049/42049_20000_4.0.data : 
+SNIC : k :20000 m :4 psnr :32.8536 SizeCompressed : 234534 Recall :1
+SLIC : k :20000 m :4 psnr :37.6526 SizeCompressed : 258944 Recall :1
+WATERPIXEL : k :20000 m :4 psnr :27.2756 SizeCompressed : 145115 Recall :0.999414
+./output_stat/42049/42049_500_4.0.data : 
+SNIC : k :500 m :4 psnr :26.0014 SizeCompressed : 56866 Recall :0.860227
+SLIC : k :500 m :4 psnr :30.6738 SizeCompressed : 68870 Recall :0.978023
+WATERPIXEL : k :500 m :4 psnr :23.6748 SizeCompressed : 54344 Recall :0.837957
+./output_stat/42049/42049_5000_8.0.data : 
+SNIC : k :5000 m :8 psnr :29.5836 SizeCompressed : 108382 Recall :0.990819
+SLIC : k :5000 m :8 psnr :33.578 SizeCompressed : 120249 Recall :0.998144
+WATERPIXEL : k :5000 m :8 psnr :25.8879 SizeCompressed : 73557 Recall :0.961711
+./output_stat/42049/42049_500_2.0.data : 
+SNIC : k :500 m :2 psnr :26.1697 SizeCompressed : 57699 Recall :0.859055
+SLIC : k :500 m :2 psnr :31.0198 SizeCompressed : 72627 Recall :0.986228
+WATERPIXEL : k :500 m :2 psnr :23.6675 SizeCompressed : 55641 Recall :0.836198
+./output_stat/42049/42049_100_2.0.data : 
+SNIC : k :100 m :2 psnr :21.3902 SizeCompressed : 50510 Recall :0.716253
+SLIC : k :100 m :2 psnr :26.7813 SizeCompressed : 60262 Recall :0.973139
+WATERPIXEL : k :100 m :2 psnr :21.759 SizeCompressed : 50656 Recall :0.727584
+./output_stat/42049/42049_2500_2.0.data : 
+SNIC : k :2500 m :2 psnr :28.3271 SizeCompressed : 85482 Recall :0.968451
+SLIC : k :2500 m :2 psnr :33.5241 SizeCompressed : 101376 Recall :0.996679
+WATERPIXEL : k :2500 m :2 psnr :25.2539 SizeCompressed : 71510 Recall :0.936023
+./output_stat/42049/42049_500_0.5.data : 
+SNIC : k :500 m :0.5 psnr :26.1712 SizeCompressed : 59390 Recall :0.860422
+SLIC : k :500 m :0.5 psnr :31.1752 SizeCompressed : 77639 Recall :0.991112
+WATERPIXEL : k :500 m :0.5 psnr :23.3336 SizeCompressed : 53611 Recall :0.825259
+./output_stat/42049/42049_10000_8.0.data : 
+SNIC : k :10000 m :8 psnr :30.9038 SizeCompressed : 153768 Recall :0.999512
+SLIC : k :10000 m :8 psnr :34.7292 SizeCompressed : 170048 Recall :0.999902
+WATERPIXEL : k :10000 m :8 psnr :26.3418 SizeCompressed : 97965 Recall :0.991502
+./output_stat/42049/42049_20000_2.0.data : 
+SNIC : k :20000 m :2 psnr :32.8794 SizeCompressed : 235972 Recall :1
+SLIC : k :20000 m :2 psnr :38.1653 SizeCompressed : 263036 Recall :1
+WATERPIXEL : k :20000 m :2 psnr :27.1461 SizeCompressed : 151772 Recall :0.999512
+./output_stat/42049/42049_10000_0.5.data : 
+SNIC : k :10000 m :0.5 psnr :31.0384 SizeCompressed : 160373 Recall :0.999219
+SLIC : k :10000 m :0.5 psnr :36.1076 SizeCompressed : 188435 Recall :0.999902
+WATERPIXEL : k :10000 m :0.5 psnr :25.444 SizeCompressed : 130849 Recall :0.991502
+./output_stat/42049/42049_20000_0.5.data : 
+SNIC : k :20000 m :0.5 psnr :32.896 SizeCompressed : 238409 Recall :1
+SLIC : k :20000 m :0.5 psnr :38.5655 SizeCompressed : 270995 Recall :1
+WATERPIXEL : k :20000 m :0.5 psnr :26.7281 SizeCompressed : 203974 Recall :0.999219
+./output_stat/42049/42049_10000_10.0.data : 
+SNIC : k :10000 m :10 psnr :30.8785 SizeCompressed : 153295 Recall :0.999512
+SLIC : k :10000 m :10 psnr :34.3547 SizeCompressed : 168591 Recall :1
+WATERPIXEL : k :10000 m :10 psnr :26.3762 SizeCompressed : 96391 Recall :0.991893
+./output_stat/42049/42049_20000_10.0.data : 
+SNIC : k :20000 m :10 psnr :32.7279 SizeCompressed : 232829 Recall :1
+SLIC : k :20000 m :10 psnr :36.4131 SizeCompressed : 254333 Recall :1
+WATERPIXEL : k :20000 m :10 psnr :27.479 SizeCompressed : 137230 Recall :0.999805
+./output_stat/42049/42049_500_10.0.data : 
+SNIC : k :500 m :10 psnr :25.7564 SizeCompressed : 56047 Recall :0.853682
+SLIC : k :500 m :10 psnr :30.0931 SizeCompressed : 63752 Recall :0.955753
+WATERPIXEL : k :500 m :10 psnr :23.6209 SizeCompressed : 50640 Recall :0.829459
+./output_stat/42049/42049_15000_10.0.data : 
+SNIC : k :15000 m :10 psnr :31.7763 SizeCompressed : 193668 Recall :1
+SLIC : k :15000 m :10 psnr :35.5282 SizeCompressed : 212889 Recall :1
+WATERPIXEL : k :15000 m :10 psnr :26.996 SizeCompressed : 117193 Recall :0.998535
+./output_stat/42049/42049_2500_0.5.data : 
+SNIC : k :2500 m :0.5 psnr :28.3718 SizeCompressed : 88272 Recall :0.967376
+SLIC : k :2500 m :0.5 psnr :33.7404 SizeCompressed : 108136 Recall :0.997363
+WATERPIXEL : k :2500 m :0.5 psnr :24.9198 SizeCompressed : 72705 Recall :0.934851
+./output_stat/42049/42049_15000_0.5.data : 
+SNIC : k :15000 m :0.5 psnr :31.9386 SizeCompressed : 199074 Recall :0.999805
+SLIC : k :15000 m :0.5 psnr :37.4813 SizeCompressed : 232738 Recall :1
+WATERPIXEL : k :15000 m :0.5 psnr :26.2639 SizeCompressed : 167224 Recall :0.99746
+./output_stat/42049/42049_2500_1.0.data : 
+SNIC : k :2500 m :1 psnr :28.3514 SizeCompressed : 86694 Recall :0.966497
+SLIC : k :2500 m :1 psnr :33.724 SizeCompressed : 105169 Recall :0.998046
+WATERPIXEL : k :2500 m :1 psnr :25.0812 SizeCompressed : 73890 Recall :0.93319
+./output_stat/42049/42049_500_1.0.data : 
+SNIC : k :500 m :1 psnr :26.3706 SizeCompressed : 58584 Recall :0.866087
+SLIC : k :500 m :1 psnr :31.0427 SizeCompressed : 75346 Recall :0.989646
+WATERPIXEL : k :500 m :1 psnr :23.4999 SizeCompressed : 54820 Recall :0.81344
+./output_stat/42049/42049_5000_2.0.data : 
+SNIC : k :5000 m :2 psnr :29.7339 SizeCompressed : 110975 Recall :0.991991
+SLIC : k :5000 m :2 psnr :34.9226 SizeCompressed : 130437 Recall :0.999316
+WATERPIXEL : k :5000 m :2 psnr :25.766 SizeCompressed : 81854 Recall :0.971381
+./output_stat/42049/42049_20000_8.0.data : 
+SNIC : k :20000 m :8 psnr :32.7843 SizeCompressed : 233246 Recall :1
+SLIC : k :20000 m :8 psnr :36.746 SizeCompressed : 255318 Recall :1
+WATERPIXEL : k :20000 m :8 psnr :27.4486 SizeCompressed : 138958 Recall :0.999707
+./output_stat/42049/42049_20000_1.0.data : 
+SNIC : k :20000 m :1 psnr :32.8917 SizeCompressed : 237262 Recall :1
+SLIC : k :20000 m :1 psnr :38.4105 SizeCompressed : 267023 Recall :1
+WATERPIXEL : k :20000 m :1 psnr :26.8351 SizeCompressed : 190360 Recall :0.999219
+./output_stat/42049/42049_15000_2.0.data : 
+SNIC : k :15000 m :2 psnr :31.9126 SizeCompressed : 196613 Recall :1
+SLIC : k :15000 m :2 psnr :37.1342 SizeCompressed : 223393 Recall :1
+WATERPIXEL : k :15000 m :2 psnr :26.739 SizeCompressed : 135612 Recall :0.997167
+./output_stat/42049/42049_5000_10.0.data : 
+SNIC : k :5000 m :10 psnr :29.5841 SizeCompressed : 108052 Recall :0.991112
+SLIC : k :5000 m :10 psnr :33.2985 SizeCompressed : 118716 Recall :0.997949
+WATERPIXEL : k :5000 m :10 psnr :25.9007 SizeCompressed : 72994 Recall :0.96093
+./output_stat/42049/42049_5000_0.5.data : 
+SNIC : k :5000 m :0.5 psnr :29.7549 SizeCompressed : 114432 Recall :0.990819
+SLIC : k :5000 m :0.5 psnr :35.2142 SizeCompressed : 138523 Recall :0.999023
+WATERPIXEL : k :5000 m :0.5 psnr :25.4285 SizeCompressed : 92681 Recall :0.969525
+./output_stat/42049/42049_500_8.0.data : 
+SNIC : k :500 m :8 psnr :25.8106 SizeCompressed : 56215 Recall :0.857394
+SLIC : k :500 m :8 psnr :30.3272 SizeCompressed : 65113 Recall :0.961711
+WATERPIXEL : k :500 m :8 psnr :23.5533 SizeCompressed : 51314 Recall :0.828482
+./output_stat/42049/42049_2500_4.0.data : 
+SNIC : k :2500 m :4 psnr :28.2493 SizeCompressed : 84212 Recall :0.9706
+SLIC : k :2500 m :4 psnr :33.1772 SizeCompressed : 96838 Recall :0.994433
+WATERPIXEL : k :2500 m :4 psnr :25.3109 SizeCompressed : 63956 Recall :0.934851
+./output_stat/42049/42049_100_1.0.data : 
+SNIC : k :100 m :1 psnr :21.4631 SizeCompressed : 50830 Recall :0.717132
+SLIC : k :100 m :1 psnr :26.9633 SizeCompressed : 61639 Recall :0.980367
+WATERPIXEL : k :100 m :1 psnr :21.4626 SizeCompressed : 49785 Recall :0.722895
+./output_stat/42049/42049_15000_1.0.data : 
+SNIC : k :15000 m :1 psnr :31.9371 SizeCompressed : 198031 Recall :0.999902
+SLIC : k :15000 m :1 psnr :37.3971 SizeCompressed : 228692 Recall :1
+WATERPIXEL : k :15000 m :1 psnr :26.4249 SizeCompressed : 166298 Recall :0.99707
+./output_stat/42049/42049_5000_1.0.data : 
+SNIC : k :5000 m :1 psnr :29.7615 SizeCompressed : 112767 Recall :0.990525
+SLIC : k :5000 m :1 psnr :35.0882 SizeCompressed : 134660 Recall :0.998926
+WATERPIXEL : k :5000 m :1 psnr :25.6101 SizeCompressed : 93485 Recall :0.969525
+./output_stat/42049/42049_100_0.5.data : 
+SNIC : k :100 m :0.5 psnr :21.4715 SizeCompressed : 50927 Recall :0.719965
+SLIC : k :100 m :0.5 psnr :27.0213 SizeCompressed : 62612 Recall :0.982125
+WATERPIXEL : k :100 m :0.5 psnr :21.3131 SizeCompressed : 49189 Recall :0.723383
+./output_stat/42049/42049_15000_4.0.data : 
+SNIC : k :15000 m :4 psnr :31.8761 SizeCompressed : 195331 Recall :1
+SLIC : k :15000 m :4 psnr :36.6978 SizeCompressed : 218557 Recall :1
+WATERPIXEL : k :15000 m :4 psnr :26.8452 SizeCompressed : 123762 Recall :0.997656
+./output_stat/42049/42049_100_10.0.data : 
+SNIC : k :100 m :10 psnr :19.9422 SizeCompressed : 50074 Recall :0.664876
+SLIC : k :100 m :10 psnr :26.4893 SizeCompressed : 55823 Recall :0.944227
+WATERPIXEL : k :100 m :10 psnr :21.8433 SizeCompressed : 48977 Recall :0.714397
+./output_stat/42049/42049_2500_10.0.data : 
+SNIC : k :2500 m :10 psnr :28.1614 SizeCompressed : 82844 Recall :0.968646
+SLIC : k :2500 m :10 psnr :32.2189 SizeCompressed : 91125 Recall :0.988767
+WATERPIXEL : k :2500 m :10 psnr :25.3182 SizeCompressed : 61894 Recall :0.92479
+./output_stat/42049/42049_10000_1.0.data : 
+SNIC : k :10000 m :1 psnr :31.0188 SizeCompressed : 158364 Recall :0.999121
+SLIC : k :10000 m :1 psnr :36.0365 SizeCompressed : 184571 Recall :1
+WATERPIXEL : k :10000 m :1 psnr :25.8091 SizeCompressed : 117635 Recall :0.991502
+./output_stat/42049/42049_10000_2.0.data : 
+SNIC : k :10000 m :2 psnr :31.0165 SizeCompressed : 156943 Recall :0.999316
+SLIC : k :10000 m :2 psnr :35.8237 SizeCompressed : 180038 Recall :1
+WATERPIXEL : k :10000 m :2 psnr :26.0228 SizeCompressed : 111910 Recall :0.992088
+./output_stat/42049/42049_15000_8.0.data : 
+SNIC : k :15000 m :8 psnr :31.8361 SizeCompressed : 194083 Recall :1
+SLIC : k :15000 m :8 psnr :35.8825 SizeCompressed : 214082 Recall :1
+WATERPIXEL : k :15000 m :8 psnr :26.9182 SizeCompressed : 118448 Recall :0.997949
+./output_stat/42049/42049_2500_8.0.data : 
+SNIC : k :2500 m :8 psnr :28.1349 SizeCompressed : 83186 Recall :0.968939
+SLIC : k :2500 m :8 psnr :32.4699 SizeCompressed : 92500 Recall :0.990819
+WATERPIXEL : k :2500 m :8 psnr :25.3561 SizeCompressed : 61976 Recall :0.929674
+./output_stat/42049/42049_100_4.0.data : 
+SNIC : k :100 m :4 psnr :20.9362 SizeCompressed : 50257 Recall :0.693788
+SLIC : k :100 m :4 psnr :26.7943 SizeCompressed : 58442 Recall :0.967181
+WATERPIXEL : k :100 m :4 psnr :22.0062 SizeCompressed : 49905 Recall :0.720356
+./output_stat/42049/42049_5000_4.0.data : 
+SNIC : k :5000 m :4 psnr :29.6831 SizeCompressed : 109743 Recall :0.9916
+SLIC : k :5000 m :4 psnr :34.4713 SizeCompressed : 125259 Recall :0.99873
+WATERPIXEL : k :5000 m :4 psnr :25.834 SizeCompressed : 75699 Recall :0.970404
+./output_stat/42049/42049_10000_4.0.data : 
+SNIC : k :10000 m :4 psnr :30.9653 SizeCompressed : 155423 Recall :0.999414
+SLIC : k :10000 m :4 psnr :35.4707 SizeCompressed : 174803 Recall :1
+WATERPIXEL : k :10000 m :4 psnr :26.2143 SizeCompressed : 107777 Recall :0.990428

@@ -16,67 +16,104 @@ int main(int argc, char* argv[])
         int k = atoi(argv[3]);
         double m = atof(argv[4]);
 
+        // -------------------PARTIE SNIC--------------------
+        // Chemin de l'image de compression
+        std::string pathCompressedSNIC = std::string(argv[2]);
+        pathCompressedSNIC = pathCompressedSNIC.substr(0, pathCompressedSNIC.size() - 4) + "Compressed_SNIC";
+
+        char *pathCharSNIC = new char[pathCompressedSNIC.length() + 1];
+        std::strcpy(pathCharSNIC, pathCompressedSNIC.c_str());
+
+        // Executer la fonction SNIC
+        SNIC(imageIn, imageOutSNIC, k, m,pathCharSNIC);
+        // Chemin de l'image de sortie
         std::string SNICPath = std::string(argv[2]);
         SNICPath = SNICPath.substr(0, SNICPath.size() - 4) + "SNIC.ppm";
-        std::cout << "Image superpixelisée \n SNIC écriture ici :"<< SNICPath << std::endl;
-        SNIC(imageIn, imageOutSNIC, k, m);
+        std::cout << "SNIC écriture ici :"<< SNICPath << std::endl;
+        // Ecrire l'image de sortie
         imageOutSNIC.write(SNICPath.c_str());
+        // Recuperer la taille de l'image compressée
+        long double compressedSizeSNIC = getFileSize(pathCharSNIC);
 
+        // -------------------PARTIE SLIC--------------------
+        // Chemin de l'image de compression
+        std::string pathCompressedSLIC = std::string(argv[2]);
+        pathCompressedSLIC = pathCompressedSLIC.substr(0, pathCompressedSLIC.size() - 4) + "Compressed_SLIC";
+        char *pathCharSLIC = new char[pathCompressedSLIC.length() + 1];
+        std::strcpy(pathCharSLIC, pathCompressedSLIC.c_str());
 
+        // Executer la fonction SLIC
+        SLIC(imageIn, imageOutSLIC, k, m, pathCharSLIC);
+        // Chemin de l'image de sortie
         std::string SLICPath = std::string(argv[2]);
         SLICPath = SLICPath.substr(0, SLICPath.size() - 4) + "SLIC.ppm";
         std::cout << "SLIC ecriture ici :"<< SLICPath << std::endl;
-
-        SLIC(imageIn, imageOutSLIC, k, m);
+        // Ecrire l'image de sortie
         imageOutSLIC.write(SLICPath.c_str());
+        // Recuperer la taille de l'image compressée
+        long double compressedSizeSLIC = getFileSize(pathCharSLIC);
 
-
+        // -------------------PARTIE WATERPIXEL--------------------
+        // Chemin de l'image de compression
+        std::string pathCompressedWaterpixel = std::string(argv[2]);
+        pathCompressedWaterpixel = pathCompressedWaterpixel.substr(0, pathCompressedWaterpixel.size() - 4) + "Compressed_Waterpixel";
+        char *pathCharWaterpixel = new char[pathCompressedWaterpixel.length() + 1];
+        std::strcpy(pathCharWaterpixel, pathCompressedWaterpixel.c_str());
+        // Executer la fonction Waterpixel
+        Waterpixel(imageIn,imageOutWaterpixel,k,0.2f,m,false, pathCharWaterpixel);
+        // Chemin de l'image de sortie
         std::string WaterpixelPath = std::string(argv[2]);
         WaterpixelPath = WaterpixelPath.substr(0, WaterpixelPath.size() - 4) + "Waterpixel.ppm";
         std::cout << "Waterpixel : ecriture ici : "<< WaterpixelPath << std::endl;
-
-        Waterpixel(imageIn,imageOutWaterpixel,k,0.2f,0.);
         imageOutWaterpixel.write(WaterpixelPath.c_str());
+        // Recuperer la taille de l'image compressée
+        long double compressedSizeWaterpixel = getFileSize(pathCharWaterpixel);
 
-        // Ecrire le PSNR dans un fichier argv[2] privé de .ppm remplacé par .psnr
+        // Ecrire le PSNR dans un fichier argv[2] privé de .ppm remplacé par .data
         double psnrSNIC = PSNR(imageIn, imageOutSNIC);
         double psnrSLIC = PSNR(imageIn, imageOutSLIC);
         double psnrWaterpixel = PSNR(imageIn, imageOutWaterpixel);
-        std::string psnrFile = std::string(argv[2]);
-        psnrFile = psnrFile.substr(0, psnrFile.size() - 4) + ".psnr";
-        std::ofstream file(psnrFile);
-        file << "PSNR SNIC :"<< psnrSNIC<< "\nPSNR SLIC :"<< psnrSLIC << "\nPSNR WATERPIXEL : "<< psnrWaterpixel << std::endl;
-        file.close();
-        std::cout << "PSNR SNIC :"<< psnrSNIC<< "\nPSNR SLIC :"<< psnrSLIC << "\nPSNR WATERPIXEL : "<< psnrWaterpixel << std::endl;
 
+        // Ouvrir le fichier de sortie
+        std::string dataFile = std::string(argv[2]);
+        dataFile = dataFile.substr(0, dataFile.size() - 4) + ".data";
+        std::ofstream file(dataFile);
         if (argc == 6){
-            Image imageBoundaryRecall;
-            imageBoundaryRecall.read(argv[5]);
-            // Ecrire le calcul du boundary recall dans un fichier argv[2] privé de .ppm remplacé par .recall
-            double recallSNIC = BoundaryRecall(imageOutSNIC, imageBoundaryRecall);
-            double recallSLIC = BoundaryRecall(imageOutSLIC, imageBoundaryRecall);
-            double recallWaterpixel = BoundaryRecall(imageOutWaterpixel, imageBoundaryRecall);
-            std::string recallFile = std::string(argv[2]);
-            recallFile = recallFile.substr(0, recallFile.size() - 4) + ".recall";
-            std::ofstream file2(recallFile);
-            file2 << "Recall SNIC :"<< recallSNIC << "\nRecall SLIC :"<< recallSLIC << "\nRecall Waterpixel:"<< recallWaterpixel << std::endl;
-            file2.close();
-            std::cout << "Boundary Recall SNIC :"<< recallSNIC << "\nRecall SLIC :"<< recallSLIC << "\nRecall Waterpixel:"<< recallWaterpixel << std::endl;
+            Image imageBoundaryRecallSNIC, imageBoundaryRecallSLIC, imageBoundaryRecallWaterpixel;
+            imageBoundaryRecallSNIC.read(argv[5]);
+            imageBoundaryRecallSLIC.read(argv[5]);
+            imageBoundaryRecallWaterpixel.read(argv[5]);
+
+            // Ecrire le calcul du boundary recall dans un fichier argv[2] privé de .ppm remplacé par .data
+            double recallSNIC = BoundaryRecall(imageOutSNIC, imageBoundaryRecallSNIC,
+                    SNICPath);
+            double recallSLIC = BoundaryRecall(imageOutSLIC, imageBoundaryRecallSLIC,SLICPath);
+            double recallWaterpixel = BoundaryRecall(imageOutWaterpixel, imageBoundaryRecallWaterpixel,WaterpixelPath);
+            file <<"\nSNIC : k :" << k << " m :"<< m << " psnr :"<< psnrSNIC << " SizeCompressed : "<<compressedSizeSNIC <<" Recall :"<< recallSNIC<<
+                    "\n" << "SLIC : k :" << k << " m :"<< m <<" psnr :"<< psnrSLIC<< " SizeCompressed : "<<compressedSizeSLIC << " Recall :"<< recallSLIC<<
+                    "\n" << "WATERPIXEL : k :" << k << " m :"<< m <<" psnr :"<< psnrWaterpixel<< " SizeCompressed : "<<compressedSizeWaterpixel << " Recall :"<< recallWaterpixel
+            << std::endl;
+            file.close();
         }
+        else{
+            file <<"\nSNIC : k :" << k << " m :"<< m << " psnr :"<< psnrSNIC << "\n" << "SLIC : k :" << k << " m :"<< m <<" psnr :"<< psnrSLIC << "\n" << "WATERPIXEL : k :" << k << " m :"<< m <<"psnr :"<< psnrWaterpixel << std::endl;
+            std::cout << "PSNR SNIC :"<< psnrSNIC<< "\nPSNR SLIC :"<< psnrSLIC << "\nPSNR WATERPIXEL : "<< psnrWaterpixel << std::endl;
+        }
+        file.close();
 
         // Ecrire les histogrammes de couleurs dans des fichiers argv[2] privé de .ppm remplacé par .histo
-        std::cout << "Histogramme de couleurs : " << std::endl;
-        std::string histoFileSNIC = std::string(SNICPath);
-        histoFileSNIC = histoFileSNIC.substr(0, histoFileSNIC.size() - 4) + ".histo";
-        histoColor(imageOutSNIC, histoFileSNIC.c_str());
+        /*    std::cout << "Histogramme de couleurs : " << std::endl;
+            std::string histoFileSNIC = std::string(SNICPath);
+            //histoFileSNIC = histoFileSNIC.substr(0, histoFileSNIC.size() - 4) + ".histo";
+            //histoColor(imageOutSNIC, histoFileSNIC.c_str());
 
-        std::string histoFileSLIC = std::string(SLICPath);
-        histoFileSLIC = histoFileSLIC.substr(0, histoFileSLIC.size() - 4) + ".histo";
-        histoColor(imageOutSLIC, histoFileSLIC.c_str());
+            std::string histoFileSLIC = std::string(SLICPath);
+            histoFileSLIC = histoFileSLIC.substr(0, histoFileSLIC.size() - 4) + ".histo";
+            //histoColor(imageOutSLIC, histoFileSLIC.c_str());
 
-        std::string histoFileWaterpixel = std::string(WaterpixelPath);
-        histoFileWaterpixel = histoFileWaterpixel.substr(0, histoFileWaterpixel.size() - 4) + ".histo";
-        histoColor(imageOutWaterpixel, histoFileWaterpixel.c_str());
+            std::string histoFileWaterpixel = std::string(WaterpixelPath);
+            //histoFileWaterpixel = histoFileWaterpixel.substr(0, histoFileWaterpixel.size() - 4) + ".histo";
+            //histoColor(imageOutWaterpixel, histoFileWaterpixel.c_str());*/
         return 0;
     } else if(argc>1){
         std::cerr << "Usage: " << argv[0] << " |OU| " << argv[0] << " imageIn.ppm imageOut.ppm k m" << " [imageBoundaryRecall.pgm (test de boundary recall)]"  << std::endl;

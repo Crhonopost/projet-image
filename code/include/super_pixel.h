@@ -204,7 +204,7 @@ void gridInitSLIC(Image &imageIn, std::vector<SuperPixel> &superPixels, std::vec
 // imageOut : image de sortie
 // k : nombre de superpixels
 // m : Facteur de compacité
-void SNIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
+void SNIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0,char* path=nullptr) {
     double s = sqrt((double)imageIn.nbPixel / (double)k); // Taille d'un superpixel
 
     std::vector<SuperPixel> superPixels;
@@ -220,10 +220,10 @@ void SNIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
     int loop = 0;
 
     while (!Q.empty()) {
-        std::cout << "\033[2J\033[H";
+        //std::cout << "\033[2J\033[H";
  
-        std::cout << "i - " << loop << "\n"
-        << "Q size : " << Q.size() << "\n";
+        //std::cout << "i - " << loop << "\n"
+        //<< "Q size : " << Q.size() << "\n";
 
         loop ++;
         Pixel *p = Q.top();
@@ -280,7 +280,8 @@ void SNIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
 
     std::vector<unsigned char> data;
     storeSNIC(imageIn.width, imageIn.height, colors, ids, data);// "output/taupe_SNIC.snic");
-    compressFile("output/taupe.snic", data);
+    compressFile(path, data);
+
 
     for(Pixel * pixel: imagePixels){
         free(pixel);
@@ -290,7 +291,7 @@ void SNIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
 // https://vision.gel.ulaval.ca/~jflalonde/cours/4105/h17/tps/results/projet/111063028/index.html
 // https://darshita1405.medium.com/superpixels-and-slic-6b2d8a6e4f08
 
-void SLIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
+void SLIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0,char* path=nullptr) {
     ScopedLogger logger("SLIC");
     double s = sqrt((double)imageIn.nbPixel / (double)k); // Taille d'un superpixel
 
@@ -365,13 +366,16 @@ void SLIC(Image &imageIn, Image &imageOut, int k = 5000, double m = 10.0) {
         imageOut[i*3 + 1] = color.g;
         imageOut[i*3 + 2] = color.b;
     }
+    std::vector<unsigned char> data;
+    storeSNIC(imageIn.width, imageIn.height, colors, ids, data);
+    compressFile(path, data);
 
     GlobalLogger::getInstance().printAverages();
 }
 
 // Reg sert a savoir si on veut plus de régularité ou plus suivre les contours
 // Plus reg est grand, plus on aura de régularité (grille carré)
-void Waterpixel(Image& imageIn, Image& imageOut, int k, float percentageRho=0.2f, double reg=50., bool debugMode = false){
+void Waterpixel(Image& imageIn, Image& imageOut, int k, float percentageRho=0.2f, double reg=50., bool debugMode = false, char* path=nullptr) {
     int nH = imageIn.height;
     int nW = imageIn.width;
     int nTaille = nH * nW;
@@ -677,7 +681,9 @@ void Waterpixel(Image& imageIn, Image& imageOut, int k, float percentageRho=0.2f
             imageOut[index*3 + 2] = 0;
         }
         else{
-            int spIdx = labels[index] - 1;
+            labels[index] = labels[index] - 1; // On réduit de 1 car on avait commencé à
+                                               // 1 pour éviter les confusions avec les pixels non assignés et watershed
+            int spIdx = labels[index];
             Rgb color = colors[spIdx];
             imageOut[index*3 + 0] = color.r;
             imageOut[index*3 + 1] = color.g;
@@ -690,6 +696,10 @@ void Waterpixel(Image& imageIn, Image& imageOut, int k, float percentageRho=0.2f
         std::string imgOutName = std::string("WATERPIXEL-DEBUG_ImgOut.ppm");
         imageOut.write(imgOutName.c_str());
     }
+
+    std::vector<unsigned char> data;
+    storeSNIC(imageIn.width, imageIn.height,colors,labels,data);
+    compressFile(path, data);
 
     // Libération de la mémoire
     for (Pixel * pixel: imagePixels){
