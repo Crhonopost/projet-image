@@ -35,7 +35,7 @@ int main() {
         ImGui::NewFrame();
     
         if(ImGui::Begin("App", nullptr, ImGuiWindowFlags_NoCollapse)) {
-            if (ImGui::Button("File explo")) fileDialog.Open();
+            if (ImGui::Button("Explorateur de fichier")) fileDialog.Open();
         }
     
         fileDialog.Display();

@@ -5,6 +5,8 @@
 #include "super_pixel.h"
 
 
+
+
 struct InterfaceState {
     int compressionMode = 0;
     Image imgInput, imgOutput;
@@ -20,6 +22,7 @@ struct InterfaceState {
     char *outputPath = "output/compressed.spr";
     float psnr;
     double inSize, compressionRate;
+    double processTime;
 
     bool LoadTextureFromMemory(Image &image, GLuint* out_texture)
     {    
@@ -61,6 +64,7 @@ struct InterfaceState {
     
         if(ImGui::Button("Compresser")){
             Image imageOut;
+            auto start = std::chrono::high_resolution_clock::now();
             switch(compressionMode){
                 case 0:
                     SLIC(image, imageOut, k, m, outputPath);
@@ -73,6 +77,8 @@ struct InterfaceState {
                     break;
             }
             setOutputImage(imageOut);
+            auto end = std::chrono::high_resolution_clock::now();
+            processTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
         }
         
     
@@ -90,13 +96,17 @@ struct InterfaceState {
 
             ImGui::Text("Image enregistrée sous '%s", outputPath);
 
+            std::ostringstream times;
+            times << std::fixed << std::setprecision(2) << processTime / 1000.;  // 2 décimales
+            ImGui::Text("Temps de compression: %ss", times.str().c_str());
+
             std::ostringstream oss;
             oss << std::fixed << std::setprecision(2) << psnr;  // 2 décimales
-            ImGui::Text("PSNR = %sdB", oss.str().c_str());
+            ImGui::Text("PSNR: %sdB", oss.str().c_str());
 
             std::ostringstream crs;
             crs << std::fixed << std::setprecision(2) << compressionRate;  // 2 décimales
-            ImGui::Text("Taux de compression = %s", crs.str().c_str());
+            ImGui::Text("Taux de compression: %s", crs.str().c_str());
 
 
         }
